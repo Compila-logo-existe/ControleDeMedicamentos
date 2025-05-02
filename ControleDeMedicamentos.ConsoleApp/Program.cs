@@ -17,9 +17,6 @@ internal class Program
 
             char opcaoEscolhida = telaSelecionada.ApresentarMenu();
 
-            if (opcaoEscolhida == 'S')
-                break;
-
             switch (opcaoEscolhida)
             {
                 case '1': telaSelecionada.CadastrarRegistro(); break;
@@ -29,6 +26,8 @@ internal class Program
                 case '3': telaSelecionada.ExcluirRegistro(); break;
 
                 case '4': telaSelecionada.VisualizarRegistros(true); break;
+
+                case 'S': break;
 
                 default: break;
             }
