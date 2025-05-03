@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 using ControleDeMedicamentos.ConsoleApp.ModuloFuncionario;
+using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 

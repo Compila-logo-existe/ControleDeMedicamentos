@@ -1,4 +1,5 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 using ControleDeMedicamentos.ConsoleApp.Util;
 
 namespace ControleDeMedicamentos.ConsoleApp;
@@ -25,6 +26,16 @@ internal class Program
 
             char opcaoEscolhida = telaSelecionada.ApresentarMenu();
 
+            if (telaSelecionada is TelaRequisicaoSaida)
+            {
+                TelaRequisicaoSaida telaRequisicaoSaida = (TelaRequisicaoSaida)telaSelecionada;
+
+                if (opcaoEscolhida == '3')
+                {
+                    telaRequisicaoSaida.VisualizarRequisicoesDePaciente(); continue;
+                }
+            }
+
             switch (opcaoEscolhida)
             {
                 case '1': telaSelecionada.CadastrarRegistro(); break;
@@ -37,7 +48,8 @@ internal class Program
 
                 case 'S': break;
 
-                default: break;
+                default:
+                    Notificador.ExibirMensagem("\nOpção inválida!", ConsoleColor.Red); break;
             }
         }
     }
