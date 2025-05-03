@@ -27,7 +27,7 @@ public class Funcionario : EntidadeBase<Funcionario>
     {
         string erros = "";
 
-        if (string.IsNullOrEmpty(Nome))
+        if (string.IsNullOrWhiteSpace(Nome))
             erros += "O campo 'Nome' é obrigatório.\n";
         else
         {
@@ -35,20 +35,20 @@ public class Funcionario : EntidadeBase<Funcionario>
                 erros += "O campo 'Nome' deve conter entre 3 e 100 caracteres.\n";
         }
 
-        if (string.IsNullOrEmpty(Telefone))
+        if (string.IsNullOrWhiteSpace(Telefone))
             erros += "O campo 'Telefone' é obrigatório.\n";
         else
         {
             if (!Regex.IsMatch(Telefone, @"^\(?\d{2}\)?\s?(9\d{4}|\d{4})-?\d{4}$"))
-                erros += "O campo 'Telefone' é deve seguir o padrão (DDD) 0000-0000 ou (DDD) 00000-0000.\n";
+                erros += "O campo 'Telefone' deve seguir o padrão (DDD) 0000-0000 ou (DDD) 00000-0000.\n";
         }
 
-        if (string.IsNullOrEmpty(CPF))
+        if (string.IsNullOrWhiteSpace(CPF))
             erros += "O campo 'CPF' é obrigatório.\n";
         else
         {
             if (!Regex.IsMatch(CPF, @"^\d{11}$"))
-                erros += "O campo 'Cartão do Sus' é precisa conter 11 números.\n";
+                erros += "O campo 'CPF' precisa conter 11 números.\n";
         }
 
         return erros;
