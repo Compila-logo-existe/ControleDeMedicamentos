@@ -15,6 +15,14 @@ internal class Program
 
             ITelaCrud telaSelecionada = telaPrincipal.ObterTela();
 
+            if (telaSelecionada == null)
+            {
+                Console.WriteLine("\nOpção Inválida!");
+                Console.Write("Pressione [Enter] para tentar novamente.");
+                Console.ReadKey();
+                continue;
+            }
+
             char opcaoEscolhida = telaSelecionada.ApresentarMenu();
 
             switch (opcaoEscolhida)
