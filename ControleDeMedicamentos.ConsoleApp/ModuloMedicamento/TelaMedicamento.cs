@@ -19,11 +19,8 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
         Console.Write("Digite o Nome: ");
         string nome = Console.ReadLine() ?? string.Empty;
 
-        Console.Write("Digite o Telefone: ");
-        string telefone = Console.ReadLine() ?? string.Empty;
-
         Console.Write("Digite a Quantidade em estoque: ");
-        string qtdEstoque = Console.ReadLine() ?? string.Empty;
+        string qtdEstoque = Console.ReadLine() ?? "0";
 
         TelaFornecedor.VisualizarRegistros(false);
 
