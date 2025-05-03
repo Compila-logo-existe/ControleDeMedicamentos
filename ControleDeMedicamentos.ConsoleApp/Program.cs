@@ -15,10 +15,15 @@ internal class Program
 
             ITelaCrud telaSelecionada = telaPrincipal.ObterTela();
 
-            char opcaoEscolhida = telaSelecionada.ApresentarMenu();
+            if (telaSelecionada == null)
+            {
+                Console.WriteLine("\nOpção Inválida!");
+                Console.Write("Pressione [Enter] para tentar novamente.");
+                Console.ReadKey();
+                continue;
+            }
 
-            if (opcaoEscolhida == 'S')
-                break;
+            char opcaoEscolhida = telaSelecionada.ApresentarMenu();
 
             switch (opcaoEscolhida)
             {
@@ -29,6 +34,8 @@ internal class Program
                 case '3': telaSelecionada.ExcluirRegistro(); break;
 
                 case '4': telaSelecionada.VisualizarRegistros(true); break;
+
+                case 'S': break;
 
                 default: break;
             }

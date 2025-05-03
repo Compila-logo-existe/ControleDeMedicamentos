@@ -1,15 +1,22 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using ControleDeMedicamentos.ConsoleApp.ModuloFuncionario;
+using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 
 namespace ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
 public class ContextoDados
 {
+    public List<Funcionario> Funcionarios { get; set; }
+    public List<RequisicaoEntrada> RequisicoesEntrada { get; set; }
+
     private string pastaArmazenamento = "C:\\temp";
     private string arquivoArmazenamento = "dados-controle-medicamento.json";
 
     public ContextoDados()
     {
+        Funcionarios = new List<Funcionario>();
+        RequisicoesEntrada = new List<RequisicaoEntrada>();
     }
 
     public ContextoDados(bool carregarDados) : this()
@@ -51,5 +58,7 @@ public class ContextoDados
 
         if (contextoArmazenado == null) return;
 
+        Funcionarios = contextoArmazenado.Funcionarios;
+        RequisicoesEntrada = contextoArmazenado.RequisicoesEntrada;
     }
 }
