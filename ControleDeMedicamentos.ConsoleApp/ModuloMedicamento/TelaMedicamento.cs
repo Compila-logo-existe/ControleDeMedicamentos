@@ -51,13 +51,13 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
 
     protected override void ExibirCabecalhoTabela()
     {
-        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30}",
-                 "ID", "Nome", "Qtd Estoque", "Descrição");
+        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30} | {4}",
+            "ID", "Nome", "Qtd Estoque", "Descrição", "Status");
     }
 
     protected override void ExibirLinhaTabela(Medicamento registro)
     {
         Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30}",
-                registro.Id, registro.Nome, registro.QtdEstoque, registro.Descricao);
+                registro.Id, registro.Nome, registro.QtdEstoque, registro.Descricao, registro.Status);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+using ControleDeMedicamentos.ConsoleApp.ModuloFornecedor;
 using ControleDeMedicamentos.ConsoleApp.ModuloFuncionario;
 using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
@@ -11,6 +12,7 @@ public class TelaPrincipal
     private char opcaoPrincipal;
 
     private ContextoDados contexto;
+    private TelaFornecedor telaFornecedor;
     private TelaFuncionario telaFuncionario;
     private TelaMedicamento telaMedicamento;
     private TelaRequisicaoEntrada telaRequisicaoEntrada;
@@ -19,6 +21,8 @@ public class TelaPrincipal
     public TelaPrincipal()
     {
         contexto = new ContextoDados(true);
+        IRepositorioFornecedor repositorioFornecedor = new RepositorioFornecedorEmArquivo(contexto);
+        telaFornecedor = new TelaFornecedor(repositorioFornecedor);
         IRepositorioFuncionario repositorioFuncionario = new RepositorioFuncionarioEmArquivo(contexto);
         telaFuncionario = new TelaFuncionario(repositorioFuncionario);
         IRepositorioMedicamento repositorioMedicamento = new RepositorioMedicamentoEmArquivo(contexto);
