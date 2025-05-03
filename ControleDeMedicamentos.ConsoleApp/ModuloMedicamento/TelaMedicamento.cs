@@ -14,13 +14,41 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
         TelaFornecedor = telaFornecedor;
     }
 
+    public override bool TemRestricoesNoInserir(Medicamento novoRegistro, out string mensagem)
+    {
+        mensagem = "";
+
+        if (RepositorioMedicamento.VerificarMedicamentoNoEstoque(novoRegistro))
+        {
+            mensagem = $"\nMedicamento já registrado";
+            mensagem += $"\nQuantidade em estoque de {novoRegistro.Nome} atualizado!";
+
+            return true;
+        }
+
+        return false;
+    }
+
     public override Medicamento ObterDados()
     {
         Console.Write("Digite o Nome: ");
         string nome = Console.ReadLine() ?? string.Empty;
 
-        Console.Write("Digite a Quantidade em estoque: ");
-        string qtdEstoque = Console.ReadLine() ?? "0";
+        int idQuantidadeEscolhida;
+
+        while (true)
+        {
+            Console.Write("Digite a Quantidade a adicionar ao estoque: ");
+            bool qtdEstoque = int.TryParse(Console.ReadLine(), out idQuantidadeEscolhida);
+            if (!qtdEstoque)
+            {
+                Console.WriteLine("\nValor inserido está incorreto, tente novamente.\n");
+                continue;
+            }
+            else
+                break;
+        }
+
 
         TelaFornecedor.VisualizarRegistros(false);
 
@@ -44,13 +72,15 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
         Console.Write("Digite a Descrição: ");
         string descricao = Console.ReadLine() ?? string.Empty;
 
-        Medicamento medicamento = new Medicamento(nome, qtdEstoque, descricao);
+        Medicamento medicamento = new Medicamento(nome, idQuantidadeEscolhida, descricao);
 
         return medicamento;
     }
 
     protected override void ExibirCabecalhoTabela()
     {
+        RepositorioMedicamento.VerificarEstoque();
+
         Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30} | {4}",
             "ID", "Nome", "Qtd Estoque", "Descrição", "Status");
     }

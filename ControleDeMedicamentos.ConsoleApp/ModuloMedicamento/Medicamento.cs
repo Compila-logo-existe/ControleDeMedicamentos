@@ -6,7 +6,7 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 public class Medicamento : EntidadeBase<Medicamento>
 {
     public string Nome { get; set; }
-    public string QtdEstoque { get; set; }
+    public int QtdEstoque { get; set; }
     public string Descricao { get; set; }
     public string Status { get; set; }
     public List<Fornecedor> Fornecedor { get; set; }
@@ -16,7 +16,7 @@ public class Medicamento : EntidadeBase<Medicamento>
         Fornecedor = new List<Fornecedor>();
     }
 
-    public Medicamento(string nome, string qtdEstoque, string descricao)
+    public Medicamento(string nome, int qtdEstoque, string descricao)
     {
         Nome = nome;
         QtdEstoque = qtdEstoque;
@@ -43,11 +43,11 @@ public class Medicamento : EntidadeBase<Medicamento>
                 erros += "O campo 'Nome' deve conter entre 3 e 100 caracteres.\n";
         }
 
-        if (string.IsNullOrEmpty(QtdEstoque))
+        if (string.IsNullOrEmpty(QtdEstoque.ToString()))
             erros += "O campo 'Quantidade em estoque' é obrigatório.\n";
         else
         {
-            if (QtdEstoque.Length <= 0)
+            if (QtdEstoque <= 0)
                 erros += "O campo 'Quantidade em estoque' não pode ser negativo.\n";
         }
 
