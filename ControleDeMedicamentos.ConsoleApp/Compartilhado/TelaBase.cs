@@ -57,6 +57,14 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
 
         string erros = novoRegistro.Validar();
 
+        string mensagem;
+
+        if (TemRestricoesNoInserir(novoRegistro, out mensagem))
+        {
+            Notificador.ExibirMensagem(mensagem, ConsoleColor.Red);
+            return;
+        }
+
         if (erros.Length > 0)
         {
             Notificador.ExibirMensagem(erros, ConsoleColor.Red);
@@ -90,6 +98,14 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
         Tipo registroEditado = ObterDados();
 
         string erros = registroEditado.Validar();
+
+        string mensagem;
+
+        if (TemRestricoesNoEditar(idRegistro, registroEditado, out mensagem))
+        {
+            Notificador.ExibirMensagem(mensagem, ConsoleColor.Red);
+            return;
+        }
 
         if (erros.Length > 0)
         {
@@ -128,6 +144,14 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
 
         Console.WriteLine();
 
+        string mensagem;
+
+        if (TemRestricoesNoExcluir(idRegistro, out mensagem))
+        {
+            Notificador.ExibirMensagem(mensagem, ConsoleColor.Red);
+            return;
+        }
+
         bool conseguiuExcluir = repositorio.ExcluirRegistro(idRegistro);
 
         if (!conseguiuExcluir)
@@ -163,6 +187,27 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
     }
 
     public abstract Tipo ObterDados();
+
+    public virtual bool TemRestricoesNoInserir(Tipo novoRegistro, out string mensagem)
+    {
+        mensagem = "";
+
+        return false;
+    }
+
+    public virtual bool TemRestricoesNoEditar(int idRegistro, Tipo registroEditado, out string mensagem)
+    {
+        mensagem = "";
+
+        return false;
+    }
+
+    public virtual bool TemRestricoesNoExcluir(int idRegistro, out string mensagem)
+    {
+        mensagem = "";
+
+        return false;
+    }
 
     protected abstract void ExibirCabecalhoTabela();
 
