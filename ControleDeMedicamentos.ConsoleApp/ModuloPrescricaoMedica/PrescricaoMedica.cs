@@ -21,4 +21,20 @@ public class PrescricaoMedica : EntidadeBase<PrescricaoMedica>
         Data = prescMedEditada.Data;
         Medicamentos = prescMedEditada.Medicamentos;
     }
+
+    public override string Validar()
+    {
+        string erros = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(CRMMedico))
+        {
+            erros += "O campo CRMMedico eh obrigatorio.\n"; 
+        }
+        else if (CRMMedico.Length != 6)
+        {
+            erros += "O campo CRMMedico deve conter 6 digitos.\n";
+        }
+
+        return erros;
+    }
 }
