@@ -6,6 +6,7 @@ using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 using ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
+using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
 namespace ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
@@ -17,6 +18,7 @@ public class ContextoDados
     public List<RequisicaoEntrada> RequisicoesEntrada { get; set; }
     public List<RequisicaoSaida> RequisicoesSaida { get; set; }
     public List<Paciente> Pacientes { get; set; }
+    public List<PrescricaoMedica> PrescricoesMedicas { get; set; }
 
     private string pastaArmazenamento = "C:\\temp";
     private string arquivoArmazenamento = "dados-controle-medicamento.json";
@@ -29,6 +31,7 @@ public class ContextoDados
         RequisicoesEntrada = new List<RequisicaoEntrada>();
         RequisicoesSaida = new List<RequisicaoSaida>();
         Pacientes = new List<Paciente>();
+        PrescricoesMedicas = new List<PrescricaoMedica>();
     }
 
     public ContextoDados(bool carregarDados) : this()
