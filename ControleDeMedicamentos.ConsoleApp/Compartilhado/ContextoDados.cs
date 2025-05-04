@@ -28,6 +28,7 @@ public class ContextoDados
         Medicamentos = new List<Medicamento>();
         RequisicoesEntrada = new List<RequisicaoEntrada>();
         RequisicoesSaida = new List<RequisicaoSaida>();
+        Pacientes = new List<Paciente>();
     }
 
     public ContextoDados(bool carregarDados) : this()
