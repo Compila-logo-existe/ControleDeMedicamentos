@@ -40,4 +40,22 @@ internal class TelaPaciente : TelaBase<Paciente>, ITelaCrud
 
         return new Paciente(nome, telefone, cartaoSUS);
     }
+
+    protected override void ExibirCabecalhoTabela()
+    {
+        Console.WriteLine
+        (
+            "{0, -10} | {1, -20} | {2, -15} | {3, -18}",
+            "ID", "Nome", "Telefone", "Cartao SUS"
+        ); 
+    }
+
+    protected override void ExibirLinhaTabela(Paciente p)
+    {
+        Console.WriteLine
+        (
+            "{0, -10} | {1, -20} | {2, -15} | {3, -18}",
+            p.Id, p.Nome, p.Telefone, p.CartaoSUS
+        ); 
+    }
 }
