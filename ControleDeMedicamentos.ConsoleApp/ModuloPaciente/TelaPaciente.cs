@@ -27,4 +27,17 @@ internal class TelaPaciente : TelaBase<Paciente>, ITelaCrud
         }
     }
 
+    public override Paciente ObterDados()
+    {
+        Console.Write("Digite o Nome: ");  
+        string nome = Console.ReadLine() ?? string.Empty;
+
+        Console.Write("Digite o Telefone: ");
+        string telefone = Console.ReadLine() ?? string.Empty;
+
+        Console.Write("Digite o Numero do Cartao do SUS: ");
+        string cartaoSUS = Console.ReadLine() ?? string.Empty;
+
+        return new Paciente(nome, telefone, cartaoSUS);
+    }
 }
