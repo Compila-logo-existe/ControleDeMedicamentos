@@ -5,6 +5,7 @@ using ControleDeMedicamentos.ConsoleApp.ModuloFuncionario;
 using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
+using ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 
 namespace ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
@@ -15,6 +16,7 @@ public class ContextoDados
     public List<Medicamento> Medicamentos { get; set; }
     public List<RequisicaoEntrada> RequisicoesEntrada { get; set; }
     public List<RequisicaoSaida> RequisicoesSaida { get; set; }
+    public List<Paciente> Pacientes { get; set; }
 
     private string pastaArmazenamento = "C:\\temp";
     private string arquivoArmazenamento = "dados-controle-medicamento.json";
