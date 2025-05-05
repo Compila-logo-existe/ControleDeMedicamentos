@@ -1,5 +1,6 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 using ControleDeMedicamentos.ConsoleApp.ModuloFornecedor;
+using ControleDeMedicamentos.ConsoleApp.Util;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 
@@ -29,6 +30,58 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
         return false;
     }
 
+    public override void EditarRegistro()
+    {
+        ExibirCabecalho();
+
+        Console.WriteLine($"Editando Medicamento...");
+        Console.WriteLine("----------------------------------------");
+
+        Console.WriteLine();
+
+        VisualizarRegistros(false);
+
+        Console.Write("Digite o ID do medicamento que deseja selecionar: ");
+        int idRegistro = Convert.ToInt32(Console.ReadLine());
+
+        Medicamento medicamentoOriginal = RepositorioMedicamento.SelecionarRegistroPorId(idRegistro);
+        Fornecedor fornecedorAntigo = medicamentoOriginal.Fornecedor;
+
+        Console.WriteLine();
+
+        Medicamento medicamentoEditado = ObterDados();
+
+        Fornecedor fornecedorEditado = medicamentoEditado.Fornecedor;
+
+        string erros = medicamentoEditado.Validar();
+
+        if (erros.Length > 0)
+        {
+            Notificador.ExibirMensagem(erros, ConsoleColor.Red);
+
+            EditarRegistro();
+
+            return;
+        }
+
+        bool conseguiuEditar = RepositorioMedicamento.EditarRegistro(idRegistro, medicamentoEditado);
+
+        if (!conseguiuEditar)
+        {
+            Notificador.ExibirMensagem("Houve um erro durante a edição do registro...", ConsoleColor.Red);
+
+            return;
+        }
+
+        if (fornecedorAntigo != fornecedorEditado)
+        {
+            fornecedorAntigo.RemoverMedicamento(medicamentoOriginal);
+            fornecedorEditado.AdicionarMedicamento(medicamentoOriginal);
+        }
+
+        Notificador.ExibirMensagem("O registro foi editado com sucesso!", ConsoleColor.Green);
+    } 
+    
     public override bool TemRestricoesNoExcluir(int idRegistro, out string mensagem)
     {
 
@@ -93,13 +146,13 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
     {
         RepositorioMedicamento.VerificarEstoque();
 
-        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30} | {4, -20} ",
+        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30} | {4, -20}",
             "ID", "Nome", "Qtd Estoque", "Descrição", "Status");
     }
 
     protected override void ExibirLinhaTabela(Medicamento registro)
     {
-        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30} | {4, -20} | {5, -15}",
+        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30} | {4, -20}",
                 registro.Id, registro.Nome, registro.QtdEstoque, registro.Descricao, registro.Status);
     }
 }

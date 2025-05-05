@@ -4,7 +4,6 @@ using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 
-// implementar remover estoque
 public class RepositorioMedicamentoEmArquivo :RepositorioBaseEmArquivo<Medicamento>, IRepositorioMedicamento
 {
     public RepositorioMedicamentoEmArquivo(ContextoDados contexto) : base(contexto) { }
@@ -39,9 +38,10 @@ public class RepositorioMedicamentoEmArquivo :RepositorioBaseEmArquivo<Medicamen
             if (m == null)
                 continue;
 
-            if (medicamento.Id == m.Id && medicamento.Id == 0)
+            if (medicamento.Nome == m.Nome && medicamento.Id == 0)
             {
                 m.QtdEstoque += medicamento.QtdEstoque;
+                medicamento.Fornecedor.AdicionarMedicamento(medicamento);
                 return true;
             }
         }
