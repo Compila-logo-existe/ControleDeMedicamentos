@@ -6,7 +6,7 @@ using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 using ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
-using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedicamento;
+using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 using ControleDeMedicamentos.ConsoleApp.ModuloMedicamentoPrescricao;
 
 namespace ControleDeMedicamentos.ConsoleApp.Compartilhado;
@@ -19,7 +19,7 @@ public class ContextoDados
     public List<RequisicaoEntrada> RequisicoesEntrada { get; set; }
     public List<RequisicaoSaida> RequisicoesSaida { get; set; }
     public List<Paciente> Pacientes { get; set; }
-    public List<PrescricaoMedicamento> PrescricoesMedicas { get; set; }
+    public List<PrescricaoMedica> PrescricoesMedicas { get; set; }
     public List<MedicamentoPrescricao> MedicamentosPrescricoes { get; set; }
 
     private string pastaArmazenamento = "C:\\temp";
@@ -33,7 +33,7 @@ public class ContextoDados
         RequisicoesEntrada = new List<RequisicaoEntrada>();
         RequisicoesSaida = new List<RequisicaoSaida>();
         Pacientes = new List<Paciente>();
-        PrescricoesMedicas = new List<PrescricaoMedicamento>();
+        PrescricoesMedicas = new List<PrescricaoMedica>();
         MedicamentosPrescricoes = new List<MedicamentoPrescricao>();
 
     }
