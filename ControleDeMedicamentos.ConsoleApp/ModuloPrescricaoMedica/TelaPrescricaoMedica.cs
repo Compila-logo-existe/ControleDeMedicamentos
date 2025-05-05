@@ -2,7 +2,7 @@ using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
-internal class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
+public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
 {
     protected TelaPrescricaoMedica(IRepositorioPrescricaoMedica repositorio) : base ("Prescricao Medica", repositorio)
     {

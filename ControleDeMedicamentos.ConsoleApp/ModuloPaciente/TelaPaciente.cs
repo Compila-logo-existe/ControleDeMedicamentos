@@ -2,7 +2,7 @@ using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 
-internal class TelaPaciente : TelaBase<Paciente>, ITelaCrud
+public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
 {
     private IRepositorioPaciente IRepositorioPaciente { get; set; } 
 
