@@ -1,5 +1,6 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
-using Microsoft.Win32;
+using ControleDeMedicamentos.ConsoleApp.ModuloMedicamentoPrescricao;
+using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 
@@ -63,7 +64,7 @@ public class RepositorioMedicamentoEmArquivo : RepositorioBaseEmArquivo<Medicame
             if (m == null)
                 continue;
 
-            foreach (MedicamentoPrescricao mp in prescricaoMedica)
+            foreach (MedicamentoPrescricao mp in prescricaoMedica.Medicamentos)
             {
                 if (mp == null)
                     continue;
