@@ -4,18 +4,18 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 
 internal class TelaPaciente : TelaBase<Paciente>, ITelaCrud
 {
-    private IRepositorioPaciente RepositorioPaciente { get; set; } 
+    private IRepositorioPaciente IRepositorioPaciente { get; set; } 
 
-    internal TelaPaciente(IRepositorioPaciente repositorio) : base("Paciente", repositorio)
+    internal TelaPaciente(IRepositorioPaciente iRepositorioPaciente) : base("Paciente", iRepositorioPaciente)
     {
-        RepositorioPaciente = repositorio;
+        IRepositorioPaciente = iRepositorioPaciente;
     }
 
     public override bool TemRestricoesNoInserir(Paciente paciente, out string mensagem)
     {
         mensagem = string.Empty; 
         
-        if (RepositorioPaciente.VerificarCartaoSUSRegistros(paciente))
+        if (IRepositorioPaciente.VerificarCartaoSUSRegistros(paciente))
         {
             mensagem += "\nJa existe um cadastro com esse Cartao do SUS!";   
 
@@ -38,7 +38,10 @@ internal class TelaPaciente : TelaBase<Paciente>, ITelaCrud
         Console.Write("Digite o Numero do Cartao do SUS: ");
         string cartaoSUS = Console.ReadLine() ?? string.Empty;
 
-        return new Paciente(nome, telefone, cartaoSUS);
+        //implementar logica pra atribuir prescricoes a list de prescricoes do paciente
+        ////implementar logica pra atribuir prescricoes a list de prescricoes do paciente
+
+        return new Paciente(nome, telefone, cartaoSUS, null, null); // dxando null de placeholder
     }
 
     protected override void ExibirCabecalhoTabela()
