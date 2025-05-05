@@ -1,8 +1,11 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
+using ControleDeMedicamentos.ConsoleApp.ModuloMedicamentoPrescricao;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 
-public class RepositorioMedicamentoEmArquivo : RepositorioBaseEmArquivo<Medicamento>, IRepositorioMedicamento
+// implementar remover estoque
+public class RepositorioMedicamentoEmArquivo :RepositorioBaseEmArquivo<Medicamento>, IRepositorioMedicamento
 {
     public RepositorioMedicamentoEmArquivo(ContextoDados contexto) : base(contexto) { }
 
@@ -68,7 +71,7 @@ public class RepositorioMedicamentoEmArquivo : RepositorioBaseEmArquivo<Medicame
             if (m == null)
                 continue;
 
-            foreach (MedicamentoPrescricao mp in prescricaoMedica)
+            foreach (MedicamentoPrescricao mp in prescricaoMedica) // clueless
             {
                 if (mp == null)
                     continue;
