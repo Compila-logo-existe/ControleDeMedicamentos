@@ -1,5 +1,7 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
+using ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
+using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 
@@ -12,7 +14,7 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
     public TelaRequisicaoSaida(IRepositorioRequisicaoSaida repositorioRequisicaoSaida, TelaPaciente telaPaciente, TelaPrescricaoMedica telaPrescricaoMedica) : base("Requisição de Saída", repositorioRequisicaoSaida)
     {
         TelaPaciente = telaPaciente;
-        TelaPrescricaoMedica = telaPrescricaoMedicao;
+        TelaPrescricaoMedica = telaPrescricaoMedica;
         RepositorioRequisicaoSaida = repositorioRequisicaoSaida;
     }
 
@@ -79,6 +81,7 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
                 break;
         }
 
+        // tem algo de acessibilidade aq p arruma
         Paciente paciente = TelaPaciente.RepositorioPacienteEmArquivo.SelecionarRegistroPorId(idPacienteEscolhido);
 
         TelaPrescricaoMedica.VisualizarRegistros(false);

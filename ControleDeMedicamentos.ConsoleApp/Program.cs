@@ -1,4 +1,5 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+using ControleDeMedicamentos.ConsoleApp.ModuloFornecedor;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 using ControleDeMedicamentos.ConsoleApp.Util;
 
@@ -25,6 +26,16 @@ internal class Program
             }
 
             char opcaoEscolhida = telaSelecionada.ApresentarMenu();
+
+            if (telaSelecionada is TelaFornecedor)
+            {
+                TelaFornecedor telaFornecedor = (TelaFornecedor)telaSelecionada;
+
+                if (opcaoEscolhida == '5')
+                {
+                    telaFornecedor.VisualizarMedicamentosFornecedor(); continue;
+                }
+            }
 
             if (telaSelecionada is TelaRequisicaoSaida)
             {

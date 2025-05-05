@@ -1,5 +1,7 @@
 using ControleDeMedicamentos.ConsoleApp.Compartilhado; 
 using System.Text.RegularExpressions;
+using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
+using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 
@@ -8,16 +10,16 @@ public class Paciente : EntidadeBase<Paciente>
     public string Nome { get; set; }
     public string Telefone { get; set; }
     public string CartaoSUS { get; set; }
-    //public List<Prescricao> Prescricoes { get; set; }
-
-    // awaiting implementation
-    //public List<RequisicaoSaida> RequisicoesSaida { get; set; }
+    public List<PrescricaoMedica> Prescricoes { get; set; }
+    public List<RequisicaoSaida> RequisicoesSaida { get; set; }
     
-    public Paciente(string nome, string tel, string cartaoSus)
+    public Paciente(string nome, string tel, string cartaoSus, List<PrescricaoMedica> prescricoesMedicas, List<RequisicaoSaida> requisicoesSaida)
     {
         Nome = nome;
         Telefone = tel;
         CartaoSUS = cartaoSus;
+        Prescricoes = prescricoesMedicas;
+        RequisicoesSaida = requisicoesSaida;
     }
     
     public override void AtualizarRegistro(Paciente pacienteEditado)
@@ -25,6 +27,8 @@ public class Paciente : EntidadeBase<Paciente>
         Nome = pacienteEditado.Nome;
         Telefone = pacienteEditado.Telefone;
         CartaoSUS = pacienteEditado.CartaoSUS;
+        Prescricoes = pacienteEditado.Prescricoes;
+        RequisicoesSaida = pacienteEditado.RequisicoesSaida;
     }
 
     public override string Validar()
@@ -69,5 +73,10 @@ public class Paciente : EntidadeBase<Paciente>
         }
 
         return erros;
+    }
+
+    public void GuardarPrescricao(PrescricaoMedica novaPrescricao)
+    {
+        Prescricoes.Add(novaPrescricao);
     }
 }

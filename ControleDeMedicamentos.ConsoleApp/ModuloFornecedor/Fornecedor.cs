@@ -1,13 +1,27 @@
 ﻿using System.Text.RegularExpressions;
 using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloFornecedor;
 
-public class Fornecedor :  EntidadeBase<Fornecedor>
+public class Fornecedor : EntidadeBase<Fornecedor>
 {
     public string Nome { get; set; }
     public string Telefone { get; set; }
     public string CNPJ { get; set; }
+    public List<Medicamento> Medicamentos { get; set; }
+    public int QtdMedicamentos
+    {
+        get
+        {
+            return Medicamentos.Count;
+        }
+    }
+
+    public Fornecedor()
+    {
+        Medicamentos = new List<Medicamento>();
+    }
 
     public Fornecedor(string nome, string telefone, string cnpj)
     {
@@ -52,5 +66,25 @@ public class Fornecedor :  EntidadeBase<Fornecedor>
         }
 
         return erros;
+    }
+
+    public void AdicionarMedicamento(Medicamento medicamento)
+    {
+        Medicamentos.Add(medicamento);
+    }
+    public void RemoverMedicamento(Medicamento medicamentoExcluir)
+    {
+        foreach (Medicamento medicamento in Medicamentos)
+        {
+            if (medicamentoExcluir == medicamento)
+            {
+                Medicamentos.Remove(medicamentoExcluir);
+                return;
+            }
+        }
+    }
+    public List<Medicamento> ObterMedicamentos()
+    {
+        return Medicamentos;
     }
 }

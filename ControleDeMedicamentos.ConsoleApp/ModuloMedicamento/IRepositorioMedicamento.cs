@@ -1,4 +1,6 @@
-﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+﻿using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
+
+using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 

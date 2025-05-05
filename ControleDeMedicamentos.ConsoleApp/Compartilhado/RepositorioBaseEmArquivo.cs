@@ -2,7 +2,7 @@
 
 public abstract class RepositorioBaseEmArquivo<Tipo> where Tipo : EntidadeBase<Tipo>
 {
-    private List<Tipo> registros = new List<Tipo>();
+    protected List<Tipo> registros = new List<Tipo>();
     private int contadorIds = 0;
 
     protected ContextoDados contexto;
@@ -24,7 +24,7 @@ public abstract class RepositorioBaseEmArquivo<Tipo> where Tipo : EntidadeBase<T
         contadorIds = maiorId;
     }
 
-    public void CadastrarRegistro(Tipo novoRegistro)
+    public virtual void CadastrarRegistro(Tipo novoRegistro)
     {
         novoRegistro.Id = ++contadorIds;
 
