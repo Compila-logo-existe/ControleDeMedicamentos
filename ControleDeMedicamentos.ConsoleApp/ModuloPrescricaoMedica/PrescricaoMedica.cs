@@ -1,18 +1,22 @@
 using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+using ControleDeMedicamentos.ConsoleApp.ModuloMedicamentoPrescricao;
+using ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
 public class PrescricaoMedica : EntidadeBase<PrescricaoMedica>
 {
-    private string CRMMedico { get; set; }
-    private DateTime Data { get; set; }            
-    private List<MedicamentoPrescricao> Medicamentos { get; set; }
+    public string CRMMedico { get; set; }
+    public DateTime Data { get; set; }            
+    public List<MedicamentoPrescricao> Medicamentos { get; set; }
+    public Paciente Paciente { get; set; }
 
-    protected PrescricaoMedica(string cRMMedico, DateTime data, List<MedicamentoPrescricao> medicamentos)
+    public PrescricaoMedica(string cRMMedico, DateTime data, List<MedicamentoPrescricao> medicamentos, Paciente paciente)
     {
         CRMMedico = cRMMedico;
         Data = data;
-        MedicamentoPrescricao = medicamentos;
+        Medicamentos = medicamentos;
+        Paciente = paciente;
     }
 
     public override void AtualizarRegistro(PrescricaoMedica prescMedEditada)
@@ -20,6 +24,7 @@ public class PrescricaoMedica : EntidadeBase<PrescricaoMedica>
         CRMMedico = prescMedEditada.CRMMedico;
         Data = prescMedEditada.Data;
         Medicamentos = prescMedEditada.Medicamentos;
+        Paciente = prescMedEditada.Paciente;
     }
 
     public override string Validar()

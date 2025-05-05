@@ -10,4 +10,11 @@ internal class RepositorioPrescricaoMedicaEmArquivo : RepositorioBaseEmArquivo<P
     {
         return contexto.PrescricoesMedicas;
     }
+
+    public override void CadastrarRegistro(PrescricaoMedica novoRegistro)
+    {
+        novoRegistro.Paciente.GuardarPrescricao(novoRegistro);
+
+        base.CadastrarRegistro(novoRegistro);
+    }
 }
