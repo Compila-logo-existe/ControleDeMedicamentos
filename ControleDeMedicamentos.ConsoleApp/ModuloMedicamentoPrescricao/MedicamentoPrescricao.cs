@@ -3,12 +3,12 @@ using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamentoPrescricao;
 
-internal class MedicamentoPrescricao : EntidadeBase<MedicamentoPrescricao>
+public class MedicamentoPrescricao : EntidadeBase<MedicamentoPrescricao>
 {
-    private string Dosagem { get; set; }
-    private string Periodo { get; set; }
-    private Medicamento Medicamento { get; set; }
-    private int Quantidade { get; set; }
+    public string Dosagem { get; private set; }
+    public string Periodo { get; private set; }
+    public Medicamento Medicamento { get; private set; }
+    public int Quantidade { get; private set; }
 
     internal MedicamentoPrescricao(string dos, string per, Medicamento med, int qtt)
     {
@@ -18,7 +18,7 @@ internal class MedicamentoPrescricao : EntidadeBase<MedicamentoPrescricao>
         Quantidade = qtt;
     }
 
-    public void AtualizarRegistro(MedicamentoPrescricao MedPrescEditado)
+    public override void AtualizarRegistro(MedicamentoPrescricao MedPrescEditado)
     {
         Dosagem = MedPrescEditado.Dosagem;
         Periodo = MedPrescEditado.Periodo;
@@ -26,7 +26,7 @@ internal class MedicamentoPrescricao : EntidadeBase<MedicamentoPrescricao>
         Quantidade = MedPrescEditado.Quantidade;
     }
 
-    public string Validar()
+    public override string Validar()
     {
         string erros = string.Empty;
 
@@ -38,5 +38,16 @@ internal class MedicamentoPrescricao : EntidadeBase<MedicamentoPrescricao>
         {
             erros += $"O campo Dosagem deve ter entre 10 e 50 caracteres.\n"; 
         }
+
+        if (string.IsNullOrEmpty(Periodo))
+        {
+            erros += $"O campo Periodo eh obrigatorio.\n";
+        }
+        else if (Periodo.Length < 10 || Periodo.Length > 100)
+        {
+            erros += $"O campo Periodo deve ter entre 10 e 100 carateres.\n";    
+        }
+
+        return erros;
     }
 }
