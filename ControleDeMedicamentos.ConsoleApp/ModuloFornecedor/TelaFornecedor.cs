@@ -101,15 +101,15 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
         Console.WriteLine($"Visualizando Medicamentos do {fornecedor.Nome}");
         Console.WriteLine("--------------------------------------------");
         Console.WriteLine();
-        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30} | {4, -20} ",
-            "ID", "Nome", "Qtd Estoque", "Descrição", "Status");
+        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30}",
+            "ID", "Nome", "Qtd Vendida", "Descrição");
 
         List<Medicamento> medicamentos = fornecedor.ObterMedicamentos();
 
         foreach (Medicamento m in medicamentos)
         {
-            Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30} | {4, -20} | {5, -15}",
-            m.Id, m.Nome, m.QtdEstoque, m.Descricao, m.Status);
+            Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30}",
+            m.Id, m.Nome, m.QtdEstoque, m.Descricao);
         }
         Console.WriteLine();
 
