@@ -15,4 +15,6 @@ internal class RepositorioPacienteEmArquivo : RepositorioBaseEmArquivo<Paciente>
     {
         return contexto.Pacientes; 
     }
+
+
 }
