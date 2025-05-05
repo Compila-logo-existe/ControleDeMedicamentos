@@ -9,12 +9,7 @@ public class Medicamento : EntidadeBase<Medicamento>
     public int QtdEstoque { get; set; }
     public string Descricao { get; set; }
     public string Status { get; set; }
-    public List<Fornecedor> Fornecedor { get; set; }
-
-    public Medicamento()
-    {
-        Fornecedor = new List<Fornecedor>();
-    }
+    public Fornecedor Fornecedor { get; set; }
 
     public Medicamento(string nome, int qtdEstoque, string descricao)
     {

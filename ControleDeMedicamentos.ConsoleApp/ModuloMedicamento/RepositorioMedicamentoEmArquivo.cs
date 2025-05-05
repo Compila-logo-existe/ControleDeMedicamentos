@@ -1,11 +1,16 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
-using Microsoft.Win32;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 
 public class RepositorioMedicamentoEmArquivo : RepositorioBaseEmArquivo<Medicamento>, IRepositorioMedicamento
 {
     public RepositorioMedicamentoEmArquivo(ContextoDados contexto) : base(contexto) { }
+
+    public override void CadastrarRegistro(Medicamento medicamento)
+    {
+        medicamento.Fornecedor.AdicionarMedicamento(medicamento);
+        base.CadastrarRegistro(medicamento);
+    }
 
     public void VerificarEstoque()
     {

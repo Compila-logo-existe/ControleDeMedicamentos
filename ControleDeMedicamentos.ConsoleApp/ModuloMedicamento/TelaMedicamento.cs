@@ -29,6 +29,18 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
         return false;
     }
 
+    public override bool TemRestricoesNoExcluir(int idRegistro, out string mensagem)
+    {
+
+        mensagem = "";
+
+        Medicamento medicamentoEscolhido = RepositorioMedicamento.SelecionarRegistroPorId(idRegistro);
+
+        medicamentoEscolhido.Fornecedor.RemoverMedicamento(medicamentoEscolhido);
+        return false;
+
+    }
+
     public override Medicamento ObterDados()
     {
         Console.Write("Digite o Nome: ");
@@ -81,13 +93,13 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
     {
         RepositorioMedicamento.VerificarEstoque();
 
-        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30} | {4}",
+        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30} | {4, -20} ",
             "ID", "Nome", "Qtd Estoque", "Descrição", "Status");
     }
 
     protected override void ExibirLinhaTabela(Medicamento registro)
     {
-        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30}",
+        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30} | {4, -20} | {5, -15}",
                 registro.Id, registro.Nome, registro.QtdEstoque, registro.Descricao, registro.Status);
     }
 }

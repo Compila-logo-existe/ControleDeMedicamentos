@@ -24,7 +24,7 @@ public abstract class RepositorioBaseEmArquivo<Tipo> where Tipo : EntidadeBase<T
         contadorIds = maiorId;
     }
 
-    public void CadastrarRegistro(Tipo novoRegistro)
+    public virtual void CadastrarRegistro(Tipo novoRegistro)
     {
         novoRegistro.Id = ++contadorIds;
 

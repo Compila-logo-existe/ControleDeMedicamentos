@@ -1,4 +1,7 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
+using ControleDeMedicamentos.ConsoleApp.Util;
+using Microsoft.Win32;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloFornecedor;
 
@@ -9,6 +12,28 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
     public TelaFornecedor(IRepositorioFornecedor repositorio) : base("Fornecedor", repositorio)
     {
         RepositorioFornecedor = repositorio;
+    }
+
+    public override char ApresentarMenu()
+    {
+        ExibirCabecalho();
+
+        Console.WriteLine();
+
+        Console.WriteLine($"1 - Cadastrar Fornecedor");
+        Console.WriteLine($"2 - Editar Fornecedor");
+        Console.WriteLine($"3 - Excluir Fornecedor");
+        Console.WriteLine($"4 - Visualizar Fornecedores");
+        Console.WriteLine($"5 - Visualizar Medicamentos do Fornecedor");
+
+        Console.WriteLine("S - Voltar");
+
+        Console.WriteLine();
+
+        Console.Write("Escolha uma das opções: ");
+        char operacaoEscolhida = Convert.ToChar(Console.ReadLine()!);
+
+        return operacaoEscolhida;
     }
 
     public override bool TemRestricoesNoInserir(Fornecedor novoRegistro, out string mensagem)
@@ -49,5 +74,45 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
     {
         Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30}",
                 registro.Id, registro.Nome, registro.Telefone, registro.CNPJ);
+    }
+
+    public void VisualizarMedicamentosFornecedor()
+    {
+        VisualizarRegistros(false);
+
+        int idFornecedorEscolhido;
+
+        while (true)
+        {
+            Console.Write("Digite o ID do fornecedor do medicamento: ");
+            bool idValido = int.TryParse(Console.ReadLine(), out idFornecedorEscolhido);
+            if (!idValido)
+            {
+                Console.WriteLine("\nID inválido, selecione novamente.\n");
+                continue;
+            }
+            else
+                break;
+        }
+
+        Fornecedor fornecedor = RepositorioFornecedor.SelecionarRegistroPorId(idFornecedorEscolhido);
+
+        Console.WriteLine();
+        Console.WriteLine($"Visualizando Medicamentos do {fornecedor.Nome}");
+        Console.WriteLine("--------------------------------------------");
+        Console.WriteLine();
+        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30} | {4, -20} ",
+            "ID", "Nome", "Qtd Estoque", "Descrição", "Status");
+
+        List<Medicamento> medicamentos = fornecedor.ObterMedicamentos();
+
+        foreach (Medicamento m in medicamentos)
+        {
+            Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30} | {4, -20} | {5, -15}",
+            m.Id, m.Nome, m.QtdEstoque, m.Descricao, m.Status);
+        }
+        Console.WriteLine();
+
+        Notificador.ExibirMensagem("Pressione ENTER para continuar...", ConsoleColor.DarkYellow);
     }
 }
