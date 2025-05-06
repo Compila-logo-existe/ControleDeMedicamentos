@@ -1,11 +1,34 @@
 using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+using ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
+using ControleDeMedicamentos.ConsoleApp.ModuloMedicamentoPrescricao;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
-public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
+internal class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>
 {
-    protected TelaPrescricaoMedica(IRepositorioPrescricaoMedica repositorio) : base ("Prescricao Medica", repositorio)
+    private TelaPaciente TelaPaciente { get; set; }
+    private RepositorioPacienteEmArquivo RepositorioPacienteEmArquivo{ get; set; }
+    private TelaMedicamentoPrescricao TelaMedicamentoPrescricao { get; set; }
+    private RepositorioMedicamentoPrescricaoEmArquivo RepositorioMedicamentoPrescricaoEmArquivo { get; set; }
+
+    protected TelaPrescricaoMedica
+    (
+        RepositorioPrescricaoMedicaEmArquivo iRepositorioPrescricaoMedica,
+
+        TelaPaciente telaPaciente, 
+        RepositorioPacienteEmArquivo iRepositorioPaciente,
+        TelaMedicamentoPrescricao telaMedicamentoPrescricao,
+        RepositorioMedicamentoPrescricaoEmArquivo iRepositorioMedicamentoPrescricao
+
+    ) : base 
+    (
+        "Prescricao Medica", 
+        iRepositorioPrescricaoMedica)
     {
+        TelaPaciente = telaPaciente;
+        RepositorioPacienteEmArquivo = iRepositorioPaciente;
+        TelaMedicamentoPrescricao = telaMedicamentoPrescricao;
+        RepositorioMedicamentoPrescricaoEmArquivo = iRepositorioMedicamentoPrescricao;
     }
 
     public override PrescricaoMedica ObterDados()
@@ -13,18 +36,43 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
         Console.WriteLine("Digite o CRM do Medico: ");   
         string crmMedico = Console.ReadLine() ?? string.Empty;
 
-        Console.WriteLine("Id > ");
-        string id = Console.ReadLine();
-
-        PrescricaoMedica prescricaoMedica = repositorio.SelecionarRegistroPorId(id); 
-
-        Console.WriteLine("Digite a data da prescricao (dd/MM/yyyy): ");
+        Console.WriteLine("Atribuindo data...");
+        Thread.Sleep(1500);
         DateTime dataPrescricao = DateTime.Now;
 
-        //implementar logica pra selecionar o paciente a qual a prescricao se aplica
-        //implementar logica pra atriuir medicamentos a lista de medicamentos da PrescricaoMedica
+        TelaPaciente.VisualizarRegistros(false);
+        Console.Write("Digite o ID do Paciente: ");
+        int idPaciente = int.Parse(Console.ReadLine()!);
+        Paciente pacienteSelecionado = RepositorioPacienteEmArquivo.SelecionarRegistroPorId(idPaciente); 
 
-        return new PrescricaoMedica(crmMedico, dataPrescricao, null, null); //dxando null p parar de encher o saco por enqnt;
+        List<MedicamentoPrescricao> prescricoesMedicamentos = [];
+        do 
+        {
+            TelaMedicamentoPrescricao.VisualizarRegistros(false);
+            Console.Write("Digite o ID da Prescricao do Medicamento: ");
+            int idPrescricaoMedicamento = int.Parse(Console.ReadLine()!);
+            MedicamentoPrescricao medicamentoPrescricao = RepositorioMedicamentoPrescricaoEmArquivo.SelecionarRegistroPorId(idPrescricaoMedicamento);
+
+            prescricoesMedicamentos.Add(medicamentoPrescricao);
+            
+            Console.WriteLine("Deseja adicionar mais Prescricoes de Medicamentos? (S/n): ");
+            string opcao = Console.ReadLine()!.ToUpper() ?? string.Empty;
+
+            if (!string.IsNullOrEmpty(opcao))
+            {
+                if (opcao == "S")
+                {
+                    continue;
+                }
+                else if (opcao == "N")
+                {
+                    return new PrescricaoMedica(crmMedico, dataPrescricao, pacienteSelecionado, prescricoesMedicamentos); 
+                }
+
+            }
+
+       }
+        while (true);
     }
 
     protected override void ExibirCabecalhoTabela()
