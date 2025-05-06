@@ -8,23 +8,23 @@ public class PrescricaoMedica : EntidadeBase<PrescricaoMedica>
 {
     public string CRMMedico { get; set; }
     public DateTime Data { get; set; }            
-    public List<MedicamentoPrescricao> Medicamentos { get; set; }
     public Paciente Paciente { get; set; }
+    public List<MedicamentoPrescricao> Medicamentos { get; set; }
 
-    public PrescricaoMedica(string cRMMedico, DateTime data, List<MedicamentoPrescricao> medicamentos, Paciente paciente)
+    public PrescricaoMedica(string cRMMedico, DateTime data, Paciente paciente, List<MedicamentoPrescricao> medicamentos)
     {
         CRMMedico = cRMMedico;
         Data = data;
-        Medicamentos = medicamentos;
         Paciente = paciente;
+        Medicamentos = medicamentos;
     }
 
     public override void AtualizarRegistro(PrescricaoMedica prescMedEditada)
     {
         CRMMedico = prescMedEditada.CRMMedico;
         Data = prescMedEditada.Data;
-        Medicamentos = prescMedEditada.Medicamentos;
         Paciente = prescMedEditada.Paciente;
+        Medicamentos = prescMedEditada.Medicamentos;
     }
 
     public override string Validar()
