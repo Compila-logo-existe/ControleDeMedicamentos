@@ -17,4 +17,15 @@ public class RepositorioPrescricaoMedicaEmArquivo : RepositorioBaseEmArquivo<Pre
 
         base.CadastrarRegistro(novoRegistro);
     }
+
+    public void VerificarValidade()
+    {
+        foreach (PrescricaoMedica pM in contexto.PrescricoesMedicas)
+        {
+            if (pM.Data.AddDays(30) < DateTime.Now)
+            {
+                pM.Status = "Vencida";
+            }
+        }
+    }
 }

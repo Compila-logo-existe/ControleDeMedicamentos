@@ -8,6 +8,7 @@ using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 using ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 using ControleDeMedicamentos.ConsoleApp.ModuloMedicamentoPrescricao;
+using System.Runtime.InteropServices;
 
 namespace ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
@@ -22,7 +23,7 @@ public class ContextoDados
     public List<PrescricaoMedica> PrescricoesMedicas { get; set; }
     public List<MedicamentoPrescricao> MedicamentosPrescricoes { get; set; }
 
-    private string pastaArmazenamento = "C:\\temp";
+    private string pastaArmazenamento = string.Empty;
     private string arquivoArmazenamento = "dados-controle-medicamento.json";
 
     public ContextoDados()
@@ -36,6 +37,18 @@ public class ContextoDados
         PrescricoesMedicas = new List<PrescricaoMedica>();
         MedicamentosPrescricoes = new List<MedicamentoPrescricao>();
 
+    }
+
+    public void VerificarSistemaOperacional()
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            pastaArmazenamento = @"C:\temp";
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            pastaArmazenamento = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "temp");
+        }
     }
 
     public ContextoDados(bool carregarDados) : this()
