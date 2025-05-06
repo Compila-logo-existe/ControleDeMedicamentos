@@ -63,7 +63,6 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
                 {
                     return new PrescricaoMedica(crmMedico, dataPrescricao, pacienteSelecionado, prescricoesMedicamentos); 
                 }
-
             }
        }
         while (true);
@@ -71,6 +70,8 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
 
     protected override void ExibirCabecalhoTabela()
     {
+        IRepositorioPrescricaoMedica.VerificarValidade();
+    
         Console.WriteLine
         (
             "{0, -10} | {1, -10} | {2, -15} | {3, -20}",
@@ -84,7 +85,6 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
         (
             "{0, -10} | {1, -10} | {2, -15} | {3, -20}",
             pM.Id, pM.CRMMedico, pM.Data, pM.Medicamentos
-            
         );
     }
 }

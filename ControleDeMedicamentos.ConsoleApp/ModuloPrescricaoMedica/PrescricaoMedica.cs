@@ -10,6 +10,7 @@ public class PrescricaoMedica : EntidadeBase<PrescricaoMedica>
     public DateTime Data { get; set; }            
     public Paciente Paciente { get; set; }
     public List<MedicamentoPrescricao> Medicamentos { get; set; }
+    public string Status { get; set; } = "Disponivel";
 
     public PrescricaoMedica(string cRMMedico, DateTime data, Paciente paciente, List<MedicamentoPrescricao> medicamentos)
     {
