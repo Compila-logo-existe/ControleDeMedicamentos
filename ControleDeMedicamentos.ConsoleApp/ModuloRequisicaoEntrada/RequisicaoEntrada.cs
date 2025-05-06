@@ -7,12 +7,13 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 
 public class RequisicaoEntrada : EntidadeBase<RequisicaoEntrada>
 {
-    public string Data { get; set; }
-    public Medicamento Medicamento { get; set; }
-    public Funcionario Funcionario { get; set; }
+    public string? Data { get; set; }
+    public Medicamento? Medicamento { get; set; }
+    public Funcionario? Funcionario { get; set; }
     public int Quantidade { get; set; }
 
     public RequisicaoEntrada() { }
+
     public RequisicaoEntrada(string data, Medicamento medicamento, Funcionario funcionario, int quantidade)
     {
         Data = data ?? DateTime.Now.ToString("dd/MM/yyyy");
@@ -42,7 +43,7 @@ public class RequisicaoEntrada : EntidadeBase<RequisicaoEntrada>
         if (Funcionario == null)
             erros += "O funcionário selecionado não está registrado.\n";
 
-        if (Quantidade < 0)
+        if (Quantidade <= 0)
             erros += "O campo 'Quantidade' precisa ser um valor positivo.\n";
 
         return erros;
