@@ -5,13 +5,12 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 
 public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
 {
-    public IRepositorioPaciente IRepositorioPaciente { get; private set; } 
-    private TelaPrescricaoMedica TelaPrescricaoMedica { get; set; }
+    public IRepositorioPaciente IRepositorioPaciente { get; set; }
+    internal TelaPrescricaoMedica TelaPrescricaoMedica { get; set; }
 
     public TelaPaciente
     (
         IRepositorioPaciente repositorioPacienteEmArquivo,
-
         TelaPrescricaoMedica telaPrescricaoMedica
 
     ) : base("Paciente", repositorioPacienteEmArquivo)
@@ -22,11 +21,11 @@ public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
 
     public override bool TemRestricoesNoInserir(Paciente paciente, out string mensagem)
     {
-        mensagem = string.Empty; 
-        
+        mensagem = string.Empty;
+
         if (IRepositorioPaciente.VerificarCartaoSUSRegistros(paciente))
         {
-            mensagem += "\nJa existe um cadastro com esse Cartao do SUS!";   
+            mensagem += "\nJa existe um cadastro com esse Cartao do SUS!";
 
             return true;
         }
@@ -38,7 +37,7 @@ public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
 
     public override Paciente ObterDados()
     {
-        Console.Write("Digite o Nome: ");  
+        Console.Write("Digite o Nome: ");
         string nome = Console.ReadLine() ?? string.Empty;
 
         Console.Write("Digite o Telefone: ");
@@ -47,7 +46,7 @@ public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
         Console.Write("Digite o Numero do Cartao do SUS: ");
         string cartaoSUS = Console.ReadLine() ?? string.Empty;
 
-        return new Paciente(nome, telefone, cartaoSUS); 
+        return new Paciente(nome, telefone, cartaoSUS);
     }
 
     protected override void ExibirCabecalhoTabela()
@@ -56,7 +55,7 @@ public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
         (
             "{0, -10} | {1, -20} | {2, -15} | {3, -18}",
             "ID", "Nome", "Telefone", "Cartao SUS"
-        ); 
+        );
     }
 
     protected override void ExibirLinhaTabela(Paciente p)
@@ -65,6 +64,6 @@ public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
         (
             "{0, -10} | {1, -20} | {2, -15} | {3, -18}",
             p.Id, p.Nome, p.Telefone, p.CartaoSUS
-        ); 
+        );
     }
 }
