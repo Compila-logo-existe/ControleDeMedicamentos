@@ -1,7 +1,6 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 using ControleDeMedicamentos.ConsoleApp.Util;
-using Microsoft.Win32;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloFornecedor;
 
@@ -31,7 +30,7 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
         Console.WriteLine();
 
         Console.Write("Escolha uma das opções: ");
-        char operacaoEscolhida = Convert.ToChar(Console.ReadLine()!);
+        char operacaoEscolhida = Convert.ToChar(Console.ReadLine()!.ToUpper());
 
         return operacaoEscolhida;
     }

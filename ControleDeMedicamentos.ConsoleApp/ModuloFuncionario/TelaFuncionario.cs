@@ -23,6 +23,7 @@ public class TelaFuncionario : TelaBase<Funcionario>, ITelaCrud
 
         return false;
     }
+
     public override Funcionario ObterDados()
     {
         Console.Write("Digite o Nome: ");

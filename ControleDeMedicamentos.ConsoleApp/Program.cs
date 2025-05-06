@@ -1,5 +1,6 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 using ControleDeMedicamentos.ConsoleApp.ModuloFornecedor;
+using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 using ControleDeMedicamentos.ConsoleApp.Util;
 
@@ -37,13 +38,35 @@ internal class Program
                 }
             }
 
+            if (telaSelecionada is TelaRequisicaoEntrada)
+            {
+                TelaRequisicaoEntrada telaRequisicaoEntrada = (TelaRequisicaoEntrada)telaSelecionada;
+
+                if (opcaoEscolhida == '1')
+                {
+                    telaRequisicaoEntrada.CadastrarRegistro(); continue;
+                }
+                if (opcaoEscolhida == '2')
+                {
+                    telaRequisicaoEntrada.VisualizarRegistros(true); continue;
+                }
+            }
+
             if (telaSelecionada is TelaRequisicaoSaida)
             {
                 TelaRequisicaoSaida telaRequisicaoSaida = (TelaRequisicaoSaida)telaSelecionada;
 
+                if (opcaoEscolhida == '1')
+                {
+                    telaRequisicaoSaida.CadastrarRegistro(); continue;
+                }
+                if (opcaoEscolhida == '2')
+                {
+                    telaRequisicaoSaida.VisualizarRegistros(true); continue;
+                }
                 if (opcaoEscolhida == '3')
                 {
-                    telaRequisicaoSaida.VisualizarRequisicoesDePaciente(); continue;
+                    telaRequisicaoSaida.VisualizarRequisicoesPaciente(); continue;
                 }
             }
 

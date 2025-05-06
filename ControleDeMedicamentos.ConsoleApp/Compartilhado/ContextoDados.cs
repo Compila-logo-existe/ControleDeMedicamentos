@@ -1,14 +1,13 @@
-﻿using System.Text.Json;
+﻿using System.Runtime.InteropServices;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using ControleDeMedicamentos.ConsoleApp.ModuloFornecedor;
 using ControleDeMedicamentos.ConsoleApp.ModuloFuncionario;
 using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
-using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
-using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 using ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
-using ControleDeMedicamentos.ConsoleApp.ModuloMedicamentoPrescricao;
-using System.Runtime.InteropServices;
+using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
+using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 
 namespace ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
@@ -21,7 +20,7 @@ public class ContextoDados
     public List<RequisicaoSaida> RequisicoesSaida { get; set; }
     public List<Paciente> Pacientes { get; set; }
     public List<PrescricaoMedica> PrescricoesMedicas { get; set; }
-    public List<MedicamentoPrescricao> MedicamentosPrescricoes { get; set; }
+    public List<PrescricaoMedicamento> MedicamentosPrescricoes { get; set; }
 
     private string pastaArmazenamento = string.Empty;
     private string arquivoArmazenamento = "dados-controle-medicamento.json";
@@ -35,7 +34,7 @@ public class ContextoDados
         RequisicoesSaida = new List<RequisicaoSaida>();
         Pacientes = new List<Paciente>();
         PrescricoesMedicas = new List<PrescricaoMedica>();
-        MedicamentosPrescricoes = new List<MedicamentoPrescricao>();
+        MedicamentosPrescricoes = new List<PrescricaoMedicamento>();
 
     }
 
@@ -59,6 +58,7 @@ public class ContextoDados
 
     public void Salvar()
     {
+        VerificarSistemaOperacional();
         string caminhoCompleto = Path.Combine(pastaArmazenamento, arquivoArmazenamento);
 
         JsonSerializerOptions jsonOptions = new JsonSerializerOptions();
@@ -75,6 +75,7 @@ public class ContextoDados
 
     public void Carregar()
     {
+        VerificarSistemaOperacional();
         string caminhoCompleto = Path.Combine(pastaArmazenamento, arquivoArmazenamento);
 
         if (!File.Exists(caminhoCompleto)) return;
@@ -95,5 +96,8 @@ public class ContextoDados
         Medicamentos = contextoArmazenado.Medicamentos;
         RequisicoesEntrada = contextoArmazenado.RequisicoesEntrada;
         RequisicoesSaida = contextoArmazenado.RequisicoesSaida;
+        Pacientes = contextoArmazenado.Pacientes;
+        PrescricoesMedicas = contextoArmazenado.PrescricoesMedicas;
+        MedicamentosPrescricoes = contextoArmazenado.MedicamentosPrescricoes;
     }
 }

@@ -6,10 +6,10 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloFornecedor;
 
 public class Fornecedor : EntidadeBase<Fornecedor>
 {
-    public string Nome { get; set; }
-    public string Telefone { get; set; }
-    public string CNPJ { get; set; }
-    public List<Medicamento> Medicamentos { get; set; }
+    public string? Nome { get; set; }
+    public string? Telefone { get; set; }
+    public string? CNPJ { get; set; }
+    public List<Medicamento> Medicamentos { get; set; } = [];
     public int QtdMedicamentos
     {
         get
@@ -18,10 +18,7 @@ public class Fornecedor : EntidadeBase<Fornecedor>
         }
     }
 
-    public Fornecedor()
-    {
-        Medicamentos = new List<Medicamento>();
-    }
+    public Fornecedor() { }
 
     public Fornecedor(string nome, string telefone, string cnpj)
     {
@@ -61,7 +58,7 @@ public class Fornecedor : EntidadeBase<Fornecedor>
             erros += "O campo 'CNPJ' é obrigatório.\n";
         else
         {
-            if (!Regex.IsMatch(CNPJ, @"^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$"))
+            if (!Regex.IsMatch(CNPJ, @"^\d{2}\.?\d{3}\.?\d{3}/?\d{4}-?\d{2}$"))
                 erros += "O campo 'CNPJ' deve estar no formato 00.000.000/0000-00.\n";
         }
 
@@ -72,6 +69,7 @@ public class Fornecedor : EntidadeBase<Fornecedor>
     {
         Medicamentos.Add(medicamento);
     }
+
     public void RemoverMedicamento(Medicamento medicamentoExcluir)
     {
         foreach (Medicamento medicamento in Medicamentos)
@@ -83,6 +81,7 @@ public class Fornecedor : EntidadeBase<Fornecedor>
             }
         }
     }
+
     public List<Medicamento> ObterMedicamentos()
     {
         return Medicamentos;

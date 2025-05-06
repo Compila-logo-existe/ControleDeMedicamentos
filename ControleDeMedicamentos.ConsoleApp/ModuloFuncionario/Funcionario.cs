@@ -5,11 +5,12 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloFuncionario;
 
 public class Funcionario : EntidadeBase<Funcionario>
 {
-    public string Nome { get; set; }
-    public string Telefone { get; set; }
-    public string CPF { get; set; }
+    public string? Nome { get; set; }
+    public string? Telefone { get; set; }
+    public string? CPF { get; set; }
 
     public Funcionario() { }
+
     public Funcionario(string nome, string telefone, string cPF)
     {
         Nome = nome;
@@ -47,7 +48,7 @@ public class Funcionario : EntidadeBase<Funcionario>
             erros += "O campo 'CPF' é obrigatório.\n";
         else
         {
-            if (!Regex.IsMatch(CPF, @"^\d{11}$"))
+            if (!Regex.IsMatch(CPF, @"^\d{3}\.?\d{3}\.?\d{3}\-?\d{2}"))
                 erros += "O campo 'CPF' precisa conter 11 números.\n";
         }
 
