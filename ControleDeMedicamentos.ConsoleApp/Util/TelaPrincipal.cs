@@ -4,6 +4,8 @@ using ControleDeMedicamentos.ConsoleApp.ModuloFuncionario;
 using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
+using ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
+using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
 namespace ControleDeMedicamentos.ConsoleApp.Util;
 
@@ -12,11 +14,14 @@ public class TelaPrincipal
     private char opcaoPrincipal;
 
     private ContextoDados contexto;
+
     private TelaFornecedor telaFornecedor;
     private TelaFuncionario telaFuncionario;
     private TelaMedicamento telaMedicamento;
     private TelaRequisicaoEntrada telaRequisicaoEntrada;
     private TelaRequisicaoSaida telaRequisicaoSaida;
+    private TelaPaciente telaPaciente;
+    private TelaPrescricaoMedica telaPrescricaoMedica;
 
     public TelaPrincipal()
     {
