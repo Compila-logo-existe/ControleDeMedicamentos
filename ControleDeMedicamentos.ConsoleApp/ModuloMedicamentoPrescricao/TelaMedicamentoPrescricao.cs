@@ -33,17 +33,14 @@ internal class TelaMedicamentoPrescricao : TelaBase<MedicamentoPrescricao>
 
         TelaMedicamento.VisualizarRegistros(false);
 
-        //Console.Write("Digite o ID do Medicamento: ");
-        //int medicamentoId = int.Parse(Console.ReadLine()!);
+        Console.Write("Digite o Medicamento: ");
+        int idMedicamento = int.Parse(Console.ReadLine()!);
+        Medicamento medicamento = RepositorioMedicamentoEmArquivo.SelecionarRegistroPorId(idMedicamento);
 
-        //Medicamento medicamento = RepositorioMedicamentoEmArquivo.SelecionarRegistroPorId(medicamentoId);
-        
-        // dxar comentado pq n tenho certeza q faz sentido mas creio q sim
-        //
         Console.Write("Digite a Quantidade: ");
         int quantidadeMedicacao = int.Parse(Console.ReadLine()!);
 
-        return new MedicamentoPrescricao(dosagem, periodo, _medicamentovaiaqui_, quantidadeMedicacao);
+        return new MedicamentoPrescricao(dosagem, periodo, medicamento, quantidadeMedicacao);
     }
 
     protected override void ExibirCabecalhoTabela()
