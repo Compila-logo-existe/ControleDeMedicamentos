@@ -4,7 +4,7 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
 public class RepositorioPrescricaoMedicaEmArquivo : RepositorioBaseEmArquivo<PrescricaoMedica>, IRepositorioPrescricaoMedica
 {
-    public RepositorioPrescricaoMedicaEmArquivo(ContextoDados contexto) : base (contexto) { }
+    public RepositorioPrescricaoMedicaEmArquivo(ContextoDados contexto) : base(contexto) { }
 
     protected override List<PrescricaoMedica> ObterRegistros()
     {
@@ -13,7 +13,7 @@ public class RepositorioPrescricaoMedicaEmArquivo : RepositorioBaseEmArquivo<Pre
 
     public override void CadastrarRegistro(PrescricaoMedica novoRegistro)
     {
-        novoRegistro.Paciente.GuardarPrescricao(novoRegistro);
+        novoRegistro.Paciente!.GuardarPrescricao(novoRegistro);
 
         base.CadastrarRegistro(novoRegistro);
     }
@@ -22,7 +22,7 @@ public class RepositorioPrescricaoMedicaEmArquivo : RepositorioBaseEmArquivo<Pre
     {
         foreach (PrescricaoMedica pM in contexto.PrescricoesMedicas)
         {
-            if (pM.Data.AddDays(30) < DateTime.Now)
+            if (pM.Data?.AddDays(30) < DateTime.Now)
             {
                 pM.Status = "Vencida";
             }
