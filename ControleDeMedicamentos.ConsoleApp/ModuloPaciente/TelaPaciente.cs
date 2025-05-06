@@ -2,11 +2,15 @@ using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 
-public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
+internal class TelaPaciente : TelaBase<Paciente>
 {
     private IRepositorioPaciente IRepositorioPaciente { get; set; } 
 
-    internal TelaPaciente(IRepositorioPaciente iRepositorioPaciente) : base("Paciente", iRepositorioPaciente)
+    internal TelaPaciente
+    (
+        IRepositorioPaciente iRepositorioPaciente
+
+    ) : base("Paciente", iRepositorioPaciente)
     {
         IRepositorioPaciente = iRepositorioPaciente;
     }
@@ -37,10 +41,7 @@ public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
 
         Console.Write("Digite o Numero do Cartao do SUS: ");
         string cartaoSUS = Console.ReadLine() ?? string.Empty;
-
-        //implementar logica pra atribuir prescricoes a list de prescricoes do paciente
-        ////implementar logica pra atribuir prescricoes a list de prescricoes do paciente
-
+        
         return new Paciente(nome, telefone, cartaoSUS, null, null); // dxando null de placeholder
     }
 
