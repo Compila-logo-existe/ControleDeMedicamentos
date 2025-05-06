@@ -13,22 +13,22 @@ internal class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>
 
     protected TelaPrescricaoMedica
     (
-        RepositorioPrescricaoMedicaEmArquivo iRepositorioPrescricaoMedica,
+        RepositorioPrescricaoMedicaEmArquivo repositorioPrescricaoMedicaEmArquivo,
 
         TelaPaciente telaPaciente, 
-        RepositorioPacienteEmArquivo iRepositorioPaciente,
+        RepositorioPacienteEmArquivo repositorioPacienteEmArquivo,
         TelaMedicamentoPrescricao telaMedicamentoPrescricao,
-        RepositorioMedicamentoPrescricaoEmArquivo iRepositorioMedicamentoPrescricao
+        RepositorioMedicamentoPrescricaoEmArquivo repositorioMedicamentoPrescricaoEmArquivo
 
     ) : base 
     (
         "Prescricao Medica", 
-        iRepositorioPrescricaoMedica)
+        repositorioPrescricaoMedicaEmArquivo)
     {
         TelaPaciente = telaPaciente;
-        RepositorioPacienteEmArquivo = iRepositorioPaciente;
+        RepositorioPacienteEmArquivo = repositorioPacienteEmArquivo;
         TelaMedicamentoPrescricao = telaMedicamentoPrescricao;
-        RepositorioMedicamentoPrescricaoEmArquivo = iRepositorioMedicamentoPrescricao;
+        RepositorioMedicamentoPrescricaoEmArquivo = repositorioMedicamentoPrescricaoEmArquivo;
     }
 
     public override PrescricaoMedica ObterDados()
