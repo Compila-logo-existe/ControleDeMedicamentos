@@ -1,14 +1,23 @@
 using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 
-internal class TelaPaciente : TelaBase<Paciente>, ITelaCrud
+public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
 {
-    private IRepositorioPaciente IRepositorioPaciente { get; set; } 
+    public IRepositorioPaciente IRepositorioPaciente { get; private set; } 
+    private TelaPrescricaoMedica TelaPrescricaoMedica { get; set; }
 
-    internal TelaPaciente(IRepositorioPaciente iRepositorioPaciente) : base("Paciente", iRepositorioPaciente)
+    public TelaPaciente
+    (
+        IRepositorioPaciente repositorioPacienteEmArquivo,
+
+        TelaPrescricaoMedica telaPrescricaoMedica
+
+    ) : base("Paciente", repositorioPacienteEmArquivo)
     {
-        IRepositorioPaciente = iRepositorioPaciente;
+        IRepositorioPaciente = repositorioPacienteEmArquivo;
+        TelaPrescricaoMedica = telaPrescricaoMedica;
     }
 
     public override bool TemRestricoesNoInserir(Paciente paciente, out string mensagem)
@@ -38,10 +47,7 @@ internal class TelaPaciente : TelaBase<Paciente>, ITelaCrud
         Console.Write("Digite o Numero do Cartao do SUS: ");
         string cartaoSUS = Console.ReadLine() ?? string.Empty;
 
-        //implementar logica pra atribuir prescricoes a list de prescricoes do paciente
-        ////implementar logica pra atribuir prescricoes a list de prescricoes do paciente
-
-        return new Paciente(nome, telefone, cartaoSUS, null, null); // dxando null de placeholder
+        return new Paciente(nome, telefone, cartaoSUS); 
     }
 
     protected override void ExibirCabecalhoTabela()

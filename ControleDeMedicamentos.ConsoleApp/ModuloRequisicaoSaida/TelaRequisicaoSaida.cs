@@ -7,9 +7,9 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 
 public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
 {
-    TelaPaciente TelaPaciente;
-    TelaPrescricaoMedica TelaPrescricaoMedica;
-    IRepositorioRequisicaoSaida RepositorioRequisicaoSaida;
+    private TelaPaciente TelaPaciente;
+    private TelaPrescricaoMedica TelaPrescricaoMedica;
+    private IRepositorioRequisicaoSaida RepositorioRequisicaoSaida;
 
     public TelaRequisicaoSaida(IRepositorioRequisicaoSaida repositorioRequisicaoSaida, TelaPaciente telaPaciente, TelaPrescricaoMedica telaPrescricaoMedica) : base("Requisição de Saída", repositorioRequisicaoSaida)
     {
@@ -82,7 +82,7 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
         }
 
         // tem algo de acessibilidade aq p arruma
-        Paciente paciente = TelaPaciente.RepositorioPacienteEmArquivo.SelecionarRegistroPorId(idPacienteEscolhido);
+        Paciente paciente = TelaPaciente.IRepositorioPaciente.SelecionarRegistroPorId(idPacienteEscolhido);
 
         TelaPrescricaoMedica.VisualizarRegistros(false);
 
@@ -101,9 +101,9 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
                 break;
         }
 
-        PrescricaoMedica prescricaoMedica = TelaPrescricaoMedica.RepositorioPrescricaoMedicaEmArquivo.SelecionarRegistroPorId(idPrescricaoMedicaEscolhida);
+        PrescricaoMedica prescricaoMedica = TelaPrescricaoMedica.IRepositorioPrescricaoMedica.SelecionarRegistroPorId(idPrescricaoMedicaEscolhida);
 
-        List<Medicamento> medicamentosRequisitados = prescricaoMedica.Medicamentos;
+        List<Medicamento> medicamentosRequisitados = PrescricaoMedica.Medicamentos;
 
         RequisicaoSaida requisicaoSaida = new RequisicaoSaida(data, paciente, prescricaoMedica, medicamentosRequisitados);
 

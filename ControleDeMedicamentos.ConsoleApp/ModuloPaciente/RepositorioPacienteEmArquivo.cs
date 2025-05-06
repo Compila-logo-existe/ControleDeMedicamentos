@@ -2,9 +2,9 @@ using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 
-internal class RepositorioPacienteEmArquivo : RepositorioBaseEmArquivo<Paciente>, IRepositorioPaciente
+public class RepositorioPacienteEmArquivo : RepositorioBaseEmArquivo<Paciente>, IRepositorioPaciente
 {
-    protected RepositorioPacienteEmArquivo(ContextoDados contexto) : base(contexto) {}
+    public RepositorioPacienteEmArquivo(ContextoDados contexto) : base(contexto) {}
 
     public bool VerificarCartaoSUSRegistros(Paciente paciente)
     {
@@ -15,6 +15,4 @@ internal class RepositorioPacienteEmArquivo : RepositorioBaseEmArquivo<Paciente>
     {
         return contexto.Pacientes; 
     }
-
-
 }

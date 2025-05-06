@@ -42,7 +42,7 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
         return operacaoEscolhida;
     }
 
-    public virtual void CadastrarRegistro()
+    public void CadastrarRegistro()
     {
         ExibirCabecalho();
 

@@ -2,4 +2,4 @@ using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
-public interface IRepositorioPrescricaoMedica : IRepositorio<PrescricaoMedica>;
+public interface IRepositorioPrescricaoMedica : IRepositorio<PrescricaoMedica> {}
