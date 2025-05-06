@@ -4,7 +4,7 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 
 public class RepositorioPacienteEmArquivo : RepositorioBaseEmArquivo<Paciente>, IRepositorioPaciente
 {
-    protected RepositorioPacienteEmArquivo(ContextoDados contexto) : base(contexto) {}
+    public RepositorioPacienteEmArquivo(ContextoDados contexto) : base(contexto) {}
 
     public bool VerificarCartaoSUSRegistros(Paciente paciente)
     {
