@@ -15,10 +15,4 @@ public class RepositorioPacienteEmArquivo : RepositorioBaseEmArquivo<Paciente>, 
     {
         return contexto.Pacientes; 
     }
-    
-    public int AtribuirReceitaAoPaciente()
-    {
-        Console.Write("A qual paciente deseja atribuir a receita? (ID): ");     
-        return int.Parse(Console.ReadLine()!);
-    }
 }
