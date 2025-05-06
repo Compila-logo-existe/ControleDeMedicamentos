@@ -1,16 +1,15 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
-using ControleDeMedicamentos.ConsoleApp.ModuloMedicamentoPrescricao;
 using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 
-public class RepositorioMedicamentoEmArquivo :RepositorioBaseEmArquivo<Medicamento>, IRepositorioMedicamento
+public class RepositorioMedicamentoEmArquivo : RepositorioBaseEmArquivo<Medicamento>, IRepositorioMedicamento
 {
     public RepositorioMedicamentoEmArquivo(ContextoDados contexto) : base(contexto) { }
 
     public override void CadastrarRegistro(Medicamento medicamento)
     {
-        medicamento.Fornecedor.AdicionarMedicamento(medicamento);
+        medicamento.Fornecedor!.AdicionarMedicamento(medicamento);
         base.CadastrarRegistro(medicamento);
     }
 
@@ -41,7 +40,7 @@ public class RepositorioMedicamentoEmArquivo :RepositorioBaseEmArquivo<Medicamen
             if (medicamento.Nome == m.Nome && medicamento.Id == 0)
             {
                 m.QtdEstoque += medicamento.QtdEstoque;
-                medicamento.Fornecedor.AdicionarMedicamento(medicamento);
+                medicamento.Fornecedor!.AdicionarMedicamento(medicamento);
                 return true;
             }
         }
@@ -71,14 +70,14 @@ public class RepositorioMedicamentoEmArquivo :RepositorioBaseEmArquivo<Medicamen
             if (m == null)
                 continue;
 
-            foreach (MedicamentoPrescricao mp in prescricaoMedica.Medicamentos)
+            foreach (PrescricaoMedicamento pm in prescricaoMedica.Medicamentos)
             {
-                if (mp == null)
+                if (pm == null)
                     continue;
 
-                if (m.Id == mp.Medicamento.Id)
+                if (m.Id == pm.Medicamento!.Id)
                 {
-                    m.QtdEstoque -= mp.Quantidade;
+                    m.QtdEstoque -= pm.Quantidade;
                 }
             }
         }

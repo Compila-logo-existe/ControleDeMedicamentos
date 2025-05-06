@@ -7,7 +7,7 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
 {
     public IRepositorioMedicamento RepositorioMedicamento;
-    TelaFornecedor TelaFornecedor;
+    internal TelaFornecedor TelaFornecedor;
 
     public TelaMedicamento(IRepositorioMedicamento repositorio, TelaFornecedor telaFornecedor) : base("Medicamento", repositorio)
     {
@@ -41,17 +41,30 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
 
         VisualizarRegistros(false);
 
-        Console.Write("Digite o ID do medicamento que deseja selecionar: ");
-        int idRegistro = Convert.ToInt32(Console.ReadLine());
 
-        Medicamento medicamentoOriginal = RepositorioMedicamento.SelecionarRegistroPorId(idRegistro);
-        Fornecedor fornecedorAntigo = medicamentoOriginal.Fornecedor;
+        int idRegistroEscolhido;
+
+        while (true)
+        {
+            Console.Write("Digite o ID do medicamento que deseja selecionar: ");
+            bool idValido = int.TryParse(Console.ReadLine(), out idRegistroEscolhido);
+            if (!idValido)
+            {
+                Console.WriteLine("\nID inválido, selecione novamente.\n");
+                continue;
+            }
+            else
+                break;
+        }
+
+        Medicamento medicamentoOriginal = RepositorioMedicamento.SelecionarRegistroPorId(idRegistroEscolhido);
+        Fornecedor fornecedorAntigo = medicamentoOriginal.Fornecedor!;
 
         Console.WriteLine();
 
         Medicamento medicamentoEditado = ObterDados();
 
-        Fornecedor fornecedorEditado = medicamentoEditado.Fornecedor;
+        Fornecedor fornecedorEditado = medicamentoEditado.Fornecedor!;
 
         string erros = medicamentoEditado.Validar();
 
@@ -64,7 +77,7 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
             return;
         }
 
-        bool conseguiuEditar = RepositorioMedicamento.EditarRegistro(idRegistro, medicamentoEditado);
+        bool conseguiuEditar = RepositorioMedicamento.EditarRegistro(idRegistroEscolhido, medicamentoEditado);
 
         if (!conseguiuEditar)
         {
@@ -80,8 +93,8 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
         }
 
         Notificador.ExibirMensagem("O registro foi editado com sucesso!", ConsoleColor.Green);
-    } 
-    
+    }
+
     public override bool TemRestricoesNoExcluir(int idRegistro, out string mensagem)
     {
 
@@ -89,7 +102,7 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
 
         Medicamento medicamentoEscolhido = RepositorioMedicamento.SelecionarRegistroPorId(idRegistro);
 
-        medicamentoEscolhido.Fornecedor.RemoverMedicamento(medicamentoEscolhido);
+        medicamentoEscolhido.Fornecedor!.RemoverMedicamento(medicamentoEscolhido);
         return false;
 
     }
