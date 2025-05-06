@@ -4,7 +4,7 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
 public class RepositorioPrescricaoMedicaEmArquivo : RepositorioBaseEmArquivo<PrescricaoMedica>, IRepositorioPrescricaoMedica
 {
-    protected RepositorioPrescricaoMedicaEmArquivo(ContextoDados contexto) : base (contexto) { }
+    public RepositorioPrescricaoMedicaEmArquivo(ContextoDados contexto) : base (contexto) { }
 
     protected override List<PrescricaoMedica> ObterRegistros()
     {
