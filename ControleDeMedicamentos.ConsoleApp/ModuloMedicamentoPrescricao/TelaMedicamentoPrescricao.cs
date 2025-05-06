@@ -3,22 +3,20 @@ using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamentoPrescricao;
 
-public class TelaMedicamentoPrescricao : TelaBase<MedicamentoPrescricao>
+public class TelaMedicamentoPrescricao : TelaBase<MedicamentoPrescricao>, ITelaCrud
 {
-    //private RepositorioMedicamentoPrescricaoEmArquivo RepositorioMedicamentoPrescricaoEmArquivo;
-    private TelaMedicamento TelaMedicamento { get; set; }
-    private RepositorioMedicamentoEmArquivo RepositorioMedicamentoEmArquivo{ get; set; }
+    public IRepositorioMedicamentoPrescricao IRepositorioMedicamentoPrescricao { get; private set; }
+    public TelaMedicamento TelaMedicamento { get; private set; }
 
     public TelaMedicamentoPrescricao
     (
-        TelaMedicamento telaMedicamento,
-        RepositorioMedicamentoEmArquivo repositorioMedicamentoEmArquivo,
-        RepositorioMedicamentoPrescricaoEmArquivo repositorioMedicamentoPrescricaoEmArquivo
+        IRepositorioMedicamentoPrescricao repositorioMedicamentoPrescricaoEmArquivo,
+        TelaMedicamento telaMedicamento
 
     ) : base ("Medicamento Prescricao", repositorioMedicamentoPrescricaoEmArquivo)
     {
+        IRepositorioMedicamentoPrescricao = repositorioMedicamentoPrescricaoEmArquivo;
         TelaMedicamento = telaMedicamento;
-        RepositorioMedicamentoEmArquivo = repositorioMedicamentoEmArquivo;
     }
 
     public override MedicamentoPrescricao ObterDados()
@@ -33,7 +31,7 @@ public class TelaMedicamentoPrescricao : TelaBase<MedicamentoPrescricao>
 
         Console.Write("Digite o Medicamento: ");
         int idMedicamento = int.Parse(Console.ReadLine()!);
-        Medicamento medicamento = RepositorioMedicamentoEmArquivo.SelecionarRegistroPorId(idMedicamento);
+        Medicamento medicamento = TelaMedicamento.RepositorioMedicamento.SelecionarRegistroPorId(idMedicamento);
 
         Console.Write("Digite a Quantidade: ");
         int quantidadeMedicacao = int.Parse(Console.ReadLine()!);
