@@ -4,21 +4,18 @@ using ControleDeMedicamentos.ConsoleApp.ModuloMedicamentoPrescricao;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
-public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>
+public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
 {
+    public IRepositorioPrescricaoMedica IRepositorioPrescricaoMedica { get; private set; }
     private TelaPaciente TelaPaciente { get; set; }
-    private RepositorioPacienteEmArquivo RepositorioPacienteEmArquivo{ get; set; }
-    private TelaMedicamentoPrescricao TelaMedicamentoPrescricao { get; set; }
-    private RepositorioMedicamentoPrescricaoEmArquivo RepositorioMedicamentoPrescricaoEmArquivo { get; set; }
+    public TelaMedicamentoPrescricao TelaMedicamentoPrescricao { get; private set; }
 
     public TelaPrescricaoMedica
     (
-        RepositorioPrescricaoMedicaEmArquivo repositorioPrescricaoMedicaEmArquivo,
+        IRepositorioPrescricaoMedica repositorioPrescricaoMedicaEmArquivo,
 
         TelaPaciente telaPaciente, 
-        RepositorioPacienteEmArquivo repositorioPacienteEmArquivo,
-        TelaMedicamentoPrescricao telaMedicamentoPrescricao,
-        RepositorioMedicamentoPrescricaoEmArquivo repositorioMedicamentoPrescricaoEmArquivo
+        TelaMedicamentoPrescricao telaMedicamentoPrescricao
 
     ) : base 
     (
@@ -26,9 +23,7 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>
         repositorioPrescricaoMedicaEmArquivo)
     {
         TelaPaciente = telaPaciente;
-        RepositorioPacienteEmArquivo = repositorioPacienteEmArquivo;
         TelaMedicamentoPrescricao = telaMedicamentoPrescricao;
-        RepositorioMedicamentoPrescricaoEmArquivo = repositorioMedicamentoPrescricaoEmArquivo;
     }
 
     public override PrescricaoMedica ObterDados()
@@ -43,7 +38,7 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>
         TelaPaciente.VisualizarRegistros(false);
         Console.Write("Digite o ID do Paciente: ");
         int idPaciente = int.Parse(Console.ReadLine()!);
-        Paciente pacienteSelecionado = RepositorioPacienteEmArquivo.SelecionarRegistroPorId(idPaciente); 
+        Paciente pacienteSelecionado = TelaPaciente.IRepositorioPaciente.SelecionarRegistroPorId(idPaciente); 
 
         List<MedicamentoPrescricao> prescricoesMedicamentos = [];
         do 
@@ -51,7 +46,7 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>
             TelaMedicamentoPrescricao.VisualizarRegistros(false);
             Console.Write("Digite o ID da Prescricao do Medicamento: ");
             int idPrescricaoMedicamento = int.Parse(Console.ReadLine()!);
-            MedicamentoPrescricao medicamentoPrescricao = RepositorioMedicamentoPrescricaoEmArquivo.SelecionarRegistroPorId(idPrescricaoMedicamento);
+            MedicamentoPrescricao medicamentoPrescricao = TelaMedicamentoPrescricao.IRepositorioMedicamentoPrescricao.SelecionarRegistroPorId(idPrescricaoMedicamento);
 
             prescricoesMedicamentos.Add(medicamentoPrescricao);
             
