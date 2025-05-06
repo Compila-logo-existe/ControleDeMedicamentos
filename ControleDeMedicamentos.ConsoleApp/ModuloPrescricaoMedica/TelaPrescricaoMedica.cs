@@ -4,14 +4,14 @@ using ControleDeMedicamentos.ConsoleApp.ModuloMedicamentoPrescricao;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
-internal class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>
+public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>
 {
     private TelaPaciente TelaPaciente { get; set; }
     private RepositorioPacienteEmArquivo RepositorioPacienteEmArquivo{ get; set; }
     private TelaMedicamentoPrescricao TelaMedicamentoPrescricao { get; set; }
     private RepositorioMedicamentoPrescricaoEmArquivo RepositorioMedicamentoPrescricaoEmArquivo { get; set; }
 
-    protected TelaPrescricaoMedica
+    public TelaPrescricaoMedica
     (
         RepositorioPrescricaoMedicaEmArquivo repositorioPrescricaoMedicaEmArquivo,
 
@@ -70,7 +70,6 @@ internal class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>
                 }
 
             }
-
        }
         while (true);
     }

@@ -3,14 +3,13 @@ using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamentoPrescricao;
 
-internal class TelaMedicamentoPrescricao : TelaBase<MedicamentoPrescricao>
+public class TelaMedicamentoPrescricao : TelaBase<MedicamentoPrescricao>
 {
     //private RepositorioMedicamentoPrescricaoEmArquivo RepositorioMedicamentoPrescricaoEmArquivo;
     private TelaMedicamento TelaMedicamento { get; set; }
     private RepositorioMedicamentoEmArquivo RepositorioMedicamentoEmArquivo{ get; set; }
-    private RepositorioMedicamentoPrescricaoEmArquivo RepositorioMedicamentoPrescricaoEmArquivo { get; set; }
 
-    internal TelaMedicamentoPrescricao
+    public TelaMedicamentoPrescricao
     (
         TelaMedicamento telaMedicamento,
         RepositorioMedicamentoEmArquivo repositorioMedicamentoEmArquivo,
@@ -20,7 +19,6 @@ internal class TelaMedicamentoPrescricao : TelaBase<MedicamentoPrescricao>
     {
         TelaMedicamento = telaMedicamento;
         RepositorioMedicamentoEmArquivo = repositorioMedicamentoEmArquivo;
-        RepositorioMedicamentoPrescricaoEmArquivo = repositorioMedicamentoPrescricaoEmArquivo;
     }
 
     public override MedicamentoPrescricao ObterDados()

@@ -2,9 +2,9 @@ using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamentoPrescricao;
 
-internal class ModuloMedicamentoPrescricao : RepositorioBaseEmArquivo<MedicamentoPrescricao>, IRepositorioMedicamentoPrescricao
+public class RepositorioMedicamentoPrescricaoEmArquivo : RepositorioBaseEmArquivo<MedicamentoPrescricao>, IRepositorioMedicamentoPrescricao
 {
-    protected ModuloMedicamentoPrescricao(ContextoDados contexto) : base (contexto) { }
+    protected RepositorioMedicamentoPrescricaoEmArquivo(ContextoDados contexto) : base (contexto) { }
 
     protected override List<MedicamentoPrescricao> ObterRegistros()
     {

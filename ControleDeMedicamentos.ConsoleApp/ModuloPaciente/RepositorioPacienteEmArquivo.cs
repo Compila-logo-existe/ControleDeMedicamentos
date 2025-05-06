@@ -2,7 +2,7 @@ using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 
-internal class RepositorioPacienteEmArquivo : RepositorioBaseEmArquivo<Paciente>, IRepositorioPaciente
+public class RepositorioPacienteEmArquivo : RepositorioBaseEmArquivo<Paciente>, IRepositorioPaciente
 {
     protected RepositorioPacienteEmArquivo(ContextoDados contexto) : base(contexto) {}
 
@@ -15,6 +15,10 @@ internal class RepositorioPacienteEmArquivo : RepositorioBaseEmArquivo<Paciente>
     {
         return contexto.Pacientes; 
     }
-
-
+    
+    public int AtribuirReceitaAoPaciente()
+    {
+        Console.Write("A qual paciente deseja atribuir a receita? (ID): ");     
+        return int.Parse(Console.ReadLine()!);
+    }
 }
