@@ -5,22 +5,22 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamentoPrescricao;
 
 internal class TelaMedicamentoPrescricao : TelaBase<MedicamentoPrescricao>
 {
-    //private IRepositorioMedicamentoPrescricao IRepositorioMedicamentoPrescricao;
+    //private RepositorioMedicamentoPrescricaoEmArquivo RepositorioMedicamentoPrescricaoEmArquivo;
     private TelaMedicamento TelaMedicamento { get; set; }
-    private IRepositorioMedicamento IRepositorioMedicamento { get; set; }
-    private IRepositorioMedicamentoPrescricao IRepositorioMedicamentoPrescricao { get; set; }
+    private RepositorioMedicamentoEmArquivo RepositorioMedicamentoEmArquivo{ get; set; }
+    private RepositorioMedicamentoPrescricaoEmArquivo RepositorioMedicamentoPrescricaoEmArquivo { get; set; }
 
     internal TelaMedicamentoPrescricao
     (
         TelaMedicamento telaMedicamento,
-        IRepositorioMedicamento iRepositorioMedicamento,
-        IRepositorioMedicamentoPrescricao iRepositorioMedicamentoPrescricao
+        RepositorioMedicamentoEmArquivo repositorioMedicamentoEmArquivo,
+        RepositorioMedicamentoPrescricaoEmArquivo repositorioMedicamentoPrescricaoEmArquivo
 
-    ) : base ("Medicamento Prescricao", iRepositorioMedicamentoPrescricao)
+    ) : base ("Medicamento Prescricao", repositorioMedicamentoPrescricaoEmArquivo)
     {
-       TelaMedicamento = telaMedicamento;
-       IRepositorioMedicamento = iRepositorioMedicamento;
-       IRepositorioMedicamentoPrescricao = iRepositorioMedicamentoPrescricao;
+        TelaMedicamento = telaMedicamento;
+        RepositorioMedicamentoEmArquivo = repositorioMedicamentoEmArquivo;
+        RepositorioMedicamentoPrescricaoEmArquivo = repositorioMedicamentoPrescricaoEmArquivo;
     }
 
     public override MedicamentoPrescricao ObterDados()
@@ -36,7 +36,7 @@ internal class TelaMedicamentoPrescricao : TelaBase<MedicamentoPrescricao>
         //Console.Write("Digite o ID do Medicamento: ");
         //int medicamentoId = int.Parse(Console.ReadLine()!);
 
-        //Medicamento medicamento = IRepositorioMedicamento.SelecionarRegistroPorId(medicamentoId);
+        //Medicamento medicamento = RepositorioMedicamentoEmArquivo.SelecionarRegistroPorId(medicamentoId);
         
         // dxar comentado pq n tenho certeza q faz sentido mas creio q sim
         //
