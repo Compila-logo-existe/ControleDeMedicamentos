@@ -43,7 +43,7 @@ public class ContextoDados
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            pastaArmazenamento = "C:\temp";
+            pastaArmazenamento = @"C:\temp";
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
