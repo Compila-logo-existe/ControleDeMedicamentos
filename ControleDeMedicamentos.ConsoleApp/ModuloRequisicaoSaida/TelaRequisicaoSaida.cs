@@ -1,15 +1,15 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
-using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 using ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
+using ControleDeMedicamentos.ConsoleApp.Util;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 
 public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
 {
-    private TelaPaciente TelaPaciente;
-    private TelaPrescricaoMedica TelaPrescricaoMedica;
-    private IRepositorioRequisicaoSaida RepositorioRequisicaoSaida;
+    public IRepositorioRequisicaoSaida RepositorioRequisicaoSaida;
+    internal TelaPaciente TelaPaciente;
+    internal TelaPrescricaoMedica TelaPrescricaoMedica;
 
     public TelaRequisicaoSaida(IRepositorioRequisicaoSaida repositorioRequisicaoSaida, TelaPaciente telaPaciente, TelaPrescricaoMedica telaPrescricaoMedica) : base("Requisição de Saída", repositorioRequisicaoSaida)
     {
@@ -33,7 +33,7 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
         Console.WriteLine();
 
         Console.Write("Escolha uma das opções: ");
-        char operacaoEscolhida = Convert.ToChar(Console.ReadLine()!);
+        char operacaoEscolhida = Convert.ToChar(Console.ReadLine()!.ToUpper());
 
         return operacaoEscolhida;
     }
@@ -81,7 +81,6 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
                 break;
         }
 
-        // tem algo de acessibilidade aq p arruma
         Paciente paciente = TelaPaciente.IRepositorioPaciente.SelecionarRegistroPorId(idPacienteEscolhido);
 
         TelaPrescricaoMedica.VisualizarRegistros(false);
@@ -101,29 +100,61 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
                 break;
         }
 
-        PrescricaoMedica prescricaoMedica = TelaPrescricaoMedica.IRepositorioPrescricaoMedica.SelecionarRegistroPorId(idPrescricaoMedicaEscolhida);
+        PrescricaoMedica prescricaoMedica = TelaPrescricaoMedica.IRepositorioPrescricaoMedica!.SelecionarRegistroPorId(idPrescricaoMedicaEscolhida);
 
-        List<Medicamento> medicamentosRequisitados = PrescricaoMedica.Medicamentos;
+        List<PrescricaoMedicamento> medicamentosRequisitados = prescricaoMedica.Medicamentos;
 
         RequisicaoSaida requisicaoSaida = new RequisicaoSaida(data, paciente, prescricaoMedica, medicamentosRequisitados);
 
         return requisicaoSaida;
     }
 
-    public void VisualizarRequisicoesDePaciente()
+    public void VisualizarRequisicoesPaciente()
     {
-        //
-    }
+        TelaPaciente.VisualizarRegistros(false);
 
+        int idPacienteEscolhido;
+
+        while (true)
+        {
+            Console.Write("Digite o ID do paciente: ");
+            bool idValido = int.TryParse(Console.ReadLine(), out idPacienteEscolhido);
+            if (!idValido)
+            {
+                Console.WriteLine("\nID inválido, selecione novamente.\n");
+                continue;
+            }
+            else
+                break;
+        }
+
+        Paciente paciente = TelaPaciente.IRepositorioPaciente.SelecionarRegistroPorId(idPacienteEscolhido);
+
+        Console.WriteLine();
+        Console.WriteLine($"Visualizando Requisições de Saída do {paciente.Nome}");
+        Console.WriteLine("------------------------------------------------------");
+        Console.WriteLine();
+        Console.WriteLine("{0, -10} | {1, -20} | {2, -10} | {3, -15}",
+                "ID", "Data", "ID Prescrição Médica", "Qtd de Medicamentos Requisitados");
+
+        List<RequisicaoSaida> prescricoes = paciente.PegarRequisicoesSaida();
+
+        foreach (RequisicaoSaida r in prescricoes)
+        {
+            Console.WriteLine("{0, -10} | {1, -20} | {2, -10} | {3, -15}",
+                r.Id, r.Data, r.PrescicaoMedica!.Id, r.MedicamentosRequisitados.Count.ToString());
+        }
+        Console.WriteLine();
+        Notificador.ExibirMensagem("Pressione ENTER para continuar...", ConsoleColor.DarkYellow);
+    }
     protected override void ExibirCabecalhoTabela()
     {
         Console.WriteLine("{0, -10} | {1, -20} | {2, -20} | {3, -10} | {4, -15}",
-                "ID", "Data", "Paciente", "ID Prescrição Médica", "Qtd de Medicamentos Requisitados");
+        "ID", "Data", "Paciente", "ID Prescrição Médica", "Qtd de Medicamentos Requisitados");
     }
-
     protected override void ExibirLinhaTabela(RequisicaoSaida registro)
     {
         Console.WriteLine("{0, -10} | {1, -20} | {2, -20} | {3, -20} | {4, -15}",
-                registro.Id, registro.Data, registro.Paciente.Nome, registro.PrescicaoMedica.Id, registro.MedicamentosRequisitados.Count.ToString());
+                registro.Id, registro.Data, registro.Paciente!.Nome, registro.PrescicaoMedica!.Id, registro.MedicamentosRequisitados.Count.ToString());
     }
 }

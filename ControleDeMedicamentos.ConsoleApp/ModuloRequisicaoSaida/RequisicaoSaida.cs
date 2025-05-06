@@ -1,6 +1,5 @@
 ﻿using System.Globalization;
 using ControleDeMedicamentos.ConsoleApp.Compartilhado;
-using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 using ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
@@ -9,13 +8,14 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 public class RequisicaoSaida : EntidadeBase<RequisicaoSaida>
 {
 
-    public string Data { get; set; }
-    public Paciente Paciente { get; set; }
-    public PrescricaoMedica PrescicaoMedica { get; set; }
-    public List<Medicamento> MedicamentosRequisitados { get; set; }
+    public string? Data { get; set; }
+    public Paciente? Paciente { get; set; }
+    public PrescricaoMedica? PrescicaoMedica { get; set; }
+    public List<PrescricaoMedicamento> MedicamentosRequisitados { get; set; } = [];
 
     public RequisicaoSaida() { }
-    public RequisicaoSaida(string data, Paciente paciente, PrescricaoMedica prescicaoMedica, List<Medicamento> medicamentosRequisitados)
+
+    public RequisicaoSaida(string data, Paciente paciente, PrescricaoMedica prescicaoMedica, List<PrescricaoMedicamento> medicamentosRequisitados)
     {
         Data = data ?? DateTime.Now.ToString("dd/MM/yyyy");
         Paciente = paciente;
