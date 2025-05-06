@@ -3,25 +3,20 @@ using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 
-public class TelaPaciente : TelaBase<Paciente>
+public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
 {
-    private RepositorioPacienteEmArquivo RepositorioPacienteEmArquivo { get; set; } 
-    
+    public IRepositorioPaciente IRepositorioPaciente { get; private set; } 
     private TelaPrescricaoMedica TelaPrescricaoMedica { get; set; }
-    private RepositorioPrescricaoMedicaEmArquivo RepositorioPrescricaoMedicaEmArquivo { get; set; }
 
-    internal TelaPaciente
+    public TelaPaciente
     (
-        RepositorioPacienteEmArquivo repositorioPacienteEmArquivo,
+        IRepositorioPaciente repositorioPacienteEmArquivo,
 
-        RepositorioPrescricaoMedicaEmArquivo repositorioPrescricaoMedicaEmArquivo,
         TelaPrescricaoMedica telaPrescricaoMedica
 
     ) : base("Paciente", repositorioPacienteEmArquivo)
     {
-        RepositorioPacienteEmArquivo = repositorioPacienteEmArquivo;
-
-        RepositorioPrescricaoMedicaEmArquivo = repositorioPrescricaoMedicaEmArquivo;
+        IRepositorioPaciente = repositorioPacienteEmArquivo;
         TelaPrescricaoMedica = telaPrescricaoMedica;
     }
 
@@ -29,7 +24,7 @@ public class TelaPaciente : TelaBase<Paciente>
     {
         mensagem = string.Empty; 
         
-        if (RepositorioPacienteEmArquivo.VerificarCartaoSUSRegistros(paciente))
+        if (IRepositorioPaciente.VerificarCartaoSUSRegistros(paciente))
         {
             mensagem += "\nJa existe um cadastro com esse Cartao do SUS!";   
 
@@ -52,28 +47,7 @@ public class TelaPaciente : TelaBase<Paciente>
         Console.Write("Digite o Numero do Cartao do SUS: ");
         string cartaoSUS = Console.ReadLine() ?? string.Empty;
 
-        List<PrescricaoMedica> prescricoesMedicas = []; 
-        do 
-        {
-            TelaPrescricaoMedica.VisualizarRegistros(false);
-            Console.Write("Digite o Id da prescricao: ");
-            int idPrescricao = int.Parse(Console.ReadLine()!);  
-            PrescricaoMedica prescricao = RepositorioPrescricaoMedicaEmArquivo.SelecionarRegistroPorId(idPrescricao); 
-            prescricoesMedicas.Add(prescricao);
-
-            Console.Write("Deseja atribuir mais prescricoes? (S/n): ");
-            string opcao = Console.ReadLine()!.ToUpper() ?? string.Empty;
-
-            if (opcao == "S")
-            {
-                continue; 
-            }
-            else if (opcao == "N")
-            {
-                return new Paciente(nome, telefone, cartaoSUS, prescricoesMedicas, null); // dxando null de placeholder
-            }
-        }
-        while(true);
+        return new Paciente(nome, telefone, cartaoSUS); 
     }
 
     protected override void ExibirCabecalhoTabela()

@@ -10,16 +10,14 @@ public class Paciente : EntidadeBase<Paciente>
     public string Nome { get; set; }
     public string Telefone { get; set; }
     public string CartaoSUS { get; set; }
-    public List<PrescricaoMedica> Prescricoes { get; set; }
-    public List<RequisicaoSaida> RequisicoesSaida { get; set; }
+    public List<PrescricaoMedica> Prescricoes { get; set; } = [];
+    public List<RequisicaoSaida> RequisicoesSaida { get; set; } = [];
     
-    public Paciente(string nome, string tel, string cartaoSus, List<PrescricaoMedica> prescricoesMedicas, List<RequisicaoSaida> requisicoesSaida)
+    public Paciente(string nome, string tel, string cartaoSus)
     {
         Nome = nome;
         Telefone = tel;
         CartaoSUS = cartaoSus;
-        Prescricoes = prescricoesMedicas;
-        RequisicoesSaida = requisicoesSaida;
     }
     
     public override void AtualizarRegistro(Paciente pacienteEditado)
@@ -27,8 +25,6 @@ public class Paciente : EntidadeBase<Paciente>
         Nome = pacienteEditado.Nome;
         Telefone = pacienteEditado.Telefone;
         CartaoSUS = pacienteEditado.CartaoSUS;
-        Prescricoes = pacienteEditado.Prescricoes;
-        RequisicoesSaida = pacienteEditado.RequisicoesSaida;
     }
 
     public override string Validar()
@@ -78,5 +74,10 @@ public class Paciente : EntidadeBase<Paciente>
     public void GuardarPrescricao(PrescricaoMedica novaPrescricao)
     {
         Prescricoes.Add(novaPrescricao);
+    }
+
+    public void GuardarRequicaoDeSaida(RequisicaoSaida novaRequisicaoSaida)
+    {
+        RequisicoesSaida.Add(novaRequisicaoSaida);
     }
 }
