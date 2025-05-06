@@ -6,6 +6,7 @@ using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 using ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
+using ControleDeMedicamentos.ConsoleApp.ModuloMedicamentoPrescricao;
 
 namespace ControleDeMedicamentos.ConsoleApp.Util;
 
@@ -22,6 +23,7 @@ public class TelaPrincipal
     private TelaRequisicaoSaida telaRequisicaoSaida;
     private TelaPaciente telaPaciente;
     private TelaPrescricaoMedica telaPrescricaoMedica;
+    private TelaMedicamentoPrescricao telaMedicamentoPrescricao;
 
     public TelaPrincipal()
     {
@@ -35,6 +37,13 @@ public class TelaPrincipal
         IRepositorioRequisicaoEntrada repositorioRequisicaoEntrada = new RepositorioRequisicaoEntradaEmArquivo(contexto);
         telaRequisicaoEntrada = new TelaRequisicaoEntrada(repositorioRequisicaoEntrada, telaMedicamento, telaFuncionario);
         IRepositorioRequisicaoSaida repositorioRequisicaoSaida = new RepositorioRequisicaoSaidaEmArquivo(contexto);
+
+        IRepositorioPaciente repositorioPaciente = new RepositorioPacienteEmArquivo(contexto);
+        IRepositorioPrescricaoMedica repositorioPrescricaoMedica = new RepositorioPrescricaoMedicaEmArquivo(contexto);
+        IRepositorioMedicamentoPrescricao repositorioMedicamentoPrescricao = new RepositorioMedicamentoPrescricaoEmArquivo(contexto);
+        telaMedicamentoPrescricao = new TelaMedicamentoPrescricao(repositorioMedicamentoPrescricao, telaMedicamento);
+        telaPaciente = new TelaPaciente(repositorioPaciente, telaPrescricaoMedica);
+        telaPrescricaoMedica = new TelaPrescricaoMedica(repositorioPrescricaoMedica, telaPaciente, telaMedicamentoPrescricao);
         telaRequisicaoSaida = new TelaRequisicaoSaida(repositorioRequisicaoSaida, telaPaciente, telaPrescricaoMedica);
     }
 
