@@ -8,15 +8,28 @@ public class RepositorioPacienteEmArquivo : RepositorioBaseEmArquivo<Paciente>, 
 
     public bool ListaVazia()
     {
-        if (contexto.Pacientes.Count <= 0)
+        if (registros.Count <= 0)
             return true;
         else
             return false;
     }
 
-    public bool VerificarCartaoSUSRegistros(Paciente paciente)
+    public bool VerificarCartaoSUSInserirRegistro(Paciente paciente)
     {
-        return contexto.Pacientes.Any(p => p != null && p.CartaoSUS == paciente.CartaoSUS);
+        return registros.Any(p => p != null && p.CartaoSUS == paciente.CartaoSUS);
+    }
+    
+    public bool VerificarCartaoSUSEditarRegistro(Paciente pacienteExistente, Paciente pacienteEditado)
+    {
+        foreach (Paciente paciente in registros)
+        {
+            if (paciente == null)
+                continue;
+
+            if (pacienteEditado.CartaoSUS == paciente.CartaoSUS && pacienteExistente.Id != pacienteEditado.Id)
+                return true;
+        }
+        return false;
     }
 
     protected override List<Paciente> ObterRegistros()
