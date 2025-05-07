@@ -53,7 +53,7 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
 
         Console.WriteLine("Atribuindo data...");
         Thread.Sleep(1500);
-        DateTime dataPrescricao = DateTime.Now;
+        DateTime dataPrescricao = DateTime.Now.Date;
 
         TelaPaciente.VisualizarRegistros(false);
         Console.Write("Digite o ID do Paciente: ");
@@ -131,7 +131,7 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
         if (exibirTitulo)
             ExibirCabecalho();
 
-        List<PrescricaoMedica> prescricoesMedicas = IRepositorioPrescricaoMedica.GerarRelatorio();
+        List<PrescricaoMedica> prescricoesMedicas = IRepositorioPrescricaoMedica.PegarRegistros();
         foreach (PrescricaoMedica registro in prescricoesMedicas)
         {
             VisualizarRegistros(false);
@@ -148,7 +148,7 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
             Console.WriteLine();
             Console.WriteLine
             (
-                $"Id: {registro.Id} \n CRMMedico: {registro.CRMMedico} \n {registro.Status} \n {registro.Data}"
+                $"Id: {registro.Id} \nCRMMedico: {registro.CRMMedico} \nStatus: {registro.Status} \nData: {registro.Data}"
             );
             Console.WriteLine("----------------------------------------");
            
@@ -158,8 +158,8 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
                 Console.WriteLine($"Dosagem: {prescMed.Dosagem}");
                 Console.WriteLine($"Periodo: {prescMed.Periodo}");
             }
-            Console.WriteLine("Aperte Enter para continuar");
-            Console.ReadKey();
+
+            break;
         }
 
         Console.WriteLine();
