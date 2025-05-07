@@ -1,5 +1,6 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 using ControleDeMedicamentos.ConsoleApp.ModuloFornecedor;
+using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 using ControleDeMedicamentos.ConsoleApp.Util;
@@ -26,64 +27,89 @@ internal class Program
                 continue;
             }
 
-            char opcaoEscolhida = telaSelecionada.ApresentarMenu();
-
-            if (telaSelecionada is TelaFornecedor)
+            bool menuSelecionado = true;
+            while (menuSelecionado)
             {
-                TelaFornecedor telaFornecedor = (TelaFornecedor)telaSelecionada;
+                char opcaoEscolhida = telaSelecionada.ApresentarMenu();
 
-                if (opcaoEscolhida == '5')
+                if (telaSelecionada is TelaFornecedor)
                 {
-                    telaFornecedor.VisualizarMedicamentosFornecedor(); continue;
+                    TelaFornecedor telaFornecedor = (TelaFornecedor)telaSelecionada;
+
+                    if (opcaoEscolhida == '5')
+                    {
+                        telaFornecedor.VisualizarMedicamentosFornecedor(); continue;
+                    }
                 }
-            }
 
-            if (telaSelecionada is TelaRequisicaoEntrada)
-            {
-                TelaRequisicaoEntrada telaRequisicaoEntrada = (TelaRequisicaoEntrada)telaSelecionada;
-
-                if (opcaoEscolhida == '1')
+                else if (telaSelecionada is TelaPrescricaoMedica)
                 {
-                    telaRequisicaoEntrada.CadastrarRegistro(); continue;
+                    TelaPrescricaoMedica telaPrescricaoMedica = (TelaPrescricaoMedica)telaSelecionada;
+
+                    switch (opcaoEscolhida)
+                    {
+                        case '1': telaPrescricaoMedica.CadastrarRegistro(); continue;
+
+                        case '2': telaPrescricaoMedica.GerarRelatorio(true); continue;
+
+                        case 'S': menuSelecionado = false; break;
+
+                        default:
+                            Notificador.ExibirMensagem("\nOpção inválida!", ConsoleColor.Red); break;
+                    }
                 }
-                if (opcaoEscolhida == '2')
+
+                else if (telaSelecionada is TelaRequisicaoEntrada)
                 {
-                    telaRequisicaoEntrada.VisualizarRegistros(true); continue;
+                    TelaRequisicaoEntrada telaRequisicaoEntrada = (TelaRequisicaoEntrada)telaSelecionada;
+
+                    switch (opcaoEscolhida)
+                    {
+                        case '1': telaRequisicaoEntrada.CadastrarRegistro(); continue;
+
+                        case '2': telaRequisicaoEntrada.VisualizarRegistros(true); continue;
+
+                        case 'S': menuSelecionado = false; break;
+
+                        default:
+                            Notificador.ExibirMensagem("\nOpção inválida!", ConsoleColor.Red); break;
+                    }
                 }
-            }
 
-            if (telaSelecionada is TelaRequisicaoSaida)
-            {
-                TelaRequisicaoSaida telaRequisicaoSaida = (TelaRequisicaoSaida)telaSelecionada;
-
-                if (opcaoEscolhida == '1')
+                else if (telaSelecionada is TelaRequisicaoSaida)
                 {
-                    telaRequisicaoSaida.CadastrarRegistro(); continue;
+                    TelaRequisicaoSaida telaRequisicaoSaida = (TelaRequisicaoSaida)telaSelecionada;
+
+                    switch (opcaoEscolhida)
+                    {
+                        case '1': telaRequisicaoSaida.CadastrarRegistro(); continue;
+
+                        case '2': telaRequisicaoSaida.VisualizarRegistros(true); continue;
+
+                        case '3': telaRequisicaoSaida.VisualizarRequisicoesPaciente(); continue;
+
+                        case 'S': menuSelecionado = false; break;
+
+                        default:
+                            Notificador.ExibirMensagem("\nOpção inválida!", ConsoleColor.Red); break;
+                    }
                 }
-                if (opcaoEscolhida == '2')
+
+                switch (opcaoEscolhida)
                 {
-                    telaRequisicaoSaida.VisualizarRegistros(true); continue;
+                    case '1': telaSelecionada.CadastrarRegistro(); break;
+
+                    case '2': telaSelecionada.EditarRegistro(); break;
+
+                    case '3': telaSelecionada.ExcluirRegistro(); break;
+
+                    case '4': telaSelecionada.VisualizarRegistros(true); break;
+
+                    case 'S': menuSelecionado = false; break;
+
+                    default:
+                        Notificador.ExibirMensagem("\nOpção inválida!", ConsoleColor.Red); break;
                 }
-                if (opcaoEscolhida == '3')
-                {
-                    telaRequisicaoSaida.VisualizarRequisicoesPaciente(); continue;
-                }
-            }
-
-            switch (opcaoEscolhida)
-            {
-                case '1': telaSelecionada.CadastrarRegistro(); break;
-
-                case '2': telaSelecionada.EditarRegistro(); break;
-
-                case '3': telaSelecionada.ExcluirRegistro(); break;
-
-                case '4': telaSelecionada.VisualizarRegistros(true); break;
-
-                case 'S': break;
-
-                default:
-                    Notificador.ExibirMensagem("\nOpção inválida!", ConsoleColor.Red); break;
             }
         }
     }

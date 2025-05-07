@@ -12,9 +12,7 @@ namespace ControleDeMedicamentos.ConsoleApp.Util;
 public class TelaPrincipal
 {
     private char opcaoPrincipal;
-
     private ContextoDados contexto;
-
     private TelaFornecedor telaFornecedor;
     private TelaFuncionario telaFuncionario;
     private TelaMedicamento telaMedicamento;
@@ -46,7 +44,7 @@ public class TelaPrincipal
         telaRequisicaoEntrada = new TelaRequisicaoEntrada(repositorioRequisicaoEntrada, telaMedicamento, telaFuncionario);
 
         IRepositorioRequisicaoSaida repositorioRequisicaoSaida = new RepositorioRequisicaoSaidaEmArquivo(contexto);
-        telaRequisicaoSaida = new TelaRequisicaoSaida(repositorioRequisicaoSaida, telaPaciente, telaPrescricaoMedica);
+        telaRequisicaoSaida = new TelaRequisicaoSaida(repositorioRequisicaoSaida, telaMedicamento, telaPaciente, telaPrescricaoMedica);
     }
 
     public void ApresentarMenuPrincipal()
