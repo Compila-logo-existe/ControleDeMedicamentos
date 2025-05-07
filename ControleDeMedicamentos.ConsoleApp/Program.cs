@@ -1,5 +1,6 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 using ControleDeMedicamentos.ConsoleApp.ModuloFornecedor;
+using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
@@ -48,6 +49,17 @@ internal class Program
                     if (opcaoEscolhida == "5")
                     {
                         telaFornecedor.VisualizarMedicamentosFornecedor();
+                        Notificador.PressioneEnter("CONTINUAR"); continue;
+                    }
+                }
+
+                else if (telaSelecionada is TelaMedicamento)
+                {
+                    TelaMedicamento telaMedicamento = (TelaMedicamento)telaSelecionada;
+
+                    if (opcaoEscolhida == "5")
+                    {
+                        telaMedicamento.ExtrairParaCSV();
                         Notificador.PressioneEnter("CONTINUAR"); continue;
                     }
                 }

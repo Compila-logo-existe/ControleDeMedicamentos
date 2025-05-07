@@ -1,7 +1,10 @@
-﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+﻿using System.Globalization;
+using System.Text;
+using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 using ControleDeMedicamentos.ConsoleApp.ModuloFornecedor;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 using ControleDeMedicamentos.ConsoleApp.Util;
+using CsvHelper;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 
@@ -17,7 +20,30 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
         RepositorioRequisicaoEntrada = repositorioRequisicaoEntrada;
         TelaFornecedor = telaFornecedor;
     }
+    public override string ApresentarMenu()
+    {
+        ExibirCabecalho();
 
+        Console.WriteLine();
+
+        Console.WriteLine($"1 - Cadastrar Medicamento");
+        Console.WriteLine($"2 - Editar Medicamento");
+        Console.WriteLine($"3 - Excluir Medicamento");
+        Console.WriteLine($"4 - Visualizar Medicamentos");
+        Console.WriteLine($"5 - Extrair Medicamentos Para CSV");
+
+        Console.WriteLine("S - Voltar");
+
+        Console.WriteLine();
+
+        Console.Write("Escolha uma das opções: ");
+        string opcao = Console.ReadLine()!;
+
+        if (opcao == null)
+            return null!;
+        else
+            return opcao.Trim().ToUpper();
+    }
     public override bool TemRestricoesNoInserir(Medicamento novoRegistro, out string mensagem)
     {
         mensagem = "";
@@ -117,6 +143,27 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
         Medicamento medicamento = new Medicamento(nome, idQuantidadeEscolhida, descricao, fornecedor);
 
         return medicamento;
+    }
+
+    public void ExtrairParaCSV()
+    {
+        string csvPath = Path.Combine(@"C:\\temp", $"medicamentos-{DateTime.Now:yyyyMMdd_HHmmss}.csv");
+
+        using var writer = new StreamWriter(csvPath, false, new UTF8Encoding(true)); // UTF-8 com BOM
+        using var csv = new CsvWriter(writer, new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            Delimiter = ",",
+            Quote = '"'
+        });
+
+        List<Medicamento> medicamentos = RepositorioMedicamento.SelecionarRegistros();
+
+        csv.Context.RegisterClassMap<MedicamentoMapaCSV>();
+        csv.WriteHeader<Medicamento>();
+        csv.NextRecord();
+        csv.WriteRecords(medicamentos);
+
+        Notificador.ExibirMensagem("\nExtraído com sucesso!\n", ConsoleColor.Green);
     }
 
     protected override void ExibirCabecalhoTabela()
