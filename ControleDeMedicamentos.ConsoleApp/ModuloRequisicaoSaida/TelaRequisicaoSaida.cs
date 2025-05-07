@@ -106,6 +106,9 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
 
         TelaPaciente.VisualizarRegistros(false);
 
+        if (TelaPaciente.IRepositorioPaciente!.ListaVazia())
+            return null!;
+
         int idPacienteEscolhido;
 
         while (true)
@@ -127,10 +130,14 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
 
         TelaPrescricaoMedica.VisualizarRegistros(false);
 
+        if (TelaPrescricaoMedica.IRepositorioPrescricaoMedica!.ListaVazia())
+            return null!;
+
         int idPrescricaoMedicaEscolhida;
 
         while (true)
         {
+
             Console.Write("\nDigite o ID de uma prescrição médica para registrar a saída: ");
             bool idValido = int.TryParse(Console.ReadLine(), out idPrescricaoMedicaEscolhida);
 

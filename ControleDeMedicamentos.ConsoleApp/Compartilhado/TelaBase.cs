@@ -58,6 +58,9 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
 
         Tipo novoRegistro = ObterDados();
 
+        if (novoRegistro == null!)
+            return;
+
         string erros = novoRegistro.Validar();
 
         string mensagem;

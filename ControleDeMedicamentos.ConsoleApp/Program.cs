@@ -62,6 +62,11 @@ internal class Program
                         telaMedicamento.ExtrairParaCSV();
                         Notificador.PressioneEnter("CONTINUAR"); continue;
                     }
+                    if (opcaoEscolhida == "6")
+                    {
+                        telaMedicamento.ExtrairParaPDF();
+                        Notificador.PressioneEnter("CONTINUAR"); continue;
+                    }
                 }
 
                 else if (telaSelecionada is TelaPrescricaoMedica)

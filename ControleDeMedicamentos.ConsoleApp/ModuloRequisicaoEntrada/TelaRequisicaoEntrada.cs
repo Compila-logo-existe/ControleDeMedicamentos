@@ -81,6 +81,9 @@ public class TelaRequisicaoEntrada : TelaBase<RequisicaoEntrada>, ITelaCrud
 
         TelaMedicamento.VisualizarRegistros(false);
 
+        if (TelaMedicamento.RepositorioMedicamento.ListaVazia())
+            return null!;
+
         int idMedicamentoEscolhido;
 
         while (true)
@@ -102,6 +105,9 @@ public class TelaRequisicaoEntrada : TelaBase<RequisicaoEntrada>, ITelaCrud
 
         TelaFuncionario.VisualizarRegistros(false);
 
+        if (TelaFuncionario.RepositorioFuncionario.ListaVazia())
+            return null!;
+
         int idFuncionarioEscolhido;
 
         while (true)
@@ -118,7 +124,7 @@ public class TelaRequisicaoEntrada : TelaBase<RequisicaoEntrada>, ITelaCrud
                 break;
         }
 
-        Funcionario funcionario = TelaFuncionario.RepositorioFuncionario.SelecionarRegistroPorId(idMedicamentoEscolhido);
+        Funcionario funcionario = TelaFuncionario.RepositorioFuncionario.SelecionarRegistroPorId(idFuncionarioEscolhido);
 
         int quantidadeMedicamento;
 

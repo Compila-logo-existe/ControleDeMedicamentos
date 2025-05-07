@@ -5,6 +5,8 @@ using ControleDeMedicamentos.ConsoleApp.ModuloFornecedor;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 using ControleDeMedicamentos.ConsoleApp.Util;
 using CsvHelper;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 
@@ -30,7 +32,8 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
         Console.WriteLine($"2 - Editar Medicamento");
         Console.WriteLine($"3 - Excluir Medicamento");
         Console.WriteLine($"4 - Visualizar Medicamentos");
-        Console.WriteLine($"5 - Extrair Medicamentos Para CSV");
+        Console.WriteLine($"5 - Exportar Medicamentos Para CSV");
+        Console.WriteLine($"6 - Exportar Medicamentos Para PDF");
 
         Console.WriteLine("S - Voltar");
 
@@ -122,6 +125,7 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
 
         while (true)
         {
+
             Console.Write("\nDigite o ID do fornecedor do medicamento: ");
             bool idValido = int.TryParse(Console.ReadLine(), out idFornecedorEscolhido);
 
@@ -163,7 +167,81 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
         csv.NextRecord();
         csv.WriteRecords(medicamentos);
 
-        Notificador.ExibirMensagem("\nExtraído com sucesso!\n", ConsoleColor.Green);
+        Notificador.ExibirMensagem("\nCSV exportado com sucesso!\n", ConsoleColor.Green);
+    }
+
+    public void ExtrairParaPDF()
+    {
+        string pdfPath = Path.Combine(@"C:\\temp", $"medicamentos-{DateTime.Now:yyyyMMdd_HHmmss}.pdf");
+
+        using (FileStream fs = new FileStream(pdfPath, FileMode.Create, FileAccess.Write, FileShare.None))
+        {
+            Document doc = new Document(PageSize.A4, 30, 30, 48, 48);
+            PdfWriter writer = PdfWriter.GetInstance(doc, fs);
+
+            doc.Open();
+
+            Paragraph titulo = new Paragraph($"Lista de Medicamentos - {DateTime.Now:dd/MM/yyyy}", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 16));
+            titulo.Alignment = Element.ALIGN_CENTER;
+
+            doc.Add(titulo);
+            doc.Add(new Paragraph("\n"));
+
+            PdfPTable tabela = new PdfPTable(7);
+            tabela.WidthPercentage = 100;
+            tabela.SetWidths([0.6f, 2, 3, 1.7f, 3, 2, 2]);
+
+            string[] cabecalhos = {
+                "Id", "Nome", "Descrição", "Quantidade em Estoque",
+                "CNPJ do Fornecedor", "Nome do Fornecedor", "Telefone do Fornecedor"
+            };
+
+            foreach (string cab in cabecalhos)
+            {
+                PdfPCell cell = new PdfPCell(new Phrase(cab, FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10)))
+                {
+                    BackgroundColor = BaseColor.LIGHT_GRAY,
+                    HorizontalAlignment = Element.ALIGN_CENTER
+                };
+
+                tabela.AddCell(cell);
+            }
+
+            List<Medicamento> medicamentos = RepositorioMedicamento.SelecionarRegistros();
+
+            foreach (Medicamento m in medicamentos)
+            {
+                tabela.AddCell(m.Id.ToString());
+                tabela.AddCell(m.Nome);
+                tabela.AddCell(m.Descricao);
+
+                PdfPCell qtdEstoqueCell = new PdfPCell(new Phrase(m.QtdEstoque.ToString()));
+
+                if (m.QtdEstoque < 5)
+                    qtdEstoqueCell.Phrase.Font.Color = BaseColor.RED;
+
+                tabela.AddCell(qtdEstoqueCell);
+
+                tabela.AddCell(m.Fornecedor?.CNPJ ?? "");
+                tabela.AddCell(m.Fornecedor?.Nome ?? "");
+                tabela.AddCell(m.Fornecedor?.Telefone ?? "");
+            }
+
+            doc.Add(tabela);
+
+            doc.Add(new Paragraph("\n"));
+            Paragraph rodape = new Paragraph(
+                $"PDF gerado em {DateTime.Now:dd/MM/yyyy HH:mm:ss} - Total de registros: {medicamentos.Count}",
+                FontFactory.GetFont(FontFactory.HELVETICA_OBLIQUE, 10, BaseColor.DARK_GRAY)
+            );
+
+            rodape.Alignment = Element.ALIGN_RIGHT;
+            doc.Add(rodape);
+
+            doc.Close();
+        }
+
+        Notificador.ExibirMensagem("\nPDF exportado com sucesso!\n", ConsoleColor.Green);
     }
 
     protected override void ExibirCabecalhoTabela()
