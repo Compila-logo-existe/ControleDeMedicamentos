@@ -13,11 +13,12 @@ public class Medicamento : EntidadeBase<Medicamento>
 
     public Medicamento() { }
 
-    public Medicamento(string nome, int qtdEstoque, string descricao)
+    public Medicamento(string nome, int qtdEstoque, string descricao, Fornecedor fornecedor)
     {
         Nome = nome;
         QtdEstoque = qtdEstoque;
         Descricao = descricao;
+        Fornecedor = fornecedor;
     }
 
     public override void AtualizarRegistro(Medicamento registroEditado)
