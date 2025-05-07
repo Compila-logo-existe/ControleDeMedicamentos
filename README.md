@@ -57,7 +57,7 @@ O sistema é dividido em sete módulos principais, cada um com suas respectivas 
 ***
 ## Tecnologias
 
-[![Tecnologias](https://skillicons.dev/icons?i=git,github,visualstudio,cs,dotnet)](https://skillicons.dev)
+[![Tecnologias](https://skillicons.dev/icons?i=git,github,visualstudio,neovim,cs,dotnet)](https://skillicons.dev)
 
 ## Ausensias
 
