@@ -8,8 +8,8 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 public class TelaRequisicaoEntrada : TelaBase<RequisicaoEntrada>, ITelaCrud
 {
     public IRepositorioRequisicaoEntrada RepositorioRequisicaoEntrada;
-    internal TelaFuncionario TelaFuncionario;
-    internal TelaMedicamento TelaMedicamento;
+    private TelaFuncionario TelaFuncionario;
+    private TelaMedicamento TelaMedicamento;
 
     public TelaRequisicaoEntrada(IRepositorioRequisicaoEntrada repositorioRequisicaoEntrada, TelaMedicamento telaMedicamento, TelaFuncionario telaFuncionario) : base("Requisicão de Entrada", repositorioRequisicaoEntrada)
     {
@@ -18,7 +18,7 @@ public class TelaRequisicaoEntrada : TelaBase<RequisicaoEntrada>, ITelaCrud
         RepositorioRequisicaoEntrada = repositorioRequisicaoEntrada;
     }
 
-    public override char ApresentarMenu()
+    public override string ApresentarMenu()
     {
         ExibirCabecalho();
 
@@ -32,11 +32,22 @@ public class TelaRequisicaoEntrada : TelaBase<RequisicaoEntrada>, ITelaCrud
         Console.WriteLine();
 
         Console.Write("Escolha uma das opções: ");
-        char operacaoEscolhida = Convert.ToChar(Console.ReadLine()!.ToUpper());
+        string opcao = Console.ReadLine()!;
 
-        return operacaoEscolhida;
+        if (opcao == null)
+            return null!;
+        else
+            return opcao.Trim().ToUpper();
     }
 
+    public override bool TemRestricoesNoInserir(RequisicaoEntrada novoRegistro, out string mensagem)
+    {
+        mensagem = "";
+
+        TelaMedicamento.RepositorioMedicamento.AdicionarEstoque(novoRegistro.Medicamento!, novoRegistro.QuantidadeMedicamento);
+
+        return false;
+    }
     public override RequisicaoEntrada ObterDados()
     {
         string data;
@@ -49,17 +60,21 @@ public class TelaRequisicaoEntrada : TelaBase<RequisicaoEntrada>, ITelaCrud
             if (!string.IsNullOrEmpty(opcao) && opcao.ToUpper() == "S")
             {
                 data = default!;
+
                 break;
             }
+
             if (!string.IsNullOrWhiteSpace(opcao) && opcao.ToLower() == "n")
             {
                 Console.Write("Digite uma data de entrada: (dd/MM/yyyy)");
                 data = Console.ReadLine()!;
+
                 break;
             }
             else
             {
                 Console.WriteLine("\nOpção inválida!\n");
+
                 continue;
             }
         }
@@ -70,11 +85,13 @@ public class TelaRequisicaoEntrada : TelaBase<RequisicaoEntrada>, ITelaCrud
 
         while (true)
         {
-            Console.Write("Digite o ID de um medicamento para dar entrada: ");
+            Console.Write("\nDigite o ID de um medicamento para dar entrada: ");
             bool idValido = int.TryParse(Console.ReadLine(), out idMedicamentoEscolhido);
+
             if (!idValido)
             {
                 Console.WriteLine("\nID inválido, selecione novamente.\n");
+
                 continue;
             }
             else
@@ -89,8 +106,9 @@ public class TelaRequisicaoEntrada : TelaBase<RequisicaoEntrada>, ITelaCrud
 
         while (true)
         {
-            Console.Write("Digite o ID de um funcionário para dar entrada: ");
+            Console.Write("\nDigite o ID de um funcionário para dar entrada: ");
             bool idValido = int.TryParse(Console.ReadLine(), out idFuncionarioEscolhido);
+
             if (!idValido)
             {
                 Console.WriteLine("\nID inválido, selecione novamente.\n");
@@ -108,9 +126,11 @@ public class TelaRequisicaoEntrada : TelaBase<RequisicaoEntrada>, ITelaCrud
         {
             Console.Write("Digite a quantidade que será armazenado ao estoque: ");
             bool idValido = int.TryParse(Console.ReadLine(), out quantidadeMedicamento);
+
             if (!idValido)
             {
                 Console.WriteLine("\nQuantidade inválida, digite novamente.\n");
+
                 continue;
             }
             else
@@ -119,8 +139,6 @@ public class TelaRequisicaoEntrada : TelaBase<RequisicaoEntrada>, ITelaCrud
 
         RequisicaoEntrada requisicaoEntrada = new RequisicaoEntrada(data, medicamento, funcionario, quantidadeMedicamento);
 
-        TelaMedicamento.RepositorioMedicamento.AdicionarEstoque(medicamento, quantidadeMedicamento);
-
         return requisicaoEntrada;
     }
 
@@ -128,7 +146,7 @@ public class TelaRequisicaoEntrada : TelaBase<RequisicaoEntrada>, ITelaCrud
     {
         if (RepositorioRequisicaoEntrada.ListaVazia())
         {
-            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            Notificador.ExibirMensagem("\nNenhum registro encontrado.\n", ConsoleColor.Red);
             return;
         }
 

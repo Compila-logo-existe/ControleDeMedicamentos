@@ -1,4 +1,5 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloFuncionario;
 
@@ -32,6 +33,15 @@ public class RepositorioFuncionarioEmArquivo : RepositorioBaseEmArquivo<Funciona
             if (dadosEditados.Telefone == funcionario.Telefone && dadosEditados.Id != funcionario.Id)
                 return true;
         }
+
+        return false;
+    }
+    public bool VerificarRequisicoesFuncionario(Funcionario registroEscolhido, IRepositorioRequisicaoEntrada repositorioRequisicaoEntrada)
+    {
+        List<RequisicaoEntrada> requisicoesEntradas = repositorioRequisicaoEntrada.SelecionarRegistros();
+
+        if (requisicoesEntradas.Any(rE => rE != null && rE.Funcionario == registroEscolhido))
+            return true;
 
         return false;
     }

@@ -1,4 +1,5 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 
@@ -23,10 +24,16 @@ public class RepositorioRequisicaoSaidaEmArquivo : RepositorioBaseEmArquivo<Requ
 
     public bool VerificarEstoqueExcedido(RequisicaoSaida novoRegistro)
     {
-        if (novoRegistro.MedicamentosRequisitados.Any(pm => pm != null
-            && pm.Quantidade > pm.Medicamento!.QtdEstoque))
+        int valor = 0;
+
+        foreach (PrescricaoMedicamento pM in novoRegistro.MedicamentosRequisitados)
         {
-            return true;
+            valor += pM.Quantidade;
+
+            if (valor > pM.Medicamento!.QtdEstoque)
+            {
+                return true;
+            }
         }
 
         return false;
@@ -39,6 +46,14 @@ public class RepositorioRequisicaoSaidaEmArquivo : RepositorioBaseEmArquivo<Requ
         {
             return true;
         }
+
+        return false;
+    }
+
+    public bool VerificarPacientePrescricao(RequisicaoSaida novoRegistro)
+    {
+        if (novoRegistro.PrescicaoMedica!.Paciente != novoRegistro.Paciente)
+            return true;
 
         return false;
     }

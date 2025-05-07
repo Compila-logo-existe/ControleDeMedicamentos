@@ -1,4 +1,5 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 using ControleDeMedicamentos.ConsoleApp.Util;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloFuncionario;
@@ -6,10 +7,12 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloFuncionario;
 public class TelaFuncionario : TelaBase<Funcionario>, ITelaCrud
 {
     public IRepositorioFuncionario RepositorioFuncionario;
+    private IRepositorioRequisicaoEntrada RepositorioRequisicaoEntrada;
 
-    public TelaFuncionario(IRepositorioFuncionario repositorio) : base("Funcionário", repositorio)
+    public TelaFuncionario(IRepositorioFuncionario repositorio, IRepositorioRequisicaoEntrada repositorioRequisicaoEntrada) : base("Funcionário", repositorio)
     {
         RepositorioFuncionario = repositorio;
+        RepositorioRequisicaoEntrada = repositorioRequisicaoEntrada;
     }
 
     public override bool TemRestricoesNoInserir(Funcionario novoRegistro, out string mensagem)
@@ -18,7 +21,8 @@ public class TelaFuncionario : TelaBase<Funcionario>, ITelaCrud
 
         if (RepositorioFuncionario.VerificarCPFInserirRegistro(novoRegistro))
         {
-            mensagem = "\nJá existe um cadastro com esse CPF!";
+            mensagem = "\nJá existe um cadastro com esse CPF!\n";
+
             return true;
         }
 
@@ -31,7 +35,22 @@ public class TelaFuncionario : TelaBase<Funcionario>, ITelaCrud
 
         if (RepositorioFuncionario.VerificarCPFEditarRegistro(registroEscolhido, dadosEditados))
         {
-            mensagem = "\nJá existe um cadastro com esse CPF!";
+            mensagem = "\nJá existe um cadastro com esse CPF!\n";
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public override bool TemRestricoesNoExcluir(Funcionario registroEscolhido, out string mensagem)
+    {
+        mensagem = "";
+
+        if (RepositorioFuncionario.VerificarRequisicoesFuncionario(registroEscolhido, RepositorioRequisicaoEntrada))
+        {
+            mensagem = "\nO Funcionário contém requisições vinculadas!\n";
+
             return true;
         }
 
@@ -58,7 +77,8 @@ public class TelaFuncionario : TelaBase<Funcionario>, ITelaCrud
     {
         if (RepositorioFuncionario.ListaVazia())
         {
-            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            Notificador.ExibirMensagem("\nNenhum registro encontrado.\n", ConsoleColor.Red);
+
             return;
         }
 

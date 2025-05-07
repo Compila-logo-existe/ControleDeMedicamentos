@@ -1,5 +1,6 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 using ControleDeMedicamentos.ConsoleApp.ModuloFornecedor;
+using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 using ControleDeMedicamentos.ConsoleApp.Util;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
@@ -7,11 +8,13 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
 {
     public IRepositorioMedicamento RepositorioMedicamento;
-    internal TelaFornecedor TelaFornecedor;
+    private TelaFornecedor TelaFornecedor;
+    private IRepositorioRequisicaoEntrada RepositorioRequisicaoEntrada;
 
-    public TelaMedicamento(IRepositorioMedicamento repositorio, TelaFornecedor telaFornecedor) : base("Medicamento", repositorio)
+    public TelaMedicamento(IRepositorioMedicamento repositorio, IRepositorioRequisicaoEntrada repositorioRequisicaoEntrada, TelaFornecedor telaFornecedor) : base("Medicamento", repositorio)
     {
         RepositorioMedicamento = repositorio;
+        RepositorioRequisicaoEntrada = repositorioRequisicaoEntrada;
         TelaFornecedor = telaFornecedor;
     }
 
@@ -51,9 +54,15 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
 
         mensagem = "";
 
-        registroEscolhido.Fornecedor!.RemoverMedicamento(registroEscolhido);
-        return false;
+        if (RepositorioMedicamento.VerificarRequisicoesMedicamento(registroEscolhido, RepositorioRequisicaoEntrada))
+        {
+            mensagem = "\nO Medicamento contém requisições vinculadas!\n";
 
+            return true;
+        }
+        registroEscolhido.Fornecedor!.RemoverMedicamento(registroEscolhido);
+
+        return false;
     }
 
     public override Medicamento ObterDados()
@@ -67,27 +76,33 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
         {
             Console.Write("Digite a Quantidade a adicionar ao estoque: ");
             bool qtdEstoque = int.TryParse(Console.ReadLine(), out idQuantidadeEscolhida);
+
             if (!qtdEstoque)
             {
-                Console.WriteLine("\nValor inserido está incorreto, tente novamente.\n");
+                Notificador.ExibirMensagem("\nValor inserido está incorreto, tente novamente.\n", ConsoleColor.Red);
+
                 continue;
             }
             else
                 break;
         }
 
-
         TelaFornecedor.VisualizarRegistros(false);
+
+        if (TelaFornecedor.RepositorioFornecedor.ListaVazia())
+            return null!;
 
         int idFornecedorEscolhido;
 
         while (true)
         {
-            Console.Write("Digite o ID do fornecedor do medicamento: ");
+            Console.Write("\nDigite o ID do fornecedor do medicamento: ");
             bool idValido = int.TryParse(Console.ReadLine(), out idFornecedorEscolhido);
+
             if (!idValido)
             {
-                Console.WriteLine("\nID inválido, selecione novamente.\n");
+                Notificador.ExibirMensagem("\nID inválido, selecione novamente.\n", ConsoleColor.Red);
+
                 continue;
             }
             else
@@ -108,7 +123,8 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
     {
         if (RepositorioMedicamento.ListaVazia())
         {
-            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            Notificador.ExibirMensagem("\nNenhum registro encontrado.\n", ConsoleColor.Red);
+
             return;
         }
 

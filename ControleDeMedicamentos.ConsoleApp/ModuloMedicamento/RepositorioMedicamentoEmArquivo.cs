@@ -1,5 +1,6 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
+using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 
@@ -15,11 +16,11 @@ public class RepositorioMedicamentoEmArquivo : RepositorioBaseEmArquivo<Medicame
             return false;
     }
 
-    public override void CadastrarRegistro(Medicamento medicamento)
+    public override void CadastrarRegistro(Medicamento novoRegistro)
     {
-        medicamento.Fornecedor!.AdicionarMedicamento(medicamento);
+        novoRegistro.Fornecedor!.AdicionarMedicamento(novoRegistro);
 
-        base.CadastrarRegistro(medicamento);
+        base.CadastrarRegistro(novoRegistro);
     }
 
     public void VerificarEstoque()
@@ -39,17 +40,17 @@ public class RepositorioMedicamentoEmArquivo : RepositorioBaseEmArquivo<Medicame
         contexto.Salvar();
     }
 
-    public bool VerificarMedicamentoNoEstoque(Medicamento medicamento)
+    public bool VerificarMedicamentoNoEstoque(Medicamento novoRegistro)
     {
         foreach (Medicamento m in registros)
         {
             if (m == null)
                 continue;
 
-            if (medicamento.Nome == m.Nome && medicamento.Id == 0)
+            if (novoRegistro.Nome == m.Nome && novoRegistro.Id == 0)
             {
-                m.QtdEstoque += medicamento.QtdEstoque;
-                medicamento.Fornecedor!.AdicionarMedicamento(medicamento);
+                m.QtdEstoque += novoRegistro.QtdEstoque;
+                novoRegistro.Fornecedor!.AdicionarMedicamento(novoRegistro);
                 return true;
             }
         }
@@ -57,14 +58,24 @@ public class RepositorioMedicamentoEmArquivo : RepositorioBaseEmArquivo<Medicame
         return false;
     }
 
-    public void AdicionarEstoque(Medicamento medicamento, int qtdEstoque)
+    public bool VerificarRequisicoesMedicamento(Medicamento registroEscolhido, IRepositorioRequisicaoEntrada repositorioRequisicaoEntrada)
+    {
+        List<RequisicaoEntrada> requisicoesEntradas = repositorioRequisicaoEntrada.SelecionarRegistros();
+
+        if (requisicoesEntradas.Any(rE => rE != null && rE.Medicamento == registroEscolhido))
+            return true;
+
+        return false;
+    }
+
+    public void AdicionarEstoque(Medicamento registroEscolhido, int qtdEstoque)
     {
         foreach (Medicamento m in registros)
         {
             if (m == null)
                 continue;
 
-            if (m.Id == medicamento.Id)
+            if (m.Id == registroEscolhido.Id)
             {
                 m.QtdEstoque += qtdEstoque;
                 return;
@@ -72,14 +83,14 @@ public class RepositorioMedicamentoEmArquivo : RepositorioBaseEmArquivo<Medicame
         }
     }
 
-    public void RemoverEstoque(PrescricaoMedica prescricaoMedica)
+    public void RemoverEstoque(PrescricaoMedica registroEscolhido)
     {
         foreach (Medicamento m in registros)
         {
             if (m == null)
                 continue;
 
-            foreach (PrescricaoMedicamento pm in prescricaoMedica.Medicamentos)
+            foreach (PrescricaoMedicamento pm in registroEscolhido.Medicamentos)
             {
                 if (pm == null)
                     continue;

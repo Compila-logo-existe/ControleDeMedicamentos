@@ -15,12 +15,11 @@ public class RequisicaoSaida : EntidadeBase<RequisicaoSaida>
 
     public RequisicaoSaida() { }
 
-    public RequisicaoSaida(string data, Paciente paciente, PrescricaoMedica prescicaoMedica, List<PrescricaoMedicamento> medicamentosRequisitados)
+    public RequisicaoSaida(string data, Paciente paciente, PrescricaoMedica prescicaoMedica)
     {
         Data = data ?? DateTime.Now.ToString("dd/MM/yyyy");
         Paciente = paciente;
         PrescicaoMedica = prescicaoMedica;
-        MedicamentosRequisitados = medicamentosRequisitados;
     }
 
     public override void AtualizarRegistro(RequisicaoSaida registroEditado)
@@ -48,5 +47,10 @@ public class RequisicaoSaida : EntidadeBase<RequisicaoSaida>
             erros += "Os medicamentos requisitados são inválidos!\n";
 
         return erros;
+    }
+
+    public void PegarMedicamentosRequisitados(PrescricaoMedica prescricaoMedica)
+    {
+        MedicamentosRequisitados = prescricaoMedica.Medicamentos;
     }
 }

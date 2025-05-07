@@ -58,7 +58,7 @@ public class Medicamento : EntidadeBase<Medicamento>
         }
 
         if (Fornecedor == null)
-            erros += "O campo 'Fornecedor' é obrigatório.";
+            erros += "O fornecedor selecionado não está registrado.";
 
         return erros;
     }

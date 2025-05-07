@@ -9,4 +9,6 @@ public interface IRepositorioRequisicaoSaida : IRepositorio<RequisicaoSaida>
     public bool VerificarEstoqueExcedido(RequisicaoSaida novoRegistro);
 
     public bool VerificarEstoquePosRequisicao(RequisicaoSaida novoRegistro);
+
+    public bool VerificarPacientePrescricao(RequisicaoSaida novoRegistro);
 }

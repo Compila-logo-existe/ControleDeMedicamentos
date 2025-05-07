@@ -9,9 +9,9 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
 {
     public IRepositorioRequisicaoSaida RepositorioRequisicaoSaida;
-    internal TelaMedicamento TelaMedicamento;
-    internal TelaPaciente TelaPaciente;
-    internal TelaPrescricaoMedica TelaPrescricaoMedica;
+    private TelaMedicamento TelaMedicamento;
+    private TelaPaciente TelaPaciente;
+    private TelaPrescricaoMedica TelaPrescricaoMedica;
 
     public TelaRequisicaoSaida(IRepositorioRequisicaoSaida repositorioRequisicaoSaida, TelaMedicamento telaMedicamento, TelaPaciente telaPaciente, TelaPrescricaoMedica telaPrescricaoMedica) : base("Requisição de Saída", repositorioRequisicaoSaida)
     {
@@ -21,7 +21,7 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
         RepositorioRequisicaoSaida = repositorioRequisicaoSaida;
     }
 
-    public override char ApresentarMenu()
+    public override string ApresentarMenu()
     {
         ExibirCabecalho();
 
@@ -36,26 +36,40 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
         Console.WriteLine();
 
         Console.Write("Escolha uma das opções: ");
-        char operacaoEscolhida = Convert.ToChar(Console.ReadLine()!.ToUpper());
+        string opcao = Console.ReadLine()!;
 
-        return operacaoEscolhida;
+        if (opcao == null)
+            return null!;
+        else
+            return opcao.Trim().ToUpper();
     }
     public override bool TemRestricoesNoInserir(RequisicaoSaida novoRegistro, out string mensagem)
     {
         mensagem = "";
 
+        if (novoRegistro == null)
+            return true;
+
         if (RepositorioRequisicaoSaida.VerificarEstoqueExcedido(novoRegistro))
         {
-            mensagem = "\nEssa requisição está excedendo a quantidade dos medicamentos em estoque.";
+            mensagem = "\nEssa requisição está excedendo a quantidade dos medicamentos em estoque.\n";
+
             return true;
         }
 
+        if (RepositorioRequisicaoSaida.VerificarPacientePrescricao(novoRegistro))
+        {
+            mensagem = "\nPaciente escolhido não corresponde ao paciente da prescrição escolhida.\n";
+            return true;
+        }
+
+        novoRegistro.PegarMedicamentosRequisitados(novoRegistro.PrescicaoMedica!);
         TelaMedicamento.RepositorioMedicamento.RemoverEstoque(novoRegistro.PrescicaoMedica!);
         TelaMedicamento.RepositorioMedicamento.VerificarEstoque();
 
         if (RepositorioRequisicaoSaida.VerificarEstoquePosRequisicao(novoRegistro))
         {
-            Notificador.ExibirMensagem("\nMedicamentos entraram em falta! Verifique o estoque.", ConsoleColor.Magenta);
+            Notificador.ExibirMensagem("\nMedicamentos entraram em falta! Verifique o estoque.\n", ConsoleColor.Magenta);
         }
 
         return false;
@@ -72,17 +86,20 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
             if (!string.IsNullOrEmpty(opcao) && opcao.ToUpper() == "S")
             {
                 data = default!;
+
                 break;
             }
             if (!string.IsNullOrWhiteSpace(opcao) && opcao.ToLower() == "n")
             {
-                Console.Write("Digite uma data de entrada: (dd/MM/yyyy)");
+                Console.Write("\nDigite uma data de entrada: (dd/MM/yyyy)");
                 data = Console.ReadLine()!;
+
                 break;
             }
             else
             {
                 Console.WriteLine("\nOpção inválida!\n");
+
                 continue;
             }
         }
@@ -93,11 +110,13 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
 
         while (true)
         {
-            Console.Write("Digite o ID de um paciente para registrar a saída: ");
+            Console.Write("\nDigite o ID de um paciente para registrar a saída: ");
             bool idValido = int.TryParse(Console.ReadLine(), out idPacienteEscolhido);
+
             if (!idValido)
             {
                 Console.WriteLine("\nID inválido, selecione novamente.\n");
+
                 continue;
             }
             else
@@ -112,11 +131,13 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
 
         while (true)
         {
-            Console.Write("Digite o ID de uma prescrição médica para registrar a saída: ");
+            Console.Write("\nDigite o ID de uma prescrição médica para registrar a saída: ");
             bool idValido = int.TryParse(Console.ReadLine(), out idPrescricaoMedicaEscolhida);
+
             if (!idValido)
             {
                 Console.WriteLine("\nID inválido, selecione novamente.\n");
+
                 continue;
             }
             else
@@ -125,9 +146,7 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
 
         PrescricaoMedica prescricaoMedica = TelaPrescricaoMedica.IRepositorioPrescricaoMedica!.SelecionarRegistroPorId(idPrescricaoMedicaEscolhida);
 
-        List<PrescricaoMedicamento> medicamentosRequisitados = prescricaoMedica.Medicamentos;
-
-        RequisicaoSaida requisicaoSaida = new RequisicaoSaida(data, paciente, prescricaoMedica, medicamentosRequisitados);
+        RequisicaoSaida requisicaoSaida = new RequisicaoSaida(data, paciente, prescricaoMedica);
 
         return requisicaoSaida;
     }
@@ -142,9 +161,11 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
         {
             Console.Write("Digite o ID do paciente: ");
             bool idValido = int.TryParse(Console.ReadLine(), out idPacienteEscolhido);
+
             if (!idValido)
             {
                 Console.WriteLine("\nID inválido, selecione novamente.\n");
+
                 continue;
             }
             else
@@ -167,15 +188,13 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
             Console.WriteLine("{0, -10} | {1, -20} | {2, -22} | {3, -15}",
                 r.Id, r.Data, r.PrescicaoMedica!.Id, r.MedicamentosRequisitados.Count.ToString());
         }
-        Console.WriteLine();
-        Notificador.ExibirMensagem("Pressione ENTER para continuar...", ConsoleColor.DarkYellow);
     }
 
     protected override void ExibirCabecalhoTabela()
     {
         if (RepositorioRequisicaoSaida.ListaVazia())
         {
-            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            Notificador.ExibirMensagem("\nNenhum registro encontrado.\n", ConsoleColor.Red);
             return;
         }
 
