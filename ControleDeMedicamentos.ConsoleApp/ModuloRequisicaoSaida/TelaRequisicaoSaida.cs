@@ -1,4 +1,5 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 using ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 using ControleDeMedicamentos.ConsoleApp.Util;
@@ -8,11 +9,13 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
 {
     public IRepositorioRequisicaoSaida RepositorioRequisicaoSaida;
+    internal TelaMedicamento TelaMedicamento;
     internal TelaPaciente TelaPaciente;
     internal TelaPrescricaoMedica TelaPrescricaoMedica;
 
-    public TelaRequisicaoSaida(IRepositorioRequisicaoSaida repositorioRequisicaoSaida, TelaPaciente telaPaciente, TelaPrescricaoMedica telaPrescricaoMedica) : base("Requisição de Saída", repositorioRequisicaoSaida)
+    public TelaRequisicaoSaida(IRepositorioRequisicaoSaida repositorioRequisicaoSaida, TelaMedicamento telaMedicamento, TelaPaciente telaPaciente, TelaPrescricaoMedica telaPrescricaoMedica) : base("Requisição de Saída", repositorioRequisicaoSaida)
     {
+        TelaMedicamento = telaMedicamento;
         TelaPaciente = telaPaciente;
         TelaPrescricaoMedica = telaPrescricaoMedica;
         RepositorioRequisicaoSaida = repositorioRequisicaoSaida;
@@ -37,11 +40,31 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
 
         return operacaoEscolhida;
     }
+    public override bool TemRestricoesNoInserir(RequisicaoSaida novoRegistro, out string mensagem)
+    {
+        mensagem = "";
+
+        if (RepositorioRequisicaoSaida.VerificarEstoqueExcedido(novoRegistro))
+        {
+            mensagem = "\nEssa requisição está excedendo a quantidade dos medicamentos em estoque.";
+            return true;
+        }
+
+        TelaMedicamento.RepositorioMedicamento.RemoverEstoque(novoRegistro.PrescicaoMedica!);
+        TelaMedicamento.RepositorioMedicamento.VerificarEstoque();
+
+        if (RepositorioRequisicaoSaida.VerificarEstoquePosRequisicao(novoRegistro))
+        {
+            Notificador.ExibirMensagem("\nMedicamentos entraram em falta! Verifique o estoque.", ConsoleColor.Magenta);
+        }
+
+        return false;
+    }
     public override RequisicaoSaida ObterDados()
     {
         string data;
 
-        Console.Write("A data de entrada é hoje? (S/n) ");
+        Console.Write("A data de saída é hoje? (S/n) ");
         string opcao = Console.ReadLine() ?? string.Empty;
 
         while (true)
@@ -134,24 +157,32 @@ public class TelaRequisicaoSaida : TelaBase<RequisicaoSaida>, ITelaCrud
         Console.WriteLine($"Visualizando Requisições de Saída do {paciente.Nome}");
         Console.WriteLine("------------------------------------------------------");
         Console.WriteLine();
-        Console.WriteLine("{0, -10} | {1, -20} | {2, -10} | {3, -15}",
+        Console.WriteLine("{0, -10} | {1, -20} | {2, -22} | {3, -15}",
                 "ID", "Data", "ID Prescrição Médica", "Qtd de Medicamentos Requisitados");
 
         List<RequisicaoSaida> prescricoes = paciente.PegarRequisicoesSaida();
 
         foreach (RequisicaoSaida r in prescricoes)
         {
-            Console.WriteLine("{0, -10} | {1, -20} | {2, -10} | {3, -15}",
+            Console.WriteLine("{0, -10} | {1, -20} | {2, -22} | {3, -15}",
                 r.Id, r.Data, r.PrescicaoMedica!.Id, r.MedicamentosRequisitados.Count.ToString());
         }
         Console.WriteLine();
         Notificador.ExibirMensagem("Pressione ENTER para continuar...", ConsoleColor.DarkYellow);
     }
+
     protected override void ExibirCabecalhoTabela()
     {
+        if (RepositorioRequisicaoSaida.ListaVazia())
+        {
+            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            return;
+        }
+
         Console.WriteLine("{0, -10} | {1, -20} | {2, -20} | {3, -10} | {4, -15}",
         "ID", "Data", "Paciente", "ID Prescrição Médica", "Qtd de Medicamentos Requisitados");
     }
+
     protected override void ExibirLinhaTabela(RequisicaoSaida registro)
     {
         Console.WriteLine("{0, -10} | {1, -20} | {2, -20} | {3, -20} | {4, -15}",

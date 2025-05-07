@@ -16,7 +16,20 @@ public class TelaFuncionario : TelaBase<Funcionario>, ITelaCrud
     {
         mensagem = "";
 
-        if (RepositorioFuncionario.VerificarCPFRegistros(novoRegistro))
+        if (RepositorioFuncionario.VerificarCPFInserirRegistro(novoRegistro))
+        {
+            mensagem = "\nJá existe um cadastro com esse CPF!";
+            return true;
+        }
+
+        return false;
+    }
+
+    public override bool TemRestricoesNoEditar(Funcionario registroEscolhido, Funcionario dadosEditados, out string mensagem)
+    {
+        mensagem = "";
+
+        if (RepositorioFuncionario.VerificarCPFEditarRegistro(registroEscolhido, dadosEditados))
         {
             mensagem = "\nJá existe um cadastro com esse CPF!";
             return true;

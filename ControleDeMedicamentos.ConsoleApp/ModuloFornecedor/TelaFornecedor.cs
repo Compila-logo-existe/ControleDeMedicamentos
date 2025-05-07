@@ -61,6 +61,19 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
         return false;
     }
 
+    public override bool TemRestricoesNoExcluir(Fornecedor registroEscolhido, out string mensagem)
+    {
+        mensagem = "";
+
+        if (registroEscolhido.QtdMedicamentos >= 1)
+        {
+            mensagem = "\nO Fornecedor ainda tem medicamentos vinculados!";
+            return true;
+        }
+
+        return false;
+    }
+
     public override Fornecedor ObterDados()
     {
         Console.Write("Digite o Nome: ");
@@ -75,24 +88,6 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
         Fornecedor fornecedor = new Fornecedor(nome, telefone, cnpj);
 
         return fornecedor;
-    }
-
-    protected override void ExibirCabecalhoTabela()
-    {
-        if (RepositorioFornecedor.ListaVazia())
-        {
-            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
-            return;
-        }
-
-        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30}",
-                "ID", "Nome", "Telefone", "CNPJ");
-    }
-
-    protected override void ExibirLinhaTabela(Fornecedor registro)
-    {
-        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30}",
-                registro.Id, registro.Nome, registro.Telefone, registro.CNPJ);
     }
 
     public void VisualizarMedicamentosFornecedor()
@@ -122,6 +117,12 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
 
         Fornecedor fornecedor = RepositorioFornecedor.SelecionarRegistroPorId(idFornecedorEscolhido);
 
+        if (fornecedor.Medicamentos.Count <= 0)
+        {
+            Notificador.ExibirMensagem($"Nenhum medicamento do {fornecedor.Nome} foi encontrado..", ConsoleColor.Red);
+            return;
+        }
+
         Console.WriteLine();
         Console.WriteLine($"Visualizando Medicamentos do {fornecedor.Nome}");
         Console.WriteLine("--------------------------------------------");
@@ -139,5 +140,23 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
         Console.WriteLine();
 
         Notificador.ExibirMensagem("Pressione ENTER para continuar...", ConsoleColor.DarkYellow);
+    }
+
+    protected override void ExibirCabecalhoTabela()
+    {
+        if (RepositorioFornecedor.ListaVazia())
+        {
+            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            return;
+        }
+
+        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30}",
+                "ID", "Nome", "Telefone", "CNPJ");
+    }
+
+    protected override void ExibirLinhaTabela(Fornecedor registro)
+    {
+        Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30}",
+                registro.Id, registro.Nome, registro.Telefone, registro.CNPJ);
     }
 }
