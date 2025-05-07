@@ -77,11 +77,11 @@ internal class Program
 
                 if (opcaoEscolhida == '1')
                 {
-                    telaPrescricaoMedica.CadastrarRegistro();    
+                    telaPrescricaoMedica.CadastrarRegistro(); continue;   
                 }
                 else if (opcaoEscolhida == '2')
                 {
-                    telaPrescricaoMedica.GerarRelatorio(false);
+                    telaPrescricaoMedica.GerarRelatorio(false); continue;
                 }
             }
 
