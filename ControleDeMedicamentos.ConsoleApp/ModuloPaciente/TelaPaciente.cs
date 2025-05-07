@@ -1,6 +1,4 @@
 using ControleDeMedicamentos.ConsoleApp.Compartilhado;
-using ControleDeMedicamentos.ConsoleApp.ModuloFuncionario;
-using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 using ControleDeMedicamentos.ConsoleApp.Util;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
@@ -8,17 +6,13 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
 {
     public IRepositorioPaciente IRepositorioPaciente { get; set; }
-    internal TelaPrescricaoMedica TelaPrescricaoMedica { get; set; }
 
     public TelaPaciente
     (
-        IRepositorioPaciente repositorioPacienteEmArquivo,
-        TelaPrescricaoMedica telaPrescricaoMedica
-
+        IRepositorioPaciente repositorioPacienteEmArquivo
     ) : base("Paciente", repositorioPacienteEmArquivo)
     {
         IRepositorioPaciente = repositorioPacienteEmArquivo;
-        TelaPrescricaoMedica = telaPrescricaoMedica;
     }
 
     public override bool TemRestricoesNoInserir(Paciente paciente, out string mensagem)
@@ -27,7 +21,7 @@ public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
 
         if (IRepositorioPaciente.VerificarCartaoSUSInserirRegistro(paciente))
         {
-            mensagem += "\nJa existe um cadastro com esse Cartao do SUS!";
+            mensagem += "\nJa existe um cadastro com esse Cartao do SUS!\n";
 
             return true;
         }
@@ -43,7 +37,7 @@ public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
 
         if (IRepositorioPaciente.VerificarCartaoSUSEditarRegistro(registroEscolhido, dadosEditados))
         {
-            mensagem += "\nJa existe um cadastro com esse Cartao do SUS!";
+            mensagem += "\nJa existe um cadastro com esse Cartao do SUS!\n";
 
             return true;
         }
@@ -64,7 +58,6 @@ public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
         Console.Write("Digite o Numero do Cartao do SUS: ");
         string cartaoSUS = Console.ReadLine() ?? string.Empty;
 
-
         return new Paciente(nome, telefone, cartaoSUS);
     }
 
@@ -72,7 +65,8 @@ public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
     {
         if (IRepositorioPaciente.ListaVazia())
         {
-            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            Notificador.ExibirMensagem("\nNenhum registro encontrado.\n", ConsoleColor.Red);
+
             return;
         }
 

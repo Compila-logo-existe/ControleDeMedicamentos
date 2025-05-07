@@ -13,7 +13,7 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
         RepositorioFornecedor = repositorio;
     }
 
-    public override char ApresentarMenu()
+    public override string ApresentarMenu()
     {
         ExibirCabecalho();
 
@@ -30,18 +30,22 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
         Console.WriteLine();
 
         Console.Write("Escolha uma das opções: ");
-        char operacaoEscolhida = Convert.ToChar(Console.ReadLine()!.ToUpper());
+        string opcao = Console.ReadLine()!;
 
-        return operacaoEscolhida;
+        if (opcao == null)
+            return null!;
+        else
+            return opcao.Trim().ToUpper();
     }
 
     public override bool TemRestricoesNoInserir(Fornecedor novoRegistro, out string mensagem)
     {
         mensagem = "";
 
-        if (RepositorioFornecedor.VerificarCNPJRegistros(novoRegistro))
+        if (RepositorioFornecedor.VerificarCNPJInserirRegistro(novoRegistro))
         {
-            mensagem = "\nJá existe um cadastro com esse CNPJ!";
+            mensagem = "\nJá existe um cadastro com esse CNPJ!\n";
+
             return true;
         }
 
@@ -54,7 +58,8 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
 
         if (RepositorioFornecedor.VerificarCNPJEditarRegistro(registroEscolhido, dadosEditados))
         {
-            mensagem = "\nJá existe um cadastro com esse CNPJ!";
+            mensagem = "\nJá existe um cadastro com esse CNPJ!\n";
+
             return true;
         }
 
@@ -67,7 +72,8 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
 
         if (registroEscolhido.QtdMedicamentos >= 1)
         {
-            mensagem = "\nO Fornecedor ainda tem medicamentos vinculados!";
+            mensagem = "\nO Fornecedor ainda tem medicamentos vinculados!\n";
+
             return true;
         }
 
@@ -94,7 +100,8 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
     {
         if (RepositorioFornecedor.ListaVazia())
         {
-            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            Notificador.ExibirMensagem("\nNenhum registro encontrado.\n", ConsoleColor.Red);
+
             return;
         }
 
@@ -104,11 +111,13 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
 
         while (true)
         {
-            Console.Write("Digite o ID do fornecedor do medicamento: ");
+            Console.Write("\nDigite o ID do fornecedor do medicamento: ");
             bool idValido = int.TryParse(Console.ReadLine(), out idFornecedorEscolhido);
+
             if (!idValido)
             {
-                Console.WriteLine("\nID inválido, selecione novamente.\n");
+                Notificador.ExibirMensagem("\nID inválido, selecione novamente.\n", ConsoleColor.Red);
+
                 continue;
             }
             else
@@ -117,9 +126,17 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
 
         Fornecedor fornecedor = RepositorioFornecedor.SelecionarRegistroPorId(idFornecedorEscolhido);
 
+        if (fornecedor == null)
+        {
+            Notificador.ExibirMensagem($"\nNenhum Fornecedor registrado nesse ID.\n", ConsoleColor.Red);
+
+            return;
+        }
+
         if (fornecedor.Medicamentos.Count <= 0)
         {
-            Notificador.ExibirMensagem($"Nenhum medicamento do {fornecedor.Nome} foi encontrado..", ConsoleColor.Red);
+            Notificador.ExibirMensagem($"\nNenhum medicamento do {fornecedor.Nome} foi encontrado..\n", ConsoleColor.Red);
+
             return;
         }
 
@@ -137,16 +154,14 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
             Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30}",
             m.Id, m.Nome, m.QtdEstoque, m.Descricao);
         }
-        Console.WriteLine();
-
-        Notificador.ExibirMensagem("Pressione ENTER para continuar...", ConsoleColor.DarkYellow);
     }
 
     protected override void ExibirCabecalhoTabela()
     {
         if (RepositorioFornecedor.ListaVazia())
         {
-            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            Notificador.ExibirMensagem("\nNenhum registro encontrado.\n", ConsoleColor.Red);
+
             return;
         }
 

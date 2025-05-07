@@ -21,7 +21,7 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
         Console.WriteLine("--------------------------------------------");
     }
 
-    public virtual char ApresentarMenu()
+    public virtual string ApresentarMenu()
     {
         ExibirCabecalho();
 
@@ -37,9 +37,12 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
         Console.WriteLine();
 
         Console.Write("Escolha uma das opções: ");
-        char operacaoEscolhida = Convert.ToChar(Console.ReadLine()!.ToUpper());
+        string opcao = Console.ReadLine()!;
 
-        return operacaoEscolhida;
+        if (opcao == null)
+            return null!;
+        else
+            return opcao.Trim().ToUpper();
     }
 
     public void CadastrarRegistro()
@@ -59,24 +62,27 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
 
         string mensagem;
 
-        if (TemRestricoesNoInserir(novoRegistro, out mensagem))
-        {
-            Notificador.ExibirMensagem(mensagem, ConsoleColor.Red);
-            return;
-        }
 
         if (erros.Length > 0)
         {
             Notificador.ExibirMensagem(erros, ConsoleColor.Red);
+            Notificador.PressioneEnter("CONTINUAR");
 
             CadastrarRegistro();
 
             return;
         }
 
+        if (TemRestricoesNoInserir(novoRegistro, out mensagem))
+        {
+            Notificador.ExibirMensagem(mensagem, ConsoleColor.Red);
+
+            return;
+        }
+
         repositorio.CadastrarRegistro(novoRegistro);
 
-        Notificador.ExibirMensagem("O registro foi concluído com sucesso!", ConsoleColor.Green);
+        Notificador.ExibirMensagem("\nO registro foi concluído com sucesso!\n", ConsoleColor.Green);
     }
 
     public virtual void EditarRegistro()
@@ -101,7 +107,8 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
 
             if (!idValido)
             {
-                Notificador.ExibirMensagem("\nO ID inserido é inválido!", ConsoleColor.Red);
+                Notificador.ExibirMensagem("\nO ID inserido é inválido!\n", ConsoleColor.Red);
+
                 return;
             }
         } while (!idValido);
@@ -112,7 +119,8 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
 
         if (registroEscolhido == null)
         {
-            Notificador.ExibirMensagem("\nO ID inserido não está registrado.", ConsoleColor.Red);
+            Notificador.ExibirMensagem("\nO ID inserido não está registrado.\n", ConsoleColor.Red);
+
             return;
         }
 
@@ -122,17 +130,20 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
 
         string mensagem;
 
-        if (TemRestricoesNoEditar(registroEscolhido, registroEditado, out mensagem))
-        {
-            Notificador.ExibirMensagem(mensagem, ConsoleColor.Red);
-            return;
-        }
 
         if (erros.Length > 0)
         {
             Notificador.ExibirMensagem(erros, ConsoleColor.Red);
+            Notificador.PressioneEnter("CONTINUAR");
 
             EditarRegistro();
+
+            return;
+        }
+
+        if (TemRestricoesNoEditar(registroEscolhido, registroEditado, out mensagem))
+        {
+            Notificador.ExibirMensagem(mensagem, ConsoleColor.Red);
 
             return;
         }
@@ -141,12 +152,12 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
 
         if (!conseguiuEditar)
         {
-            Notificador.ExibirMensagem("Houve um erro durante a edição do registro...", ConsoleColor.Red);
+            Notificador.ExibirMensagem("\nHouve um erro durante a edição do registro...\n", ConsoleColor.Red);
 
             return;
         }
 
-        Notificador.ExibirMensagem("O registro foi editado com sucesso!", ConsoleColor.Green);
+        Notificador.ExibirMensagem("\nO registro foi editado com sucesso!\n", ConsoleColor.Green);
     }
 
     public virtual void ExcluirRegistro()
@@ -185,6 +196,7 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
         if (TemRestricoesNoExcluir(registroEscolhido, out mensagem))
         {
             Notificador.ExibirMensagem(mensagem, ConsoleColor.Red);
+
             return;
         }
 
@@ -192,19 +204,19 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
 
         if (!conseguiuExcluir)
         {
-            Notificador.ExibirMensagem("Houve um erro durante a exclusão do registro...", ConsoleColor.Red);
+            Notificador.ExibirMensagem("\nHouve um erro durante a exclusão do registro...\n", ConsoleColor.Red);
 
             return;
         }
 
-        Notificador.ExibirMensagem("O registro foi excluído com sucesso!", ConsoleColor.Green);
+        Notificador.ExibirMensagem("\nO registro foi excluído com sucesso!\n", ConsoleColor.Green);
     }
 
     public void VisualizarRegistros(bool exibirTitulo)
     {
         if (exibirTitulo)
             ExibirCabecalho();
-        
+
         Console.Clear();
 
         Console.WriteLine($"Visualizando {nomeEntidade}s...");
@@ -218,10 +230,6 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
 
         foreach (Tipo registro in registros)
             ExibirLinhaTabela(registro);
-
-        Console.WriteLine();
-
-        Notificador.ExibirMensagem("Pressione ENTER para continuar...", ConsoleColor.DarkYellow);
     }
 
     public abstract Tipo ObterDados();

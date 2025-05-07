@@ -2,7 +2,7 @@
 
 public interface ITelaCrud
 {
-    char ApresentarMenu();
+    string ApresentarMenu();
     void CadastrarRegistro();
     void EditarRegistro();
     void ExcluirRegistro();

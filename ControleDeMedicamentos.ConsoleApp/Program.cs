@@ -11,6 +11,7 @@ internal class Program
 {
     static void Main(string[] args)
     {
+        Console.ForegroundColor = ConsoleColor.White;
         TelaPrincipal telaPrincipal = new TelaPrincipal();
 
         while (true)
@@ -19,26 +20,35 @@ internal class Program
 
             ITelaCrud telaSelecionada = telaPrincipal.ObterTela();
 
+            if (telaPrincipal.opcaoPrincipal != null && telaPrincipal.opcaoPrincipal.ToUpper() == "S")
+            {
+                Console.Clear();
+                Notificador.ExibirMensagem("Adeus (T_T)/\n\n", ConsoleColor.Blue);
+
+                return;
+            }
+
             if (telaSelecionada == null)
             {
-                Console.WriteLine("\nOpção Inválida!");
-                Console.Write("Pressione [Enter] para tentar novamente.");
-                Console.ReadKey();
+                Notificador.ExibirMensagem("Opção inválida!", ConsoleColor.Red);
+                Notificador.PressioneEnter("CONTINUAR");
+
                 continue;
             }
 
             bool menuSelecionado = true;
             while (menuSelecionado)
             {
-                char opcaoEscolhida = telaSelecionada.ApresentarMenu();
+                string opcaoEscolhida = telaSelecionada.ApresentarMenu();
 
                 if (telaSelecionada is TelaFornecedor)
                 {
                     TelaFornecedor telaFornecedor = (TelaFornecedor)telaSelecionada;
 
-                    if (opcaoEscolhida == '5')
+                    if (opcaoEscolhida == "5")
                     {
-                        telaFornecedor.VisualizarMedicamentosFornecedor(); continue;
+                        telaFornecedor.VisualizarMedicamentosFornecedor();
+                        Notificador.PressioneEnter("CONTINUAR"); continue;
                     }
                 }
 
@@ -48,15 +58,21 @@ internal class Program
 
                     switch (opcaoEscolhida)
                     {
-                        case '1': telaPrescricaoMedica.CadastrarRegistro(); continue;
+                        case "1":
+                            telaPrescricaoMedica.CadastrarRegistro();
+                            Notificador.PressioneEnter("CONTINUAR"); continue;
 
-                        case '2': telaPrescricaoMedica.GerarRelatorio(true); continue;
+                        case "2":
+                            telaPrescricaoMedica.GerarRelatorio(true);
+                            Notificador.PressioneEnter("CONTINUAR"); continue;
 
-                        case 'S': menuSelecionado = false; break;
+                        case "S": menuSelecionado = false; continue;
 
                         default:
-                            Notificador.ExibirMensagem("\nOpção inválida!", ConsoleColor.Red); break;
+                            Notificador.ExibirMensagem("Opção inválida!", ConsoleColor.Red); break;
                     }
+
+                    Notificador.PressioneEnter("CONTINUAR"); continue;
                 }
 
                 else if (telaSelecionada is TelaRequisicaoEntrada)
@@ -65,14 +81,18 @@ internal class Program
 
                     switch (opcaoEscolhida)
                     {
-                        case '1': telaRequisicaoEntrada.CadastrarRegistro(); continue;
+                        case "1":
+                            telaRequisicaoEntrada.CadastrarRegistro();
+                            Notificador.PressioneEnter("CONTINUAR"); continue;
 
-                        case '2': telaRequisicaoEntrada.VisualizarRegistros(true); continue;
+                        case "2":
+                            telaRequisicaoEntrada.VisualizarRegistros(true);
+                            Notificador.PressioneEnter("CONTINUAR"); continue;
 
-                        case 'S': menuSelecionado = false; break;
+                        case "S": menuSelecionado = false; continue;
 
                         default:
-                            Notificador.ExibirMensagem("\nOpção inválida!", ConsoleColor.Red); break;
+                            Notificador.ExibirMensagem("Opção inválida!", ConsoleColor.Red); break;
                     }
                 }
 
@@ -82,34 +102,42 @@ internal class Program
 
                     switch (opcaoEscolhida)
                     {
-                        case '1': telaRequisicaoSaida.CadastrarRegistro(); continue;
+                        case "1":
+                            telaRequisicaoSaida.CadastrarRegistro();
+                            Notificador.PressioneEnter("CONTINUAR"); continue;
 
-                        case '2': telaRequisicaoSaida.VisualizarRegistros(true); continue;
+                        case "2":
+                            telaRequisicaoSaida.VisualizarRegistros(true);
+                            Notificador.PressioneEnter("CONTINUAR"); continue;
 
-                        case '3': telaRequisicaoSaida.VisualizarRequisicoesPaciente(); continue;
+                        case "3":
+                            telaRequisicaoSaida.VisualizarRequisicoesPaciente();
+                            Notificador.PressioneEnter("CONTINUAR"); continue;
 
-                        case 'S': menuSelecionado = false; break;
+                        case "S": menuSelecionado = false; continue;
 
                         default:
-                            Notificador.ExibirMensagem("\nOpção inválida!", ConsoleColor.Red); break;
+                            Notificador.ExibirMensagem("Opção inválida!", ConsoleColor.Red); break;
                     }
                 }
 
-            switch (opcaoEscolhida)
-            {
-                case '1': telaSelecionada.CadastrarRegistro(); break;
+                switch (opcaoEscolhida)
+                {
+                    case "1": telaSelecionada.CadastrarRegistro(); break;
 
-                    case '2': telaSelecionada.EditarRegistro(); break;
+                    case "2": telaSelecionada.EditarRegistro(); break;
 
-                    case '3': telaSelecionada.ExcluirRegistro(); break;
+                    case "3": telaSelecionada.ExcluirRegistro(); break;
 
-                    case '4': telaSelecionada.VisualizarRegistros(true); break;
+                    case "4": telaSelecionada.VisualizarRegistros(true); break;
 
-                    case 'S': menuSelecionado = false; break;
+                    case "S": menuSelecionado = false; continue;
 
                     default:
-                        Notificador.ExibirMensagem("\nOpção inválida!", ConsoleColor.Red); break;
+                        Notificador.ExibirMensagem("Opção inválida!", ConsoleColor.Red); break;
                 }
+
+                Notificador.PressioneEnter("CONTINUAR");
             }
         }
     }

@@ -11,7 +11,7 @@ namespace ControleDeMedicamentos.ConsoleApp.Util;
 
 public class TelaPrincipal
 {
-    private char opcaoPrincipal;
+    public string? opcaoPrincipal;
     private ContextoDados contexto;
     private TelaFornecedor telaFornecedor;
     private TelaFuncionario telaFuncionario;
@@ -26,24 +26,19 @@ public class TelaPrincipal
         contexto = new ContextoDados(true);
 
         IRepositorioFornecedor repositorioFornecedor = new RepositorioFornecedorEmArquivo(contexto);
-        telaFornecedor = new TelaFornecedor(repositorioFornecedor);
-
         IRepositorioFuncionario repositorioFuncionario = new RepositorioFuncionarioEmArquivo(contexto);
-        telaFuncionario = new TelaFuncionario(repositorioFuncionario);
-
         IRepositorioMedicamento repositorioMedicamento = new RepositorioMedicamentoEmArquivo(contexto);
-        telaMedicamento = new TelaMedicamento(repositorioMedicamento, telaFornecedor);
-
         IRepositorioPaciente repositorioPaciente = new RepositorioPacienteEmArquivo(contexto);
-        telaPaciente = new TelaPaciente(repositorioPaciente, telaPrescricaoMedica!);
-
         IRepositorioPrescricaoMedica repositorioPrescricaoMedica = new RepositorioPrescricaoMedicaEmArquivo(contexto);
-        telaPrescricaoMedica = new TelaPrescricaoMedica(repositorioPrescricaoMedica, telaMedicamento, telaPaciente);
-
         IRepositorioRequisicaoEntrada repositorioRequisicaoEntrada = new RepositorioRequisicaoEntradaEmArquivo(contexto);
-        telaRequisicaoEntrada = new TelaRequisicaoEntrada(repositorioRequisicaoEntrada, telaMedicamento, telaFuncionario);
-
         IRepositorioRequisicaoSaida repositorioRequisicaoSaida = new RepositorioRequisicaoSaidaEmArquivo(contexto);
+
+        telaFornecedor = new TelaFornecedor(repositorioFornecedor);
+        telaFuncionario = new TelaFuncionario(repositorioFuncionario, repositorioRequisicaoEntrada);
+        telaMedicamento = new TelaMedicamento(repositorioMedicamento, repositorioRequisicaoEntrada, telaFornecedor);
+        telaPaciente = new TelaPaciente(repositorioPaciente);
+        telaPrescricaoMedica = new TelaPrescricaoMedica(repositorioPrescricaoMedica, telaMedicamento, telaPaciente);
+        telaRequisicaoEntrada = new TelaRequisicaoEntrada(repositorioRequisicaoEntrada, telaMedicamento, telaFuncionario);
         telaRequisicaoSaida = new TelaRequisicaoSaida(repositorioRequisicaoSaida, telaMedicamento, telaPaciente, telaPrescricaoMedica);
     }
 
@@ -69,33 +64,33 @@ public class TelaPrincipal
         Console.WriteLine();
 
         Console.Write("Escolha uma das opções: ");
-        opcaoPrincipal = Console.ReadLine()!.ToUpper()[0];
+        opcaoPrincipal = Console.ReadLine()!;
     }
 
     public ITelaCrud ObterTela()
     {
-        if (opcaoPrincipal == '1')
+        if (opcaoPrincipal == "1")
             return telaFornecedor;
 
-        if (opcaoPrincipal == '2')
+        if (opcaoPrincipal == "2")
             return telaPaciente;
 
-        if (opcaoPrincipal == '3')
+        if (opcaoPrincipal == "3")
             return telaMedicamento;
 
-        if (opcaoPrincipal == '4')
+        if (opcaoPrincipal == "4")
             return telaFuncionario;
 
-        if (opcaoPrincipal == '5')
+        if (opcaoPrincipal == "5")
             return telaRequisicaoEntrada;
 
-        if (opcaoPrincipal == '6')
+        if (opcaoPrincipal == "6")
             return telaRequisicaoSaida;
 
-        if (opcaoPrincipal == '7')
+        if (opcaoPrincipal == "7")
             return telaPrescricaoMedica;
 
-        if (opcaoPrincipal == 'S')
+        if (opcaoPrincipal == "S")
             Environment.Exit(0);
 
         return null!;

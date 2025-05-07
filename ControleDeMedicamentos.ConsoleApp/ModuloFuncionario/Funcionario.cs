@@ -48,7 +48,7 @@ public class Funcionario : EntidadeBase<Funcionario>
             erros += "O campo 'CPF' é obrigatório.\n";
         else
         {
-            if (!Regex.IsMatch(CPF, @"^\d{3}\.?\d{3}\.?\d{3}\-?\d{2}"))
+            if (!Regex.IsMatch(CPF, @"^\d{3}\.?\d{3}\.?\d{3}\-?\d{2}$"))
                 erros += "O campo 'CPF' precisa conter 11 números.\n";
         }
 

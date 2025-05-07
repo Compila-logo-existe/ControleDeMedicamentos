@@ -6,7 +6,7 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 public class PrescricaoMedica : EntidadeBase<PrescricaoMedica>
 {
     public string? CRMMedico { get; set; }
-    public DateTime? Data { get; set; }
+    public DateTime Data { get; set; }
     public Paciente? Paciente { get; set; }
     public List<PrescricaoMedicamento> Medicamentos { get; set; } = [];
     public string? Status { get; set; } = "Disponivel";
@@ -35,11 +35,19 @@ public class PrescricaoMedica : EntidadeBase<PrescricaoMedica>
 
         if (string.IsNullOrWhiteSpace(CRMMedico))
         {
-            erros += "O campo CRMMedico eh obrigatorio.\n";
+            erros += "O campo 'CRMMedico' é obrigatório.\n";
         }
         else if (CRMMedico.Length != 6)
         {
-            erros += "O campo CRMMedico deve conter 6 digitos.\n";
+            erros += "O campo 'CRMMedico' deve conter 6 digitos.\n";
+        }
+        else if (Paciente == null)
+        {
+            erros += "O paciente selecionado não está registrado.\n";
+        }
+        else if (Medicamentos == null)
+        {
+            erros += "O medicamento selecionado não está registrado.\n";
         }
 
         return erros;

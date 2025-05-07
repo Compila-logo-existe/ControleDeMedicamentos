@@ -16,7 +16,6 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
         IRepositorioPrescricaoMedica repositorioPrescricaoMedicaEmArquivo,
         TelaMedicamento telaMedicamento,
         TelaPaciente telaPaciente
-
     ) : base
     (
         "Prescricao Medica",
@@ -27,7 +26,7 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
         TelaPaciente = telaPaciente;
     }
 
-    public override char ApresentarMenu()
+    public override string ApresentarMenu()
     {
         ExibirCabecalho();
 
@@ -41,14 +40,17 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
         Console.WriteLine();
 
         Console.Write("Escolha uma das opções: ");
-        char operacaoEscolhida = Convert.ToChar(Console.ReadLine()!.ToUpper());
+        string opcao = Console.ReadLine()!;
 
-        return operacaoEscolhida;
+        if (opcao == null)
+            return null!;
+        else
+            return opcao.Trim().ToUpper();
     }
 
     public override PrescricaoMedica ObterDados()
     {
-        Console.WriteLine("Digite o CRM do Medico: ");
+        Console.Write("Digite o CRM do Medico: ");
         string crmMedico = Console.ReadLine() ?? string.Empty;
 
         Console.WriteLine("Atribuindo data...");
@@ -56,9 +58,25 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
         DateTime dataPrescricao = DateTime.Now.Date;
 
         TelaPaciente.VisualizarRegistros(false);
-        Console.Write("Digite o ID do Paciente: ");
-        int idPaciente = int.Parse(Console.ReadLine()!);
-        Paciente pacienteSelecionado = TelaPaciente.IRepositorioPaciente.SelecionarRegistroPorId(idPaciente);
+
+        int idPacienteEscolhido;
+
+        while (true)
+        {
+            Console.Write("\nDigite o ID do Paciente: ");
+            bool qtdEstoque = int.TryParse(Console.ReadLine(), out idPacienteEscolhido);
+
+            if (!qtdEstoque)
+            {
+                Notificador.ExibirMensagem("\nID inválido, selecione novamente.\n", ConsoleColor.Red);
+
+                continue;
+            }
+            else
+                break;
+        }
+
+        Paciente pacienteSelecionado = TelaPaciente.IRepositorioPaciente.SelecionarRegistroPorId(idPacienteEscolhido);
 
         List<PrescricaoMedicamento> prescricoesMedicamentos = [];
 
@@ -70,11 +88,13 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
 
             while (true)
             {
-                Console.Write("Digite o ID do Medicamento: ");
+                Console.Write("\nDigite o ID do Medicamento: ");
                 bool idValido = int.TryParse(Console.ReadLine(), out idMedicamento);
+
                 if (!idValido)
                 {
-                    Console.WriteLine("\nID inválido, escolha novamente.\n");
+                    Console.WriteLine("\nID inválido, selecione novamente.\n");
+
                     continue;
                 }
                 else
@@ -95,9 +115,11 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
             {
                 Console.Write("Digite a Quantidade: ");
                 bool idValido = int.TryParse(Console.ReadLine(), out quantidadeMedicacao);
+
                 if (!idValido)
                 {
                     Console.WriteLine("\nQuantidade inválida, tente novamente.\n");
+
                     continue;
                 }
                 else
@@ -108,18 +130,23 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
 
             prescricoesMedicamentos.Add(prescricaoMedicamento);
 
-            Console.WriteLine("Deseja adicionar mais Prescricoes de Medicamentos? (S/n): ");
-            string opcao = Console.ReadLine()!.ToUpper() ?? string.Empty;
-
-            if (!string.IsNullOrEmpty(opcao))
+            while (true)
             {
-                if (opcao == "S")
+                Console.Write("Deseja adicionar mais Prescricoes de Medicamentos? (S/n): ");
+                string opcao = Console.ReadLine()! ?? string.Empty;
+
+                if (!string.IsNullOrEmpty(opcao))
                 {
-                    continue;
-                }
-                else if (opcao == "N")
-                {
-                    return new PrescricaoMedica(crmMedico, dataPrescricao, pacienteSelecionado, prescricoesMedicamentos);
+                    opcao = opcao.ToUpper();
+
+                    if (opcao == "S")
+                    {
+                        continue;
+                    }
+                    else if (opcao == "N")
+                    {
+                        return new PrescricaoMedica(crmMedico, dataPrescricao, pacienteSelecionado, prescricoesMedicamentos);
+                    }
                 }
             }
         }
@@ -131,46 +158,60 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
         if (exibirTitulo)
             ExibirCabecalho();
 
-        List<PrescricaoMedica> prescricoesMedicas = IRepositorioPrescricaoMedica.PegarRegistros();
+        List<PrescricaoMedica> prescricoesMedicas = IRepositorioPrescricaoMedica!.PegarRegistros();
+
         foreach (PrescricaoMedica registro in prescricoesMedicas)
         {
             VisualizarRegistros(false);
 
-            Console.Write("Digite o Id da prescricao: ");
-            int idRelatorio = int.Parse(Console.ReadLine()!);
+            int idRelatorioEscolhido;
+
+            while (true)
+            {
+                Console.Write("\nDigite o Id da prescricao: ");
+                bool idValido = int.TryParse(Console.ReadLine(), out idRelatorioEscolhido);
+
+                if (!idValido)
+                {
+                    Notificador.ExibirMensagem("\nID inválido, selecione novamente.\n", ConsoleColor.Red);
+
+                    continue;
+                }
+                else
+                    break;
+            }
+
             Console.Clear();
 
-            PrescricaoMedica prescricaoMedica = IRepositorioPrescricaoMedica.SelecionarRegistroPorId(idRelatorio);
-            
+            PrescricaoMedica prescricaoMedica = IRepositorioPrescricaoMedica.SelecionarRegistroPorId(idRelatorioEscolhido);
+
             Console.WriteLine("----------------------------------------");
             Console.WriteLine($"Relatorio da prescricao");
             Console.WriteLine("----------------------------------------");
             Console.WriteLine();
             Console.WriteLine
             (
-                $"Id: {registro.Id} \nCRMMedico: {registro.CRMMedico} \nStatus: {registro.Status} \nData: {registro.Data}"
+                $"Id: {prescricaoMedica.Id} \nCRMMedico: {prescricaoMedica.CRMMedico} \nPaciente: {prescricaoMedica.Paciente!.Nome} " +
+                $"\nStatus: {prescricaoMedica.Status} \nData: {prescricaoMedica.Data.ToShortDateString()}"
             );
             Console.WriteLine("----------------------------------------");
-           
-            foreach (PrescricaoMedicamento prescMed in registro.Medicamentos)
+
+            foreach (PrescricaoMedicamento prescMed in prescricaoMedica.Medicamentos)
             {
-                Console.WriteLine($"Nome: {prescMed.Medicamento.Nome}");
+                Console.WriteLine($"Nome: {prescMed.Medicamento!.Nome}");
                 Console.WriteLine($"Dosagem: {prescMed.Dosagem}");
                 Console.WriteLine($"Periodo: {prescMed.Periodo}");
             }
 
             break;
         }
-
-        Console.WriteLine();
-        Notificador.ExibirMensagem("Pressione ENTER para continuar...", ConsoleColor.DarkYellow);
     }
 
     protected override void ExibirCabecalhoTabela()
     {
-        if (IRepositorioPrescricaoMedica.ListaVazia())
+        if (IRepositorioPrescricaoMedica!.ListaVazia())
         {
-            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            Notificador.ExibirMensagem("\nNenhum registro encontrado.\n", ConsoleColor.Red);
             return;
         }
 
@@ -178,7 +219,7 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
 
         Console.WriteLine
         (
-            "{0, -10} | {1, -10} | {2, -15} | {3, -15} | {4, -20}", 
+            "{0, -10} | {1, -10} | {2, -15} | {3, -15} | {4, -20}",
             "ID", "CRMMedico", "Status", "Data Emissao", "Medicamentos"
         );
     }
@@ -188,7 +229,7 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
         Console.WriteLine
         (
             "{0, -10} | {1, -10} | {2, -15} | {3, -15} | {4, -20}",
-            pM.Id, pM.CRMMedico, pM.Status, pM.Data, pM.Medicamentos.Count.ToString()
+            pM.Id, pM.CRMMedico, pM.Status, pM.Data.ToShortDateString(), pM.Medicamentos.Count.ToString()
         );
     }
 }
