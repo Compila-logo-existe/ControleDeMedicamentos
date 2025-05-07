@@ -204,6 +204,8 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
     {
         if (exibirTitulo)
             ExibirCabecalho();
+        
+        Console.Clear();
 
         Console.WriteLine($"Visualizando {nomeEntidade}s...");
         Console.WriteLine("----------------------------------------");

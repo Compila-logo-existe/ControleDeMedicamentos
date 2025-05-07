@@ -95,9 +95,9 @@ internal class Program
                     }
                 }
 
-                switch (opcaoEscolhida)
-                {
-                    case '1': telaSelecionada.CadastrarRegistro(); break;
+            switch (opcaoEscolhida)
+            {
+                case '1': telaSelecionada.CadastrarRegistro(); break;
 
                     case '2': telaSelecionada.EditarRegistro(); break;
 

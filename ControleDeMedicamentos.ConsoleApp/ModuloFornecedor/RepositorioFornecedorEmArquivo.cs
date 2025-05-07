@@ -13,7 +13,7 @@ public class RepositorioFornecedorEmArquivo : RepositorioBaseEmArquivo<Fornecedo
             return false;
     }
 
-    public bool VerificarCNPJRegistros(Fornecedor novoRegistro)
+    public bool VerificarCNPJInserirRegistro(Fornecedor novoRegistro)
     {
         if (contexto.Fornecedores.Any(f => f != null && f.CNPJ == novoRegistro.CNPJ))
             return true;

@@ -19,6 +19,11 @@ public class RepositorioPrescricaoMedicaEmArquivo : RepositorioBaseEmArquivo<Pre
         return contexto.PrescricoesMedicas;
     }
 
+    public List<PrescricaoMedica> PegarRegistros()
+    {
+        return contexto.PrescricoesMedicas;
+    }
+
     public override void CadastrarRegistro(PrescricaoMedica novoRegistro)
     {
         novoRegistro.Paciente!.GuardarPrescricao(novoRegistro);
