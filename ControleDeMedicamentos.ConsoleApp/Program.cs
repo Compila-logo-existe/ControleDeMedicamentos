@@ -3,6 +3,7 @@ using ControleDeMedicamentos.ConsoleApp.ModuloFornecedor;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 using ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoSaida;
 using ControleDeMedicamentos.ConsoleApp.Util;
+using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
 namespace ControleDeMedicamentos.ConsoleApp;
 
@@ -67,6 +68,20 @@ internal class Program
                 if (opcaoEscolhida == '3')
                 {
                     telaRequisicaoSaida.VisualizarRequisicoesPaciente(); continue;
+                }
+            }
+
+            if (telaSelecionada is TelaPrescricaoMedica)
+            {
+                TelaPrescricaoMedica telaPrescricaoMedica = (TelaPrescricaoMedica)telaSelecionada; 
+
+                if (opcaoEscolhida == '1')
+                {
+                    telaPrescricaoMedica.CadastrarRegistro();    
+                }
+                else if (opcaoEscolhida == '2')
+                {
+                    telaPrescricaoMedica.GerarRelatorio(false);
                 }
             }
 
