@@ -90,10 +90,31 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
 
         VisualizarRegistros(false);
 
-        Console.Write("Digite o ID do registro que deseja selecionar: ");
-        int idRegistro = Convert.ToInt32(Console.ReadLine());
+        bool idValido;
+        int idRegistroEscolhido;
+
+        do
+        {
+            Console.WriteLine("\n--------------------------------------------");
+            Console.Write("Digite o ID do registro que deseja editar: ");
+            idValido = int.TryParse(Console.ReadLine(), out idRegistroEscolhido);
+
+            if (!idValido)
+            {
+                Notificador.ExibirMensagem("\nO ID inserido é inválido!", ConsoleColor.Red);
+                return;
+            }
+        } while (!idValido);
+
+        Tipo registroEscolhido = repositorio.SelecionarRegistroPorId(idRegistroEscolhido);
 
         Console.WriteLine();
+
+        if (registroEscolhido == null)
+        {
+            Notificador.ExibirMensagem("\nO ID inserido não está registrado.", ConsoleColor.Red);
+            return;
+        }
 
         Tipo registroEditado = ObterDados();
 
@@ -101,7 +122,7 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
 
         string mensagem;
 
-        if (TemRestricoesNoEditar(idRegistro, registroEditado, out mensagem))
+        if (TemRestricoesNoEditar(registroEscolhido, registroEditado, out mensagem))
         {
             Notificador.ExibirMensagem(mensagem, ConsoleColor.Red);
             return;
@@ -116,7 +137,7 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
             return;
         }
 
-        bool conseguiuEditar = repositorio.EditarRegistro(idRegistro, registroEditado);
+        bool conseguiuEditar = repositorio.EditarRegistro(idRegistroEscolhido, registroEditado);
 
         if (!conseguiuEditar)
         {
@@ -139,20 +160,35 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
 
         VisualizarRegistros(false);
 
-        Console.Write("Digite o ID do registro que deseja selecionar: ");
-        int idRegistro = Convert.ToInt32(Console.ReadLine());
+        bool idValido;
+        int idRegistroEscolhido;
+
+        do
+        {
+            Console.WriteLine("\n--------------------------------------------");
+            Console.Write("Digite o ID do registro que deseja editar: ");
+            idValido = int.TryParse(Console.ReadLine(), out idRegistroEscolhido);
+
+            if (!idValido)
+            {
+                Notificador.ExibirMensagem("\nO ID inserido é inválido!", ConsoleColor.Red);
+                return;
+            }
+        } while (!idValido);
+
+        Tipo registroEscolhido = repositorio.SelecionarRegistroPorId(idRegistroEscolhido);
 
         Console.WriteLine();
 
         string mensagem;
 
-        if (TemRestricoesNoExcluir(idRegistro, out mensagem))
+        if (TemRestricoesNoExcluir(registroEscolhido, out mensagem))
         {
             Notificador.ExibirMensagem(mensagem, ConsoleColor.Red);
             return;
         }
 
-        bool conseguiuExcluir = repositorio.ExcluirRegistro(idRegistro);
+        bool conseguiuExcluir = repositorio.ExcluirRegistro(idRegistroEscolhido);
 
         if (!conseguiuExcluir)
         {
@@ -195,14 +231,14 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
         return false;
     }
 
-    public virtual bool TemRestricoesNoEditar(int idRegistro, Tipo registroEditado, out string mensagem)
+    public virtual bool TemRestricoesNoEditar(Tipo registroEscolhido, Tipo dadosEditados, out string mensagem)
     {
         mensagem = "";
 
         return false;
     }
 
-    public virtual bool TemRestricoesNoExcluir(int idRegistro, out string mensagem)
+    public virtual bool TemRestricoesNoExcluir(Tipo registroEscolhido, out string mensagem)
     {
         mensagem = "";
 
