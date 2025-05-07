@@ -7,5 +7,5 @@ public interface IRepositorioPrescricaoMedica : IRepositorio<PrescricaoMedica>
     public bool ListaVazia();
     public void VerificarValidade();
 
-    public List<PrescricaoMedica> GerarRelatorio();
+    public List<PrescricaoMedica> PegarRegistros();
 }
