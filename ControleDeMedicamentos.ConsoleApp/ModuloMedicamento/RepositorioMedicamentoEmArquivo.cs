@@ -18,12 +18,13 @@ public class RepositorioMedicamentoEmArquivo : RepositorioBaseEmArquivo<Medicame
     public override void CadastrarRegistro(Medicamento medicamento)
     {
         medicamento.Fornecedor!.AdicionarMedicamento(medicamento);
+
         base.CadastrarRegistro(medicamento);
     }
 
     public void VerificarEstoque()
     {
-        foreach (Medicamento m in contexto.Medicamentos)
+        foreach (Medicamento m in registros)
         {
             if (m == null)
                 continue;
@@ -34,13 +35,13 @@ public class RepositorioMedicamentoEmArquivo : RepositorioBaseEmArquivo<Medicame
             else
                 m.Status = "EM FALTA!!!";
         }
-        contexto.Salvar();
 
+        contexto.Salvar();
     }
 
     public bool VerificarMedicamentoNoEstoque(Medicamento medicamento)
     {
-        foreach (Medicamento m in contexto.Medicamentos)
+        foreach (Medicamento m in registros)
         {
             if (m == null)
                 continue;
@@ -58,7 +59,7 @@ public class RepositorioMedicamentoEmArquivo : RepositorioBaseEmArquivo<Medicame
 
     public void AdicionarEstoque(Medicamento medicamento, int qtdEstoque)
     {
-        foreach (Medicamento m in contexto.Medicamentos)
+        foreach (Medicamento m in registros)
         {
             if (m == null)
                 continue;
@@ -73,7 +74,7 @@ public class RepositorioMedicamentoEmArquivo : RepositorioBaseEmArquivo<Medicame
 
     public void RemoverEstoque(PrescricaoMedica prescricaoMedica)
     {
-        foreach (Medicamento m in contexto.Medicamentos)
+        foreach (Medicamento m in registros)
         {
             if (m == null)
                 continue;

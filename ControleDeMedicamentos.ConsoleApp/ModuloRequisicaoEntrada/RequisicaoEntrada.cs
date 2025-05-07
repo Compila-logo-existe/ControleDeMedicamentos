@@ -9,17 +9,17 @@ public class RequisicaoEntrada : EntidadeBase<RequisicaoEntrada>
 {
     public string? Data { get; set; }
     public Medicamento? Medicamento { get; set; }
+    public int QuantidadeMedicamento { get; set; }
     public Funcionario? Funcionario { get; set; }
-    public int Quantidade { get; set; }
 
     public RequisicaoEntrada() { }
 
-    public RequisicaoEntrada(string data, Medicamento medicamento, Funcionario funcionario, int quantidade)
+    public RequisicaoEntrada(string data, Medicamento medicamento, Funcionario funcionario, int quantidadeMedicamento)
     {
         Data = data ?? DateTime.Now.ToString("dd/MM/yyyy");
         Medicamento = medicamento;
         Funcionario = funcionario;
-        Quantidade = quantidade;
+        QuantidadeMedicamento = quantidadeMedicamento;
     }
 
     public override void AtualizarRegistro(RequisicaoEntrada registroEditado)
@@ -27,7 +27,7 @@ public class RequisicaoEntrada : EntidadeBase<RequisicaoEntrada>
         Data = registroEditado.Data;
         Medicamento = registroEditado.Medicamento;
         Funcionario = registroEditado.Funcionario;
-        Quantidade = registroEditado.Quantidade;
+        QuantidadeMedicamento = registroEditado.QuantidadeMedicamento;
     }
 
     public override string Validar()
@@ -43,7 +43,7 @@ public class RequisicaoEntrada : EntidadeBase<RequisicaoEntrada>
         if (Funcionario == null)
             erros += "O funcionário selecionado não está registrado.\n";
 
-        if (Quantidade <= 0)
+        if (QuantidadeMedicamento <= 0)
             erros += "O campo 'Quantidade' precisa ser um valor positivo.\n";
 
         return erros;

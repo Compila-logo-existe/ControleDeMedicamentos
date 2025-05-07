@@ -102,12 +102,12 @@ public class TelaRequisicaoEntrada : TelaBase<RequisicaoEntrada>, ITelaCrud
 
         Funcionario funcionario = TelaFuncionario.RepositorioFuncionario.SelecionarRegistroPorId(idMedicamentoEscolhido);
 
-        int quantidade;
+        int quantidadeMedicamento;
 
         while (true)
         {
             Console.Write("Digite a quantidade que será armazenado ao estoque: ");
-            bool idValido = int.TryParse(Console.ReadLine(), out quantidade);
+            bool idValido = int.TryParse(Console.ReadLine(), out quantidadeMedicamento);
             if (!idValido)
             {
                 Console.WriteLine("\nQuantidade inválida, digite novamente.\n");
@@ -117,9 +117,9 @@ public class TelaRequisicaoEntrada : TelaBase<RequisicaoEntrada>, ITelaCrud
                 break;
         }
 
-        RequisicaoEntrada requisicaoEntrada = new RequisicaoEntrada(data, medicamento, funcionario, quantidade);
+        RequisicaoEntrada requisicaoEntrada = new RequisicaoEntrada(data, medicamento, funcionario, quantidadeMedicamento);
 
-        TelaMedicamento.RepositorioMedicamento.AdicionarEstoque(medicamento, quantidade);
+        TelaMedicamento.RepositorioMedicamento.AdicionarEstoque(medicamento, quantidadeMedicamento);
 
         return requisicaoEntrada;
     }
@@ -140,6 +140,6 @@ public class TelaRequisicaoEntrada : TelaBase<RequisicaoEntrada>, ITelaCrud
     protected override void ExibirLinhaTabela(RequisicaoEntrada registro)
     {
         Console.WriteLine("{0, -10} | {1, -15} | {2, -20} | {3, -20} | {4, -15}",
-                registro.Id, registro.Data, registro.Medicamento!.Nome, registro.Funcionario!.Nome, registro.Quantidade);
+                registro.Id, registro.Data, registro.Medicamento!.Nome, registro.Funcionario!.Nome, registro.QuantidadeMedicamento);
     }
 }
