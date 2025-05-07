@@ -30,79 +30,28 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
         return false;
     }
 
-    public override void EditarRegistro()
+    public override bool TemRestricoesNoEditar(Medicamento registroEscolhido, Medicamento dadosEditados, out string mensagem)
     {
-        ExibirCabecalho();
+        Fornecedor fornecedorAntigo = registroEscolhido.Fornecedor!;
+        Fornecedor fornecedorNovo = dadosEditados.Fornecedor!;
 
-        Console.WriteLine($"Editando Medicamento...");
-        Console.WriteLine("----------------------------------------");
+        mensagem = "";
 
-        Console.WriteLine();
-
-        VisualizarRegistros(false);
-
-
-        int idRegistroEscolhido;
-
-        while (true)
+        if (fornecedorAntigo != fornecedorNovo)
         {
-            Console.Write("Digite o ID do medicamento que deseja selecionar: ");
-            bool idValido = int.TryParse(Console.ReadLine(), out idRegistroEscolhido);
-            if (!idValido)
-            {
-                Console.WriteLine("\nID inválido, selecione novamente.\n");
-                continue;
-            }
-            else
-                break;
+            fornecedorAntigo.RemoverMedicamento(registroEscolhido);
+            fornecedorNovo.AdicionarMedicamento(registroEscolhido);
         }
 
-        Medicamento medicamentoOriginal = RepositorioMedicamento.SelecionarRegistroPorId(idRegistroEscolhido);
-        Fornecedor fornecedorAntigo = medicamentoOriginal.Fornecedor!;
-
-        Console.WriteLine();
-
-        Medicamento medicamentoEditado = ObterDados();
-
-        Fornecedor fornecedorEditado = medicamentoEditado.Fornecedor!;
-
-        string erros = medicamentoEditado.Validar();
-
-        if (erros.Length > 0)
-        {
-            Notificador.ExibirMensagem(erros, ConsoleColor.Red);
-
-            EditarRegistro();
-
-            return;
-        }
-
-        bool conseguiuEditar = RepositorioMedicamento.EditarRegistro(idRegistroEscolhido, medicamentoEditado);
-
-        if (!conseguiuEditar)
-        {
-            Notificador.ExibirMensagem("Houve um erro durante a edição do registro...", ConsoleColor.Red);
-
-            return;
-        }
-
-        if (fornecedorAntigo != fornecedorEditado)
-        {
-            fornecedorAntigo.RemoverMedicamento(medicamentoOriginal);
-            fornecedorEditado.AdicionarMedicamento(medicamentoOriginal);
-        }
-
-        Notificador.ExibirMensagem("O registro foi editado com sucesso!", ConsoleColor.Green);
+        return false;
     }
 
-    public override bool TemRestricoesNoExcluir(int idRegistro, out string mensagem)
+    public override bool TemRestricoesNoExcluir(Medicamento registroEscolhido, out string mensagem)
     {
 
         mensagem = "";
 
-        Medicamento medicamentoEscolhido = RepositorioMedicamento.SelecionarRegistroPorId(idRegistro);
-
-        medicamentoEscolhido.Fornecedor!.RemoverMedicamento(medicamentoEscolhido);
+        registroEscolhido.Fornecedor!.RemoverMedicamento(registroEscolhido);
         return false;
 
     }
