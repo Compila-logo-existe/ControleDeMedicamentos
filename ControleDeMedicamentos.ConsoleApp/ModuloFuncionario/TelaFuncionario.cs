@@ -1,4 +1,5 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+using ControleDeMedicamentos.ConsoleApp.Util;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloFuncionario;
 
@@ -42,6 +43,12 @@ public class TelaFuncionario : TelaBase<Funcionario>, ITelaCrud
 
     protected override void ExibirCabecalhoTabela()
     {
+        if (RepositorioFuncionario.ListaVazia())
+        {
+            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            return;
+        }
+
         Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30}",
                 "ID", "Nome", "Telefone", "CPF");
     }

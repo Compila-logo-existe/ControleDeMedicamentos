@@ -13,11 +13,11 @@ public abstract class TelaBase<Tipo> where Tipo : EntidadeBase<Tipo>
         this.repositorio = repositorio;
     }
 
-    public void ExibirCabecalho()
+    public virtual void ExibirCabecalho()
     {
         Console.Clear();
         Console.WriteLine("--------------------------------------------");
-        Console.WriteLine($"Controle de {nomeEntidade}s");
+        Console.WriteLine($"Controle de {nomeEntidade}");
         Console.WriteLine("--------------------------------------------");
     }
 

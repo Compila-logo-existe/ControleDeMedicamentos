@@ -7,6 +7,14 @@ public class RepositorioMedicamentoEmArquivo : RepositorioBaseEmArquivo<Medicame
 {
     public RepositorioMedicamentoEmArquivo(ContextoDados contexto) : base(contexto) { }
 
+    public bool ListaVazia()
+    {
+        if (contexto.Medicamentos.Count <= 0)
+            return true;
+        else
+            return false;
+    }
+
     public override void CadastrarRegistro(Medicamento medicamento)
     {
         medicamento.Fornecedor!.AdicionarMedicamento(medicamento);

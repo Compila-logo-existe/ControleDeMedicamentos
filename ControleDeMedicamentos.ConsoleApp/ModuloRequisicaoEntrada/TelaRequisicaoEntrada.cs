@@ -1,6 +1,7 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 using ControleDeMedicamentos.ConsoleApp.ModuloFuncionario;
 using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
+using ControleDeMedicamentos.ConsoleApp.Util;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloRequisicaoEntrada;
 
@@ -125,6 +126,13 @@ public class TelaRequisicaoEntrada : TelaBase<RequisicaoEntrada>, ITelaCrud
 
     protected override void ExibirCabecalhoTabela()
     {
+        if (RepositorioRequisicaoEntrada.ListaVazia())
+        {
+            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            return;
+        }
+
+
         Console.WriteLine("{0, -10} | {1, -15} | {2, -20} | {3, -20} | {4, -15}",
                 "ID", "Data", "Medicamento", "Funcionário", "Quantidade");
     }

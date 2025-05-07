@@ -150,13 +150,19 @@ public class TelaMedicamento : TelaBase<Medicamento>, ITelaCrud
         Console.Write("Digite a Descrição: ");
         string descricao = Console.ReadLine() ?? string.Empty;
 
-        Medicamento medicamento = new Medicamento(nome, idQuantidadeEscolhida, descricao);
+        Medicamento medicamento = new Medicamento(nome, idQuantidadeEscolhida, descricao, fornecedor);
 
         return medicamento;
     }
 
     protected override void ExibirCabecalhoTabela()
     {
+        if (RepositorioMedicamento.ListaVazia())
+        {
+            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            return;
+        }
+
         RepositorioMedicamento.VerificarEstoque();
 
         Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30} | {4, -20}",

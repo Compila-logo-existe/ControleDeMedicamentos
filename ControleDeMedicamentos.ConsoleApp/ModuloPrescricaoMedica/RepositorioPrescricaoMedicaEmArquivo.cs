@@ -6,6 +6,14 @@ public class RepositorioPrescricaoMedicaEmArquivo : RepositorioBaseEmArquivo<Pre
 {
     public RepositorioPrescricaoMedicaEmArquivo(ContextoDados contexto) : base(contexto) { }
 
+    public bool ListaVazia()
+    {
+        if (contexto.PrescricoesMedicas.Count <= 0)
+            return true;
+        else
+            return false;
+    }
+
     protected override List<PrescricaoMedica> ObterRegistros()
     {
         return contexto.PrescricoesMedicas;

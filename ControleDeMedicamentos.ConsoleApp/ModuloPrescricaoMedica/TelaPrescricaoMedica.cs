@@ -1,6 +1,7 @@
 using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 using ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 using ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
+using ControleDeMedicamentos.ConsoleApp.Util;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
 
@@ -108,6 +109,12 @@ public class TelaPrescricaoMedica : TelaBase<PrescricaoMedica>, ITelaCrud
 
     protected override void ExibirCabecalhoTabela()
     {
+        if (IRepositorioPrescricaoMedica.ListaVazia())
+        {
+            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            return;
+        }
+
         IRepositorioPrescricaoMedica!.VerificarValidade();
 
         Console.WriteLine

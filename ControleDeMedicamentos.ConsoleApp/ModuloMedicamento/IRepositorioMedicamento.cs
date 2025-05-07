@@ -6,6 +6,7 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloMedicamento;
 
 public interface IRepositorioMedicamento : IRepositorio<Medicamento>
 {
+    public bool ListaVazia();
     public void VerificarEstoque();
 
     public bool VerificarMedicamentoNoEstoque(Medicamento medicamento);

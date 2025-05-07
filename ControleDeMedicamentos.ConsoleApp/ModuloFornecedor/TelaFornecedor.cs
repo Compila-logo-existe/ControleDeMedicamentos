@@ -65,6 +65,12 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
 
     protected override void ExibirCabecalhoTabela()
     {
+        if (RepositorioFornecedor.ListaVazia())
+        {
+            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            return;
+        }
+
         Console.WriteLine("{0, -10} | {1, -20} | {2, -15} | {3, -30}",
                 "ID", "Nome", "Telefone", "CNPJ");
     }
@@ -77,6 +83,12 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
 
     public void VisualizarMedicamentosFornecedor()
     {
+        if (RepositorioFornecedor.ListaVazia())
+        {
+            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            return;
+        }
+
         VisualizarRegistros(false);
 
         int idFornecedorEscolhido;

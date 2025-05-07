@@ -1,5 +1,7 @@
 using ControleDeMedicamentos.ConsoleApp.Compartilhado;
+using ControleDeMedicamentos.ConsoleApp.ModuloFuncionario;
 using ControleDeMedicamentos.ConsoleApp.ModuloPrescricaoMedica;
+using ControleDeMedicamentos.ConsoleApp.Util;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPaciente;
 
@@ -51,6 +53,12 @@ public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
 
     protected override void ExibirCabecalhoTabela()
     {
+        if (IRepositorioPaciente.ListaVazia())
+        {
+            Notificador.ExibirMensagem("Nenhum registro encontrado.", ConsoleColor.Red);
+            return;
+        }
+
         Console.WriteLine
         (
             "{0, -10} | {1, -20} | {2, -15} | {3, -18}",

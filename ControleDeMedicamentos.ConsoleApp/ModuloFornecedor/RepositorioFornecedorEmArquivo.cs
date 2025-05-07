@@ -5,6 +5,13 @@ namespace ControleDeMedicamentos.ConsoleApp.ModuloFornecedor;
 public class RepositorioFornecedorEmArquivo : RepositorioBaseEmArquivo<Fornecedor>, IRepositorioFornecedor
 {
     public RepositorioFornecedorEmArquivo(ContextoDados contexto) : base(contexto) { }
+    public bool ListaVazia()
+    {
+        if (contexto.Fornecedores.Count <= 0)
+            return true;
+        else
+            return false;
+    }
 
     public bool VerificarCNPJRegistros(Fornecedor fornecedor)
     {
