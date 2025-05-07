@@ -47,6 +47,20 @@ public class TelaFornecedor : TelaBase<Fornecedor>, ITelaCrud
 
         return false;
     }
+
+    public override bool TemRestricoesNoEditar(Fornecedor registroEscolhido, Fornecedor dadosEditados, out string mensagem)
+    {
+        mensagem = "";
+
+        if (RepositorioFornecedor.VerificarCNPJEditarRegistro(registroEscolhido, dadosEditados))
+        {
+            mensagem = "\nJá existe um cadastro com esse CNPJ!";
+            return true;
+        }
+
+        return false;
+    }
+
     public override Fornecedor ObterDados()
     {
         Console.Write("Digite o Nome: ");
