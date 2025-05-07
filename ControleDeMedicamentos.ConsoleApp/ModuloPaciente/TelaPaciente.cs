@@ -25,7 +25,23 @@ public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
     {
         mensagem = string.Empty;
 
-        if (IRepositorioPaciente.VerificarCartaoSUSRegistros(paciente))
+        if (IRepositorioPaciente.VerificarCartaoSUSInserirRegistro(paciente))
+        {
+            mensagem += "\nJa existe um cadastro com esse Cartao do SUS!";
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public override bool TemRestricoesNoEditar(Paciente registroEscolhido, Paciente dadosEditados, out string mensagem)
+    {
+        mensagem = string.Empty;
+
+        if (IRepositorioPaciente.VerificarCartaoSUSEditarRegistro(registroEscolhido, dadosEditados))
         {
             mensagem += "\nJa existe um cadastro com esse Cartao do SUS!";
 
@@ -47,6 +63,7 @@ public class TelaPaciente : TelaBase<Paciente>, ITelaCrud
 
         Console.Write("Digite o Numero do Cartao do SUS: ");
         string cartaoSUS = Console.ReadLine() ?? string.Empty;
+
 
         return new Paciente(nome, telefone, cartaoSUS);
     }
