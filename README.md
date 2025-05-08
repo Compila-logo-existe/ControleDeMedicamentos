@@ -52,8 +52,7 @@ O sistema é dividido em sete módulos principais, cada um com suas respectivas 
 - Atualização automática da quantidade em estoque.
 - Valida a presença de funcionário responsável e quantidade positiva.
 ***
-
-![]() 
+![Controle de Medicamentos](https://github.com/user-attachments/assets/7af7a4ac-a79e-4a8a-96e6-b8195804ebcb)
 ***
 ## Tecnologias
 
@@ -86,13 +85,13 @@ dotnet build --configuration Release
 5. Para executar o projeto compilando em tempo real
    
 ```
-dotnet run --project ClubeDoLivro.ConsoleApp
+dotnet run --project ControleDeMedicamentos.ConsoleApp
 ```
 
-6. Para executar o arquivo compilado, navegue até a pasta `./ClubeDoLivro.ConsoleApp/bin/Release/net8.0/` e execute o arquivo:
+6. Para executar o arquivo compilado, navegue até a pasta `.\ControleDeMedicamentos.ConsoleApp\bin\Release\net8.0\` e execute o arquivo:
    
 ```
-ClubeDoLivro.ConsoleApp.exe
+ControleDeMedicamentos.ConsoleApp.exe
 ```
 
 ## Requisitos
