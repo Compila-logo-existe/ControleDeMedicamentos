@@ -3,10 +3,10 @@
 ![](https://hs.toledoprudente.edu.br/hs-fs/hubfs/contador%20profissional%20presidente%20prudente.gif?width=480&name=contador%20profissional%20presidente%20prudente.gif)
 
 ## Introdução
-
 Este projeto consiste em um sistema completo de controle de medicamentos, desenvolvido para gerenciar o fluxo de entrada e saída de remédios em uma unidade de saúde. O programa foi criado com o objetivo de oferecer um ambiente funcional para registrar, controlar e consultar dados essenciais relacionados a fornecedores, pacientes, medicamentos, funcionários, prescrições médicas e requisições.
 
 A aplicação permite manter o controle rigoroso dos medicamentos em estoque, evitar perdas por falta de monitoramento e garantir que a distribuição dos remédios seja feita conforme a disponibilidade e prescrições médicas válidas.
+
 ## Propriedades do programa
 O sistema é dividido em sete módulos principais, cada um com suas respectivas funcionalidades e regras de negócio:
 
@@ -54,22 +54,19 @@ O sistema é dividido em sete módulos principais, cada um com suas respectivas 
 ***
 ![Controle de Medicamentos](https://github.com/user-attachments/assets/7af7a4ac-a79e-4a8a-96e6-b8195804ebcb)
 ***
-## Tecnologias
 
+## Tecnologias
 [![Tecnologias](https://skillicons.dev/icons?i=git,github,visualstudio,neovim,cs,dotnet)](https://skillicons.dev)
 
-## Ausensias
-
+## Ausências
 ![](https://i.pinimg.com/originals/6f/01/b7/6f01b75b69b25384b44fca0f8f099881.gif) 
 
-- **Gif**: Ainda não foi inserido o gif do projeto funcionando
-- **Desafios**: Nenhum dos desafios propostos foi realizado.
+- **Desafios**: Faltou implementação do desafio 1.3.
 <br><br>
 
 ## Como utilizar
-
 1. Clone o repositório ou baixe o código fonte.
-2. Abra o terminal ou o prompt de comando e navegue até a pasta raiz
+2. Abra o terminal ou o prompt de comando e navegue até a pasta raiz.
 3. Utilize o comando abaixo para restaurar as dependências do projeto.
 
 ```
